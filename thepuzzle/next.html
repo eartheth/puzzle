@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VOID ACCESS // LOGIN</title>
+<title>THE IMPOSSIBLE PUZZLE // ACCESS</title>
 
 <style>
     * {
@@ -14,19 +14,19 @@
         margin: 0;
         min-height: 100%;
         overflow: hidden;
-        background: #02030a;
-        color: #eef2ff;
-        font-family: "Segoe UI", Arial, sans-serif;
+        background: #020202;
+        color: #d8d8d8;
+        font-family: "Courier New", monospace;
     }
 
     body {
         position: relative;
         min-height: 100vh;
         background:
-            radial-gradient(circle at 20% 20%, rgba(82, 44, 255, .22), transparent 28%),
-            radial-gradient(circle at 80% 30%, rgba(0, 220, 255, .18), transparent 30%),
-            radial-gradient(circle at 50% 90%, rgba(255, 0, 160, .14), transparent 32%),
-            linear-gradient(135deg, #02030a 0%, #07091a 45%, #02030a 100%);
+            radial-gradient(circle at 20% 20%, rgba(255,255,255,.045), transparent 28%),
+            radial-gradient(circle at 80% 30%, rgba(255,255,255,.03), transparent 30%),
+            radial-gradient(circle at 50% 90%, rgba(255,255,255,.022), transparent 32%),
+            linear-gradient(135deg, #020202 0%, #080808 45%, #020202 100%);
     }
 
     /* animated aurora */
@@ -46,21 +46,21 @@
         background: conic-gradient(
             from 0deg,
             transparent 0deg,
-            rgba(89, 0, 255, .45) 70deg,
+            rgba(255,255,255,.11) 70deg,
             transparent 130deg,
-            rgba(0, 234, 255, .4) 220deg,
+            rgba(255,255,255,.075) 220deg,
             transparent 300deg
         );
         animation: auroraSpin 18s linear infinite;
     }
 
     .aurora::before {
-        background: radial-gradient(circle, rgba(255, 0, 140, .30), transparent 55%);
+        background: radial-gradient(circle, rgba(255,255,255,.055), transparent 55%);
         animation: auroraFloat 10s ease-in-out infinite alternate;
     }
 
     .aurora::after {
-        background: radial-gradient(circle, rgba(0, 255, 225, .25), transparent 55%);
+        background: radial-gradient(circle, rgba(255,255,255,.04), transparent 55%);
         animation: auroraFloat2 13s ease-in-out infinite alternate;
     }
 
@@ -86,8 +86,8 @@
         bottom: -42%;
         height: 70%;
         background:
-            linear-gradient(rgba(79, 115, 255, .17) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(79, 115, 255, .17) 1px, transparent 1px);
+            linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
         background-size: 52px 52px;
         transform: perspective(500px) rotateX(63deg);
         transform-origin: center top;
@@ -143,9 +143,9 @@
         background: linear-gradient(
             90deg,
             transparent,
-            rgba(115, 160, 255, .08),
+            rgba(255,255,255,.03),
             rgba(255,255,255,.13),
-            rgba(115,160,255,.08),
+            rgba(255,255,255,.03),
             transparent
         );
         transform: rotate(18deg);
@@ -185,7 +185,7 @@
         height: 180px;
         left: 7%;
         top: 12%;
-        background: radial-gradient(circle, rgba(95, 0, 255, .9), transparent 68%);
+        background: radial-gradient(circle, rgba(255,255,255,.16), transparent 68%);
         animation: orb1 8s ease-in-out infinite alternate;
     }
 
@@ -194,7 +194,7 @@
         height: 240px;
         right: 3%;
         top: 9%;
-        background: radial-gradient(circle, rgba(0, 220, 255, .8), transparent 68%);
+        background: radial-gradient(circle, rgba(255,255,255,.11), transparent 68%);
         animation: orb2 11s ease-in-out infinite alternate;
     }
 
@@ -203,7 +203,7 @@
         height: 210px;
         left: 20%;
         bottom: 3%;
-        background: radial-gradient(circle, rgba(255, 0, 140, .62), transparent 70%);
+        background: radial-gradient(circle, rgba(255,255,255,.08), transparent 70%);
         animation: orb3 9s ease-in-out infinite alternate;
     }
 
@@ -250,10 +250,10 @@
         background:
             conic-gradient(
                 from var(--spin),
-                #7b2cff,
-                #00e5ff,
-                #ff2fa7,
-                #7b2cff
+                #5f5f5f,
+                #bdbdbd,
+                #7a7a7a,
+                #5f5f5f
             );
         filter: blur(13px);
         opacity: .7;
@@ -269,10 +269,10 @@
         background:
             conic-gradient(
                 from var(--spin),
-                rgba(123,44,255,.9),
-                rgba(0,229,255,.9),
-                rgba(255,47,167,.9),
-                rgba(123,44,255,.9)
+                rgba(255,255,255,.34),
+                rgba(255,255,255,.18),
+                rgba(255,255,255,.08),
+                rgba(255,255,255,.34)
             );
         z-index: -1;
         animation: borderSpin 4s linear infinite;
@@ -326,7 +326,7 @@
     }
 
     .tiny {
-        color: #7d88b8;
+        color: #5f5f5f;
         font: 11px/1.4 "Courier New", monospace;
         letter-spacing: 3px;
         margin-bottom: 10px;
@@ -345,7 +345,7 @@
         line-height: .96;
         letter-spacing: -3px;
         font-weight: 800;
-        background: linear-gradient(90deg, #fff, #9fdcff, #ddb1ff, #fff);
+        background: linear-gradient(90deg, #fff, #d0d0d0, #9a9a9a, #fff);
         background-size: 250% auto;
         -webkit-background-clip: text;
         background-clip: text;
@@ -367,13 +367,13 @@
     }
 
     .title::before {
-        color: #00e5ff;
+        color: #bdbdbd;
         clip-path: inset(0 0 55% 0);
         animation: glitchA 2.8s infinite;
     }
 
     .title::after {
-        color: #ff2fa7;
+        color: #7a7a7a;
         clip-path: inset(55% 0 0 0);
         animation: glitchB 3.1s infinite;
     }
@@ -394,7 +394,7 @@
 
     .sub {
         margin: 14px 0 26px;
-        color: #8e96b8;
+        color: #707070;
         font-size: 13px;
         line-height: 1.7;
     }
@@ -403,7 +403,7 @@
         position: relative;
         min-height: 20px;
         margin-bottom: 20px;
-        color: #6c7aa7;
+        color: #626262;
         font: 11px/1.5 "Courier New", monospace;
         letter-spacing: .5px;
     }
@@ -427,7 +427,7 @@
     .field label {
         display: block;
         margin: 0 0 8px 3px;
-        color: #7782aa;
+        color: #656565;
         font-size: 10px;
         letter-spacing: 2px;
         font-weight: 700;
@@ -438,7 +438,7 @@
         overflow: hidden;
         border-radius: 14px;
         background: rgba(255,255,255,.035);
-        border: 1px solid rgba(150,170,255,.16);
+        border: 1px solid rgba(255,255,255,.10);
         transition: .22s;
     }
 
@@ -449,7 +449,7 @@
         background: linear-gradient(
             90deg,
             transparent,
-            rgba(110, 185, 255, .14),
+            rgba(255,255,255,.045),
             transparent
         );
         transform: translateX(-120%);
@@ -462,10 +462,10 @@
     }
 
     .input-wrap:focus-within {
-        border-color: rgba(127, 190, 255, .65);
+        border-color: rgba(255,255,255,.32);
         box-shadow:
-            0 0 0 3px rgba(73, 111, 255, .08),
-            0 0 25px rgba(63, 126, 255, .16);
+            0 0 0 3px rgba(255,255,255,.035),
+            0 0 25px rgba(255,255,255,.055);
         transform: translateY(-1px) scale(1.006);
     }
 
@@ -482,7 +482,7 @@
     }
 
     input::placeholder {
-        color: #4f5879;
+        color: #4c4c4c;
     }
 
     .icon {
@@ -490,14 +490,14 @@
         right: 14px;
         top: 50%;
         transform: translateY(-50%);
-        color: #7181ba;
+        color: #666666;
         z-index: 3;
         animation: iconPulse 2.5s ease-in-out infinite;
     }
 
     @keyframes iconPulse {
         50% {
-            color: #9ec7ff;
+            color: #bcbcbc;
             text-shadow: 0 0 12px rgba(100,170,255,.6);
         }
     }
@@ -514,11 +514,10 @@
         color: #fff;
         font-weight: 800;
         letter-spacing: 2px;
-        background:
-            linear-gradient(90deg, #6f35ff, #267dff, #00c5d8, #6f35ff);
+        background: linear-gradient(90deg, #191919, #444, #777, #333, #191919);
         background-size: 300% 100%;
         box-shadow:
-            0 10px 35px rgba(63, 91, 255, .28),
+            0 10px 35px rgba(255,255,255,.055),
             inset 0 1px rgba(255,255,255,.24);
         animation: btnFlow 3.2s linear infinite, btnPulse 2.2s ease-in-out infinite;
         transition: transform .18s;
@@ -539,8 +538,8 @@
     @keyframes btnPulse {
         50% {
             box-shadow:
-                0 12px 42px rgba(77, 122, 255, .44),
-                0 0 28px rgba(0, 213, 255, .16),
+                0 12px 42px rgba(255,255,255,.09),
+                0 0 28px rgba(255,255,255,.035),
                 inset 0 1px rgba(255,255,255,.24);
         }
     }
@@ -561,29 +560,12 @@
         }
     }
 
-    .creds {
-        margin-top: 18px;
-        border: 1px dashed rgba(140,160,255,.18);
-        border-radius: 12px;
-        padding: 13px;
-        color: #6d789c;
-        font: 11px/1.8 "Courier New", monospace;
-        background: rgba(0,0,0,.12);
-        animation: credsGlow 3s ease-in-out infinite;
-    }
-
-    @keyframes credsGlow {
-        50% {
-            border-color: rgba(120,190,255,.34);
-            color: #8293bd;
-        }
-    }
 
     .status {
         min-height: 26px;
         margin-top: 15px;
         text-align: center;
-        color: #8492bd;
+        color: #747474;
         font: 12px/1.7 "Courier New", monospace;
     }
 
@@ -608,26 +590,26 @@
 
     .corner.tl {
         top: 12px; left: 12px;
-        border-top: 1px solid #7fb3ff;
-        border-left: 1px solid #7fb3ff;
+        border-top: 1px solid #777777;
+        border-left: 1px solid #777777;
     }
 
     .corner.tr {
         top: 12px; right: 12px;
-        border-top: 1px solid #d082ff;
-        border-right: 1px solid #d082ff;
+        border-top: 1px solid #555555;
+        border-right: 1px solid #555555;
     }
 
     .corner.bl {
         bottom: 12px; left: 12px;
-        border-bottom: 1px solid #80e6ff;
-        border-left: 1px solid #80e6ff;
+        border-bottom: 1px solid #8a8a8a;
+        border-left: 1px solid #8a8a8a;
     }
 
     .corner.br {
         bottom: 12px; right: 12px;
-        border-bottom: 1px solid #ff7ac8;
-        border-right: 1px solid #ff7ac8;
+        border-bottom: 1px solid #666666;
+        border-right: 1px solid #666666;
     }
 
     .success-screen {
@@ -636,7 +618,7 @@
         z-index: 200;
         display: none;
         place-items: center;
-        background: #02030a;
+        background: #020202;
         overflow: hidden;
     }
 
@@ -654,7 +636,7 @@
         position: absolute;
         width: 220px;
         height: 220px;
-        border: 2px solid rgba(107,200,255,.55);
+        border: 2px solid rgba(255,255,255,.24);
         border-radius: 50%;
         animation: ringExpand 1.6s ease-out infinite;
     }
@@ -684,7 +666,7 @@
         margin: 0;
         font-size: clamp(36px, 8vw, 80px);
         letter-spacing: -3px;
-        background: linear-gradient(90deg, #fff, #7de5ff, #d49cff, #fff);
+        background: linear-gradient(90deg, #fff, #c8c8c8, #8e8e8e, #fff);
         background-size: 300% 100%;
         -webkit-background-clip: text;
         background-clip: text;
@@ -693,7 +675,7 @@
     }
 
     .success-text p {
-        color: #8092bd;
+        color: #6f6f6f;
         letter-spacing: 4px;
         font-size: 11px;
     }
@@ -723,7 +705,7 @@
 
     .floating-code {
         position: absolute;
-        color: rgba(155,180,255,.09);
+        color: rgba(255,255,255,.045);
         font: 11px "Courier New", monospace;
         white-space: nowrap;
         pointer-events: none;
@@ -745,6 +727,13 @@
 
 <body>
 
+<!--
+    PUZZLE NOTE:
+    password = Zindea_Cubu
+    Password checking is case-insensitive.
+-->
+
+
 <div class="aurora"></div>
 <div class="grid"></div>
 <div class="beam"></div>
@@ -764,12 +753,12 @@
             <span class="corner bl"></span>
             <span class="corner br"></span>
 
-            <div class="tiny">NODE_07 // SECURE ACCESS</div>
+            <div class="tiny">PUZZLE://ACCESS/██████</div>
 
-            <h1 class="title" data-text="VOID LOGIN">VOID LOGIN</h1>
+            <h1 class="title" data-text="ACCESS REQUIRED">ACCESS REQUIRED</h1>
 
             <div class="sub">
-                Identity verification required before entering the next layer.
+                The next layer does not recognize you. Prove that it should.
             </div>
 
             <div class="system-line" id="systemLine"></div>
@@ -795,13 +784,7 @@
             </button>
 
             <div class="status" id="status"></div>
-
-            <div class="creds">
-                TEST CREDENTIALS<br>
-                USER: <strong>guest</strong><br>
-                PASS: <strong>void123</strong>
-            </div>
-        </div>
+</div>
     </div>
 </div>
 
@@ -812,7 +795,7 @@
 
     <div class="success-text">
         <h2>ACCESS GRANTED</h2>
-        <p>WELCOME, GUEST.</p>
+        <p>THE NEXT LAYER IS OPEN.</p>
     </div>
 </div>
 
@@ -867,7 +850,7 @@ function drawParticles() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(170,205,255,${p.a})`;
+        ctx.fillStyle = `rgba(220,220,220,${p.a})`;
         ctx.fill();
     }
 
@@ -885,7 +868,7 @@ function drawParticles() {
                 ctx.beginPath();
                 ctx.moveTo(a.x, a.y);
                 ctx.lineTo(b.x, b.y);
-                ctx.strokeStyle = `rgba(100,145,255,${.06 * (1 - dist / (95 * devicePixelRatio))})`;
+                ctx.strokeStyle = `rgba(170,170,170,${.06 * (1 - dist / (95 * devicePixelRatio))})`;
                 ctx.stroke();
             }
         }
@@ -960,7 +943,7 @@ const systemLine = document.getElementById("systemLine");
 const messages = [
     "INITIALIZING AUTHENTICATION MATRIX...",
     "SCANNING LOCAL IDENTITY CACHE...",
-    "HANDSHAKE WITH NODE_07 COMPLETE.",
+    "HANDSHAKE WITH UNKNOWN LAYER COMPLETE.",
     "WAITING FOR USER CREDENTIALS..."
 ];
 
@@ -1035,7 +1018,7 @@ function login() {
     status.textContent = "VERIFYING...";
 
     setTimeout(() => {
-        if (u === "guest" && p === "void123") {
+        if (u === "guest" && p.toLowerCase() === "zindea_cubu") {
 
             status.textContent = "SIGNATURE ACCEPTED.";
 
@@ -1061,7 +1044,7 @@ function login() {
             document.body.animate(
                 [
                     { filter: "none" },
-                    { filter: "hue-rotate(100deg) contrast(1.5)" },
+                    { filter: "grayscale(1) invert(.12) contrast(2.2) brightness(1.25)" },
                     { filter: "none" }
                 ],
                 {
