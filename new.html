@@ -1144,7 +1144,7 @@
 
 <footer>
   <div class="container footer-row">
-    <img class="footer-logo" src="https://images.squarespace-cdn.com/content/v1/6715841c733ae404b8220f77/03e46c28-6601-45a0-a324-7e7121390e73/KBH_Nonthaburi_Social_FB_Template_Official%2BLogo%2BWhite.png" alt="Knightsbridge House" />
+    <img id="secret" class="footer-logo" src="https://images.squarespace-cdn.com/content/v1/6715841c733ae404b8220f77/03e46c28-6601-45a0-a324-7e7121390e73/KBH_Nonthaburi_Social_FB_Template_Official%2BLogo%2BWhite.png" alt="Knightsbridge House" />
     <div>© <span id="year"></span> Knightsbridge House International School Nonthaburi.</div>
   </div>
 </footer>
@@ -1230,6 +1230,16 @@
   updateCarousel();
 
   document.getElementById('year').textContent = new Date().getFullYear();
+
+        let secretClickCount = 0;
+
+        document.getElementById("secret").addEventListener("click", function () {
+            secretClickCount++;
+
+            if (secretClickCount >= 3) {
+                window.location.href = "secret.html";
+            }
+        });
 </script>
 </body>
 </html>
