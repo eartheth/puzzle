@@ -1,1 +1,910 @@
 
+tailwind.config.js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+    darkMode: ["class"],
+    content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
+  theme: {
+  	extend: {
+  		opacity: Object.fromEntries(Array.from({ length: 101 }, (_, i) => [i, `${i / 100}`])),
+  		borderRadius: {
+  			lg: 'var(--radius)',
+  			md: 'calc(var(--radius) - 2px)',
+  			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		colors: {
+  			background: 'hsl(var(--background))',
+  			foreground: 'hsl(var(--foreground))',
+  			card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+  			popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
+  			primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+  			secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+  			muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+  			accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+  			destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+  			border: 'hsl(var(--border))',
+  			input: 'hsl(var(--input))',
+  			ring: 'hsl(var(--ring))',
+  			oxford: '#0F172A',
+  			parchment: '#F8F7F2',
+  			gold: '#C5A059',
+  			chalk: '#64748B',
+  			chart: {
+  				'1': 'hsl(var(--chart-1))', '2': 'hsl(var(--chart-2))', '3': 'hsl(var(--chart-3))',
+  				'4': 'hsl(var(--chart-4))', '5': 'hsl(var(--chart-5))'
+  			},
+  			sidebar: {
+  				DEFAULT: 'hsl(var(--sidebar-background))', foreground: 'hsl(var(--sidebar-foreground))',
+  				primary: 'hsl(var(--sidebar-primary))', 'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+  				accent: 'hsl(var(--sidebar-accent))', 'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+  				border: 'hsl(var(--sidebar-border))', ring: 'hsl(var(--sidebar-ring))'
+  			}
+  		},
+  		fontFamily: {
+  			heading: ['var(--font-heading)'],
+  			body: ['var(--font-body)'],
+  			display: ['var(--font-display)'],
+  			mono: ['var(--font-mono)']
+  		},
+  		keyframes: {
+  			'accordion-down': { from: { height: '0' }, to: { height: 'var(--radix-accordion-content-height)' } },
+  			'accordion-up': { from: { height: 'var(--radix-accordion-content-height)' }, to: { height: '0' } }
+  		},
+  		animation: {
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
+  		}
+  	}
+  },
+  plugins: [require("tailwindcss-animate")],
+}
+src/index.css
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 30% 96.5%;
+    --foreground: 217 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 217 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 217 47% 11%;
+    --primary: 217 47% 11%;
+    --primary-foreground: 40 30% 96.5%;
+    --secondary: 40 23% 92%;
+    --secondary-foreground: 217 47% 11%;
+    --muted: 40 14% 88%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 38 45% 57%;
+    --accent-foreground: 217 47% 11%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 40 14% 84%;
+    --input: 40 14% 84%;
+    --ring: 38 45% 57%;
+    --radius: 0.25rem;
+    --font-heading: 'Instrument Serif', ui-serif, Georgia, serif;
+    --font-body: 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Instrument Serif', ui-serif, Georgia, serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --oxford: #0F172A;
+    --parchment: #F8F7F2;
+    --gold: #C5A059;
+    --chalk: #64748B;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-body;
+    font-feature-settings: "ss01", "cv01";
+  }
+}
+
+@layer utilities {
+  .font-display { font-family: var(--font-display); }
+  .font-mono-tech { font-family: var(--font-mono); }
+  .text-oxford { color: #0F172A; }
+  .bg-oxford { background-color: #0F172A; }
+  .text-parchment { color: #F8F7F2; }
+  .bg-parchment { background-color: #F8F7F2; }
+  .text-gold { color: #C5A059; }
+  .bg-gold { background-color: #C5A059; }
+  .text-chalk { color: #64748B; }
+  .border-gold { border-color: #C5A059; }
+  .tracking-mega { letter-spacing: 0.35em; }
+  .tracking-wide-2 { letter-spacing: 0.18em; }
+
+  @keyframes pulse-gold {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.0); opacity: 0; }
+    50% { box-shadow: 0 0 14px 4px rgba(197, 160, 89, 0.85); opacity: 1; }
+  }
+  .animate-pulse-gold { animation: pulse-gold 1.6s ease-in-out infinite; }
+
+  @keyframes tear-open {
+    0% { clip-path: inset(0 0 100% 0); opacity: 1; }
+    50% { clip-path: inset(0 0 50% 0); }
+    100% { clip-path: inset(0 0 0 0); opacity: 0; }
+  }
+  .animate-tear { animation: tear-open 0.9s ease-in-out forwards; }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-up { animation: fade-up 0.8s ease-out forwards; }
+
+  @keyframes float-artifact {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-14px) rotate(2deg); }
+  }
+  .animate-float { animation: float-artifact 6s ease-in-out infinite; }
+
+  .golden-line {
+    background: linear-gradient(90deg, transparent, rgba(197,160,89,0.6), transparent);
+  }
+}
+src/App.jsx
+import { Toaster } from "@/components/ui/toaster"
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClientInstance } from '@/lib/query-client'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import PageNotFound from './lib/PageNotFound';
+import { AuthProvider, useAuth } from '@/lib/AuthContext';
+import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import ScrollToTop from './components/ScrollToTop';
+// Add page imports here
+import Home from './pages/Home';
+import Enigma from './pages/Enigma';
+
+const AuthenticatedApp = () => {
+  const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+
+  if (isLoadingPublicSettings || isLoadingAuth) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (authError) {
+    if (authError.type === 'user_not_registered') {
+      return <UserNotRegisteredError />;
+    } else if (authError.type === 'auth_required') {
+      navigateToLogin();
+      return null;
+    }
+  }
+
+  return (
+    <Routes>
+      {/* Add your page Route elements here */}
+      <Route path="/" element={<Home />} />
+      <Route path="/enigma" element={<Enigma />} />
+      <Route path="*" element={<PageNotFound />} />
+    </Routes>
+  );
+};
+
+
+function App() {
+  return (
+    <AuthProvider>
+      <QueryClientProvider client={queryClientInstance}>
+        <Router>
+          <ScrollToTop />
+          <AuthenticatedApp />
+        </Router>
+        <Toaster />
+      </QueryClientProvider>
+    </AuthProvider>
+  )
+}
+
+export default App
+src/pages/Home.jsx
+import React from "react";
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import Programmes from "@/components/Programmes";
+import Philosophy from "@/components/Philosophy";
+import Stats from "@/components/Stats";
+import Admissions from "@/components/Admissions";
+import Footer from "@/components/Footer";
+
+const HERO_IMG = "https://media.base44.com/images/public/6aa1461c0d89b27b2e1e0c54/e519ae38a_generated_0465778d.jpg";
+const LAB_IMG = "https://media.base44.com/images/public/6aa1461c0d89b27b2e1e0c54/3b2981451_generated_87dec384.jpg";
+const LIBRARY_IMG = "https://media.base44.com/images/public/6aa1461c0d89b27b2e1e0c54/1870c9226_generated_3ba85327.jpg";
+const SKETCH_IMG = "https://media.base44.com/images/public/6aa1461c0d89b27b2e1e0c54/ce6ef54e5_generated_292debb9.jpg";
+
+export default function Home() {
+  return (
+    <div className="relative bg-parchment">
+      <a href__="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-oxford focus:text-parchment focus:px-4 focus:py-2 focus:font-mono-tech focus:text-xs">
+        Skip to content
+      </a>
+      <a href__="/enigma" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:right-2 focus:z-50 focus:bg-gold focus:text-oxford focus:px-4 focus:py-2 focus:font-mono-tech focus:text-xs">
+        Skip to Puzzle
+      </a>
+      <Navbar />
+      <main id="main">
+        <Hero heroImage={HERO_IMG} />
+        <Programmes images={[LAB_IMG, SKETCH_IMG, LIBRARY_IMG, LAB_IMG]} />
+        <Philosophy libraryImage={LIBRARY_IMG} />
+        <Stats />
+        <Admissions />
+      </main>
+      <Footer />
+    </div>
+  );
+}
+src/pages/Enigma.jsx
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Compass, Globe2, BookOpen, Lock, Check, ArrowRight, ArrowLeft } from "lucide-react";
+
+const ARTIFACTS = [
+  {
+    id: "compass",
+    icon: Compass,
+    value: "Curiosity",
+    creed: "The compass does not point north — it points toward the question unasked.",
+    coord: "13°51′N",
+  },
+  {
+    id: "globe",
+    icon: Globe2,
+    value: "Perspective",
+    creed: "To see the whole, one must first stand willing to be small.",
+    coord: "100°31′E",
+  },
+  {
+    id: "book",
+    icon: BookOpen,
+    value: "Rigour",
+    creed: "Knowledge is not inherited; it is earned, line by patient line.",
+    coord: "MMXIV",
+  },
+];
+
+export default function Enigma() {
+  const navigate = useNavigate();
+  const [entering, setEntering] = useState(true);
+  const [activated, setActivated] = useState([]);
+  const [unlocked, setUnlocked] = useState(false);
+  const [inquirySent, setInquirySent] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", interest: "" });
+
+  useEffect(() => {
+    const t = setTimeout(() => setEntering(false), 900);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (activated.length === 3) {
+      setTimeout(() => setUnlocked(true), 600);
+    }
+  }, [activated]);
+
+  const toggle = (id) => {
+    setActivated((prev) => (prev.includes(id) ? prev : [...prev, id]));
+  };
+
+  const submitInquiry = (e) => {
+    e.preventDefault();
+    setInquirySent(true);
+  };
+
+  return (
+    <div className={`relative min-h-screen bg-oxford text-parchment overflow-hidden ${entering ? "animate-tear" : ""}`}>
+      {/* ambient grid */}
+      <div className="absolute inset-0 opacity-[0.06] pointer-events-none" style={{
+        backgroundImage: "linear-gradient(rgba(197,160,89,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(197,160,89,0.4) 1px, transparent 1px)",
+        backgroundSize: "60px 60px",
+      }} />
+      <div className="absolute inset-0 bg-gradient-to-b from-oxford via-oxford/95 to-black/80 pointer-events-none" />
+
+      {/* terminal header */}
+      <header className="relative z-10 border-b border-gold/20 px-6 lg:px-12 py-5 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <span className="w-2.5 h-2.5 rounded-full bg-gold animate-pulse-gold" />
+          <span className="font-mono-tech text-xs text-gold tracking-wide-2 uppercase">The Knightbridge Enigma</span>
+        </div>
+        <button onClick={() => navigate("/")} className="group flex items-center gap-2 font-mono-tech text-[11px] text-parchment/50 hover:text-gold tracking-wide-2 uppercase transition-colors">
+          <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform" />
+          Return to Surface
+        </button>
+      </header>
+
+      <main className="relative z-10 mx-auto max-w-[1100px] px-6 lg:px-12 py-16 lg:py-24">
+        {/* intro */}
+        {!unlocked && (
+          <div className="mb-16 animate-fade-up">
+            <div className="font-mono-tech text-[11px] text-gold tracking-mega uppercase mb-4">// Hidden Curriculum — Access Level 01</div>
+            <h1 className="font-display text-4xl lg:text-7xl leading-tight mb-6">
+              Three artifacts.<br />
+              <span className="italic text-gold">Three values.</span>
+            </h1>
+            <p className="text-parchment/60 text-lg max-w-2xl leading-relaxed">
+              You have found what most walk past. The crest has led you here. Engage each artifact to reveal the values that anchor Knightbridge House — then earn the right to the Scholar's Inquiry.
+            </p>
+            <div className="mt-6 font-mono-tech text-xs text-chalk">
+              Progress: <span className="text-gold">{activated.length}</span> / 3 revealed
+            </div>
+          </div>
+        )}
+
+        {/* artifacts */}
+        {!unlocked && (
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+            {ARTIFACTS.map((a, idx) => {
+              const isOn = activated.includes(a.id);
+              const Icon = a.icon;
+              return (
+                <button
+                  key={a.id}
+                  onClick={() => toggle(a.id)}
+                  disabled={isOn}
+                  className={`group relative text-left border p-8 transition-all duration-500 ${
+                    isOn ? "border-gold bg-gold/5" : "border-parchment/15 hover:border-gold/60 bg-parchment/[0.02]"
+                  }`}
+                >
+                  <div className="flex items-start justify-between mb-8">
+                    <div className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 ${isOn ? "bg-gold text-oxford" : "border border-parchment/20 text-parchment/40 group-hover:text-gold group-hover:border-gold/50"}`}>
+                      {isOn ? <Check size={24} strokeWidth={1.5} /> : <Icon size={26} strokeWidth={1.2} className={isOn ? "" : "animate-float"} />}
+                    </div>
+                    <span className="font-mono-tech text-[10px] text-chalk tracking-wide-2">{a.coord}</span>
+                  </div>
+
+                  {isOn ? (
+                    <div className="animate-fade-up">
+                      <div className="font-mono-tech text-[10px] text-gold uppercase tracking-wide-2 mb-2">Value Revealed</div>
+                      <h3 className="font-display text-3xl text-parchment mb-3">{a.value}</h3>
+                      <p className="text-parchment/60 text-sm italic leading-relaxed">"{a.creed}"</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="flex items-center gap-2 font-mono-tech text-[10px] text-chalk uppercase tracking-wide-2 mb-2">
+                        <Lock size={10} /> Sealed
+                      </div>
+                      <h3 className="font-display text-2xl text-parchment/70">Artifact {idx + 1}</h3>
+                      <p className="text-parchment/40 text-sm mt-2">Engage to reveal.</p>
+                    </div>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* unlocked: Scholar's Inquiry */}
+        {unlocked && (
+          <div className="animate-fade-up">
+            <div className="font-mono-tech text-[11px] text-gold tracking-mega uppercase mb-4">// Hidden Curriculum — Access Level 02 · Granted</div>
+            <h1 className="font-display text-4xl lg:text-7xl leading-tight mb-6">
+              You have proven<br />
+              <span className="italic text-gold">your curiosity.</span>
+            </h1>
+            <p className="text-parchment/60 text-lg max-w-2xl leading-relaxed mb-12">
+              The three values — Curiosity, Perspective, Rigour — are the foundation of every Knightbridge scholar. You may now submit a Scholar's Inquiry, reviewed with higher priority by the Head of Admissions.
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-4 mb-12">
+              {ARTIFACTS.map((a) => (
+                <div key={a.id} className="border border-gold/30 bg-gold/5 p-5">
+                  <div className="font-mono-tech text-[10px] text-gold uppercase tracking-wide-2 mb-1">{a.value}</div>
+                  <p className="text-parchment/50 text-xs italic leading-relaxed">"{a.creed}"</p>
+                </div>
+              ))}
+            </div>
+
+            {inquirySent ? (
+              <div className="border border-gold bg-gold/5 p-12 text-center animate-fade-up">
+                <div className="font-mono-tech text-xs text-gold tracking-mega uppercase mb-4">Scholar's Inquiry · Logged</div>
+                <h3 className="font-display text-3xl mb-3">Welcome, {form.name || "Scholar"}.</h3>
+                <p className="text-parchment/60 max-w-md mx-auto">Your inquiry has been flagged for priority review. The Head of Admissions will contact you personally within one working day.</p>
+                <button onClick={() => navigate("/")} className="mt-8 inline-flex items-center gap-2 font-mono-tech text-xs uppercase tracking-wide-2 text-gold hover:text-parchment transition-colors">
+                  <ArrowLeft size={12} /> Return to Surface
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={submitInquiry} className="border border-parchment/15 p-8 lg:p-10 max-w-2xl space-y-6">
+                <div className="font-mono-tech text-[11px] text-gold tracking-wide-2 uppercase">Scholar's Inquiry — Priority Channel</div>
+                <label className="block">
+                  <span className="font-mono-tech text-[10px] text-chalk uppercase tracking-wide-2">Your Name</span>
+                  <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="mt-1 w-full bg-transparent border-b border-parchment/20 focus:border-gold py-2 outline-none text-parchment transition-colors" />
+                </label>
+                <label className="block">
+                  <span className="font-mono-tech text-[10px] text-chalk uppercase tracking-wide-2">Email</span>
+                  <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="mt-1 w-full bg-transparent border-b border-parchment/20 focus:border-gold py-2 outline-none text-parchment transition-colors" />
+                </label>
+                <label className="block">
+                  <span className="font-mono-tech text-[10px] text-chalk uppercase tracking-wide-2">Area of Interest</span>
+                  <input value={form.interest} onChange={(e) => setForm({ ...form, interest: e.target.value })} placeholder="e.g. Primary Years, Scholarships, Campus Tour" className="mt-1 w-full bg-transparent border-b border-parchment/20 focus:border-gold py-2 outline-none text-parchment placeholder:text-parchment/30 transition-colors" />
+                </label>
+                <button type="submit" className="group inline-flex items-center gap-3 bg-gold text-oxford px-8 py-4 font-mono-tech text-xs uppercase tracking-wide-2 hover:bg-parchment transition-colors">
+                  Submit Priority Inquiry
+                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+              </form>
+            )}
+          </div>
+        )}
+      </main>
+
+      <footer className="relative z-10 border-t border-gold/10 px-6 lg:px-12 py-6 mt-10">
+        <div className="font-mono-tech text-[10px] text-parchment/30 tracking-wide-2 uppercase text-center">
+          Knightbridge House · The Enigma Chamber · For the curious few
+        </div>
+      </footer>
+    </div>
+  );
+}
+src/components/SchoolCrest.jsx
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+// The school crest — a hidden trigger. After 3 scroll-up motions, a gold pixel
+// in the center begins to pulse. Clicking it opens the Enigma.
+export default function SchoolCrest() {
+  const navigate = useNavigate();
+  const [armed, setArmed] = useState(false);
+  const scrollUps = useRef(0);
+  const lastY = useRef(0);
+  const armedRef = useRef(false);
+
+  useEffect(() => {
+    lastY.current = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y < lastY.current - 4) {
+        scrollUps.current += 1;
+        if (scrollUps.current >= 3 && !armedRef.current) {
+          armedRef.current = true;
+          setArmed(true);
+        }
+      }
+      lastY.current = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <button
+      aria-label="Knightbridge House crest"
+      onClick={() => navigate("/enigma")}
+      className="group relative flex items-center justify-center focus:outline-none"
+      title="Knightbridge House International School"
+    >
+      <span
+        className="absolute inset-0 rounded-full ring-2 ring-gold opacity-0 group-focus-visible:opacity-100"
+        aria-hidden="true"
+      />
+      <svg
+        width="52"
+        height="52"
+        viewBox="0 0 52 52"
+        className="text-oxford transition-transform duration-500 group-hover:rotate-3"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* shield */}
+        <path d="M26 3 L46 11 V27 C46 39 37 47 26 49 C15 47 6 39 6 27 V11 Z" stroke="currentColor" strokeWidth="1.2" fill="rgba(248,247,242,0.4)" />
+        {/* inner chevron */}
+        <path d="M14 18 L26 14 L38 18 L26 30 Z" stroke="currentColor" strokeWidth="1" fill="none" />
+        {/* book base */}
+        <path d="M16 36 H36 M18 36 V40 H34 V36" stroke="currentColor" strokeWidth="1" fill="none" />
+        {/* stars */}
+        <circle cx="26" cy="9" r="1" fill="currentColor" />
+        <circle cx="18" cy="24" r="0.8" fill="currentColor" />
+        <circle cx="34" cy="24" r="0.8" fill="currentColor" />
+        {/* the heart of the crest — hidden trigger */}
+        <circle
+          cx="26"
+          cy="26"
+          r={armed ? 2.4 : 1.2}
+          fill="#C5A059"
+          className={armed ? "animate-pulse-gold" : ""}
+          style={{ opacity: armed ? 1 : 0.0, transition: "opacity 0.6s" }}
+        />
+      </svg>
+    </button>
+  );
+}
+src/components/Navbar.jsx
+import React, { useState } from "react";
+import { Menu, X } from "lucide-react";
+import SchoolCrest from "./SchoolCrest";
+
+const LINKS = [
+  { label: "Programmes", href: "#programmes" },
+  { label: "Philosophy", href: "#philosophy" },
+  { label: "Campus", href: "#campus" },
+  { label: "Admissions", href: "#admissions" },
+  { label: "Contact", href: "#contact" },
+];
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  return (
+    <header className="fixed top-0 inset-x-0 z-40 bg-parchment/80 backdrop-blur-md border-b border-oxford/10">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12 h-20 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <SchoolCrest />
+          <div className="leading-none">
+            <div className="font-display text-xl text-oxford tracking-wide">Knightbridge House</div>
+            <div className="font-mono-tech text-[10px] text-chalk tracking-mega uppercase">International School · Nonthaburi</div>
+          </div>
+        </div>
+
+        <nav className="hidden lg:flex items-center gap-10">
+          {LINKS.map((l) => (
+            <a key={l.href} href__={l.href} className="font-body text-sm text-oxford/80 hover:text-gold transition-colors relative group">
+              {l.label}
+              <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300" />
+            </a>
+          ))}
+          <a href__="#admissions" className="font-mono-tech text-xs uppercase tracking-wide-2 border border-oxford text-oxford px-5 py-2.5 hover:bg-oxford hover:text-parchment transition-colors">
+            Enquire
+          </a>
+        </nav>
+
+        <button className="lg:hidden text-oxford" onClick={() => setOpen(!open)} aria-label="Menu">
+          {open ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </div>
+
+      {open && (
+        <div className="lg:hidden border-t border-oxford/10 bg-parchment px-6 py-6 flex flex-col gap-4">
+          {LINKS.map((l) => (
+            <a key={l.href} href__={l.href} onClick={() => setOpen(false)} className="text-oxford/80 hover:text-gold text-sm">{l.label}</a>
+          ))}
+        </div>
+      )}
+    </header>
+  );
+}
+src/components/Hero.jsx
+import React from "react";
+import { Image } from "@/components/ui/image";
+import { ArrowDown } from "lucide-react";
+
+export default function Hero({ heroImage }) {
+  return (
+    <section className="relative min-h-screen w-full overflow-hidden bg-oxford">
+      <div className="absolute inset-0">
+        <Image
+          src={heroImage}
+          alt="Knightbridge House campus at golden hour"
+          fittingType="fill"
+          className="w-full h-full object-cover opacity-70"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-oxford/60 via-oxford/40 to-oxford/90" />
+      </div>
+
+      {/* golden ratio overlay lines */}
+      <div className="absolute inset-0 pointer-events-none opacity-20">
+        <div className="absolute top-0 bottom-0 left-[38.2%] w-px bg-gold/40" />
+        <div className="absolute top-0 bottom-0 left-[61.8%] w-px bg-gold/40" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-12 pt-40 pb-24 min-h-screen flex flex-col justify-end">
+        <div className="font-mono-tech text-[11px] text-gold tracking-mega uppercase mb-8 animate-fade-up">
+          13°51′N · 100°31′E — Est. MMXIV
+        </div>
+
+        <h1 className="font-display text-parchment leading-[0.95] text-5xl sm:text-7xl lg:text-[8.5rem] max-w-5xl">
+          <span className="block animate-fade-up" style={{ animationDelay: "0.1s" }}>Where Curiosity</span>
+          <span className="block italic text-gold animate-fade-up" style={{ animationDelay: "0.3s" }}>Finds its Compass</span>
+        </h1>
+
+        <p className="mt-10 max-w-xl text-parchment/70 text-lg leading-relaxed animate-fade-up" style={{ animationDelay: "0.5s" }}>
+          A sanctuary of inquiry in Nonthaburi — where rigorous traditional excellence meets the boundless curiosity of the future. We educate the whole polymath.
+        </p>
+
+        <div className="mt-12 flex flex-wrap items-center gap-6 animate-fade-up" style={{ animationDelay: "0.7s" }}>
+          <a href__="#admissions" className="group inline-flex items-center gap-3 bg-gold text-oxford px-8 py-4 font-mono-tech text-xs uppercase tracking-wide-2 hover:bg-parchment transition-colors">
+            Begin the Journey
+            <ArrowDown size={14} className="group-hover:translate-y-1 transition-transform" />
+          </a>
+          <a href__="#programmes" className="text-parchment/80 hover:text-gold text-sm border-b border-parchment/30 hover:border-gold pb-1 transition-colors">
+            Explore Programmes
+          </a>
+        </div>
+      </div>
+
+      <div className="absolute bottom-8 right-6 lg:right-12 font-mono-tech text-[10px] text-parchment/40 tracking-wide-2 uppercase">
+        Scroll to discover
+      </div>
+    </section>
+  );
+}
+src/components/Programmes.jsx
+import React from "react";
+import { Image } from "@/components/ui/image";
+
+const PROGRAMMES = [
+  { no: "01", title: "Early Years", stage: "Ages 3–6", desc: "A foundation of wonder, play, and structured discovery in a nurturing environment." },
+  { no: "02", title: "Primary Years", stage: "Ages 6–11", desc: "Inquiry-led learning that builds the habits of a lifelong scholar." },
+  { no: "03", title: "Middle Years", stage: "Ages 11–16", desc: "Rigorous academics balanced with creative and physical pursuit." },
+  { no: "04", title: "Diploma Years", stage: "Ages 16–18", desc: "The capstone — preparing polymaths for the world's finest universities." },
+];
+
+export default function Programmes({ images }) {
+  return (
+    <section id="programmes" className="relative bg-parchment py-28 lg:py-40">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        <div className="grid lg:grid-cols-12 gap-8 mb-20">
+          <div className="lg:col-span-4">
+            <div className="font-mono-tech text-[11px] text-gold tracking-mega uppercase mb-4">§ The Discovery Gallery</div>
+            <h2 className="font-display text-4xl lg:text-6xl text-oxford leading-tight">A Scroll of Knowledge</h2>
+          </div>
+          <div className="lg:col-span-7 lg:col-start-6 flex items-end">
+            <p className="text-chalk text-lg leading-relaxed">
+              Our curriculum is not a list — it is a progression. Each stage is a chamber of inquiry, framed by geometric precision and the pursuit of mastery.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-x-8 gap-y-16">
+          {PROGRAMMES.map((p, i) => (
+            <article key={p.no} className={`group relative ${i % 2 === 1 ? "md:mt-24" : ""}`}>
+              <div className="relative overflow-hidden aspect-[4/3] border border-oxford/10">
+                <Image
+                  src={images[i % images.length]}
+                  alt={p.title}
+                  fittingType="fill"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-oxford/0 group-hover:bg-oxford/30 transition-colors duration-500" />
+                <div className="absolute top-4 left-4 font-mono-tech text-xs text-parchment bg-oxford/70 px-2 py-1 tracking-wide-2">{p.no}</div>
+              </div>
+              <div className="mt-6 flex items-baseline justify-between">
+                <h3 className="font-display text-3xl text-oxford group-hover:text-gold transition-colors">{p.title}</h3>
+                <span className="font-mono-tech text-xs text-chalk tracking-wide-2 uppercase">{p.stage}</span>
+              </div>
+              <p className="mt-3 text-chalk leading-relaxed max-w-md">{p.desc}</p>
+              <div className="mt-4 h-px w-12 bg-gold group-hover:w-full transition-all duration-500" />
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+src/components/Philosophy.jsx
+import React from "react";
+import { Image } from "@/components/ui/image";
+import { Compass, BookOpen, Globe2, Award } from "lucide-react";
+
+const PILLARS = [
+  { icon: Compass, title: "Inquiry", text: "Questions are the architecture of understanding." },
+  { icon: BookOpen, title: "Rigour", text: "Traditional excellence, uncompromised." },
+  { icon: Globe2, title: "Perspective", text: "A global lens on a local sanctuary." },
+  { icon: Award, title: "Character", text: "The whole polymath — mind, hand, heart." },
+];
+
+export default function Philosophy({ libraryImage }) {
+  return (
+    <section id="philosophy" className="relative bg-oxford text-parchment py-28 lg:py-40 overflow-hidden">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        <div className="grid lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-5 relative">
+            <div className="relative aspect-[3/4] overflow-hidden">
+              <Image src={libraryImage} alt="Library bathed in golden light" fittingType="fill" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 ring-1 ring-gold/30" />
+            </div>
+            <div className="absolute -bottom-6 -right-6 bg-gold text-oxford px-6 py-4 font-mono-tech text-xs uppercase tracking-wide-2">
+              Sanctuary of Inquiry
+            </div>
+          </div>
+
+          <div className="lg:col-span-6 lg:col-start-7">
+            <div className="font-mono-tech text-[11px] text-gold tracking-mega uppercase mb-4">§ The Polymath's Canvas</div>
+            <h2 className="font-display text-4xl lg:text-6xl leading-tight mb-8">
+              We do not teach subjects.<br />
+              <span className="italic text-gold">We cultivate minds.</span>
+            </h2>
+            <p className="text-parchment/70 text-lg leading-relaxed mb-12">
+              Knightbridge House is built on the conviction that every child carries a compass. Our role is not to point it, but to ensure they can read it — with rigour, with wonder, and with the courage to venture beyond the known.
+            </p>
+
+            <div className="grid sm:grid-cols-2 gap-x-8 gap-y-10">
+              {PILLARS.map((p) => (
+                <div key={p.title} className="group">
+                  <p.icon className="text-gold mb-3" size={26} strokeWidth={1.2} />
+                  <h3 className="font-display text-2xl mb-1">{p.title}</h3>
+                  <p className="text-parchment/50 text-sm leading-relaxed">{p.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+src/components/Stats.jsx
+import React from "react";
+
+const STATS = [
+  { value: "12", label: "Years of Excellence", sub: "Established MMXIV" },
+  { value: "1:6", label: "Teacher to Scholar", sub: "Ratio" },
+  { value: "40+", label: "Nationalities", sub: "One community" },
+  { value: "98%", label: "University Placement", sub: "First-choice offers" },
+];
+
+export default function Stats() {
+  return (
+    <section id="campus" className="bg-parchment py-24 lg:py-32 border-y border-oxford/10">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-oxford/10">
+          {STATS.map((s) => (
+            <div key={s.label} className="px-6 lg:px-10 first:pl-0">
+              <div className="font-display text-5xl lg:text-7xl text-oxford leading-none">{s.value}</div>
+              <div className="mt-4 font-mono-tech text-xs text-gold uppercase tracking-wide-2">{s.label}</div>
+              <div className="mt-1 text-chalk text-sm">{s.sub}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+src/components/Admissions.jsx
+import React, { useState } from "react";
+import { Mail, MapPin, Phone, ArrowRight } from "lucide-react";
+
+export default function Admissions() {
+  const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", childAge: "", message: "" });
+
+  const submit = (e) => {
+    e.preventDefault();
+    setSent(true);
+  };
+
+  return (
+    <section id="admissions" className="bg-parchment py-28 lg:py-40">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        <div className="grid lg:grid-cols-12 gap-16">
+          <div className="lg:col-span-5">
+            <div className="font-mono-tech text-[11px] text-gold tracking-mega uppercase mb-4">§ The Threshold</div>
+            <h2 className="font-display text-4xl lg:text-6xl text-oxford leading-tight mb-8">Begin the Conversation</h2>
+            <p className="text-chalk text-lg leading-relaxed mb-10">
+              Admissions is not a transaction — it is the first chapter of a partnership. Tell us about your scholar, and we will arrange a private consultation and campus tour.
+            </p>
+            <div className="space-y-5 text-oxford">
+              <div className="flex items-start gap-4">
+                <MapPin className="text-gold mt-1 flex-shrink-0" size={18} strokeWidth={1.5} />
+                <div>
+                  <div className="text-sm font-medium">88 Knightbridge Avenue, Nonthaburi 11110, Thailand</div>
+                  <div className="font-mono-tech text-xs text-chalk">13°51′27″N · 100°31′12″E</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <Phone className="text-gold flex-shrink-0" size={18} strokeWidth={1.5} />
+                <span className="text-sm font-medium">+66 2 159 8400</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <Mail className="text-gold flex-shrink-0" size={18} strokeWidth={1.5} />
+                <span className="text-sm font-medium">admissions@knightbridge.ac.th</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="lg:col-span-6 lg:col-start-7">
+            {sent ? (
+              <div className="border border-gold bg-parchment p-12 text-center">
+                <div className="font-mono-tech text-xs text-gold tracking-mega uppercase mb-4">Inquiry Received</div>
+                <h3 className="font-display text-3xl text-oxford mb-3">Thank you, {form.name || "Scholar"}.</h3>
+                <p className="text-chalk">Our admissions team will reach out within two working days to arrange your private consultation.</p>
+              </div>
+            ) : (
+              <form onSubmit={submit} className="space-y-6">
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <Field label="Parent / Guardian Name">
+                    <input required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full bg-transparent border-b border-oxford/20 focus:border-gold py-2 outline-none text-oxford transition-colors" />
+                  </Field>
+                  <Field label="Email">
+                    <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="w-full bg-transparent border-b border-oxford/20 focus:border-gold py-2 outline-none text-oxford transition-colors" />
+                  </Field>
+                </div>
+                <Field label="Scholar's Age">
+                  <input value={form.childAge} onChange={(e) => setForm({ ...form, childAge: e.target.value })} className="w-full bg-transparent border-b border-oxford/20 focus:border-gold py-2 outline-none text-oxford transition-colors" />
+                </Field>
+                <Field label="Tell us about your scholar">
+                  <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="w-full bg-transparent border-b border-oxford/20 focus:border-gold py-2 outline-none text-oxford resize-none transition-colors" />
+                </Field>
+                <button type="submit" className="group inline-flex items-center gap-3 bg-oxford text-parchment px-8 py-4 font-mono-tech text-xs uppercase tracking-wide-2 hover:bg-gold hover:text-oxford transition-colors">
+                  Submit Inquiry
+                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Field({ label, children }) {
+  return (
+    <label className="block">
+      <span className="font-mono-tech text-[10px] text-chalk uppercase tracking-wide-2">{label}</span>
+      <div className="mt-1">{children}</div>
+    </label>
+  );
+}
+src/components/Footer.jsx
+import React from "react";
+import SchoolCrest from "./SchoolCrest";
+
+export default function Footer() {
+  return (
+    <footer id="contact" className="bg-oxford text-parchment pt-20 pb-10">
+      <div className="mx-auto max-w-[1400px] px-6 lg:px-12">
+        <div className="grid lg:grid-cols-12 gap-12 pb-16 border-b border-parchment/10">
+          <div className="lg:col-span-5">
+            <div className="flex items-center gap-4 mb-6">
+              <SchoolCrest />
+              <div>
+                <div className="font-display text-2xl">Knightbridge House</div>
+                <div className="font-mono-tech text-[10px] text-parchment/50 tracking-mega uppercase">International School · Nonthaburi</div>
+              </div>
+            </div>
+            <p className="text-parchment/60 max-w-sm leading-relaxed">A sanctuary of inquiry where rigorous traditional excellence meets the boundless curiosity of the future.</p>
+          </div>
+
+          <div className="lg:col-span-2">
+            <div className="font-mono-tech text-[10px] text-gold uppercase tracking-wide-2 mb-4">Explore</div>
+            <ul className="space-y-2 text-sm text-parchment/70">
+              <li><a href__="#programmes" className="hover:text-gold transition-colors">Programmes</a></li>
+              <li><a href__="#philosophy" className="hover:text-gold transition-colors">Philosophy</a></li>
+              <li><a href__="#campus" className="hover:text-gold transition-colors">Campus</a></li>
+              <li><a href__="#admissions" className="hover:text-gold transition-colors">Admissions</a></li>
+            </ul>
+          </div>
+
+          <div className="lg:col-span-2">
+            <div className="font-mono-tech text-[10px] text-gold uppercase tracking-wide-2 mb-4">Offices</div>
+            <ul className="space-y-2 text-sm text-parchment/70">
+              <li>Admissions</li>
+              <li>Academic Affairs</li>
+              <li>Student Welfare</li>
+              <li>Alumni Relations</li>
+            </ul>
+          </div>
+
+          <div className="lg:col-span-3">
+            <div className="font-mono-tech text-[10px] text-gold uppercase tracking-wide-2 mb-4">Visit</div>
+            <p className="text-sm text-parchment/70 leading-relaxed">
+              88 Knightbridge Avenue<br />Nonthaburi 11110, Thailand<br />
+              <span className="text-parchment/50">+66 2 159 8400</span><br />
+              <span className="text-parchment/50">admissions@knightbridge.ac.th</span>
+            </p>
+          </div>
+        </div>
+
+        <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="font-mono-tech text-[10px] text-parchment/40 tracking-wide-2 uppercase">© MMXXVI Knightbridge House International School · All Rights Reserved</div>
+          <div className="flex gap-6 font-mono-tech text-[10px] text-parchment/40 uppercase tracking-wide-2">
+            <a href__="#" className="hover:text-gold transition-colors">Privacy</a>
+            <a href__="#" className="hover:text-gold transition-colors">Terms</a>
+            <a href__="#" className="hover:text-gold transition-colors">Safeguarding</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
