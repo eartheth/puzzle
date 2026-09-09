@@ -449,7 +449,7 @@ function submitAnswer() {
     const box = document.getElementById("answerBox");
 
     const answer = input.value.trim().toLowerCase();
-    const correctPassword = "src";
+    const correctPassword = "jaide";
 
     if (!answer) {
         feedback.innerHTML = "[SYSTEM] YOU HAVE TO TYPE SOMETHING.";
@@ -481,8 +481,30 @@ function submitAnswer() {
             <span style="color:#999">src</span>
         `;
 
-        input.disabled = false;
-        input.focus();
+        feedback.innerHTML += `
+            <br><br>
+            REDIRECTING IN 5...
+        `;
+
+        let seconds = 5;
+
+        const countdown = setInterval(() => {
+            seconds--;
+
+            if (seconds > 0) {
+                feedback.innerHTML = `
+                    <strong>JK!</strong><br><br>
+                    CORRECT.<br>
+                    ATTRIBUTE ACCEPTED.<br><br>
+                    <span style="color:#999">src</span><br><br>
+                    REDIRECTING IN ${seconds}...
+                `;
+            } else {
+                clearInterval(countdown);
+                window.location.href = "next.html";
+            }
+        }, 1000);
+
     }, 900);
 }
 
