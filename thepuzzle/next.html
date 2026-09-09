@@ -731,6 +731,7 @@
     PUZZLE NOTE:
     password = Zindea_Cubu
     Password checking is case-insensitive.
+    Username can be anything.
 -->
 
 
@@ -795,7 +796,7 @@
 
     <div class="success-text">
         <h2>ACCESS GRANTED</h2>
-        <p>THE NEXT LAYER IS OPEN.</p>
+        <p id="welcomeUser">THE NEXT LAYER IS OPEN.</p>
     </div>
 </div>
 
@@ -1018,7 +1019,7 @@ function login() {
     status.textContent = "VERIFYING...";
 
     setTimeout(() => {
-        if (u === "guest" && p.toLowerCase() === "zindea_cubu") {
+        if (p.toLowerCase() === "zindea_cubu") {
 
             status.textContent = "SIGNATURE ACCEPTED.";
 
@@ -1027,6 +1028,8 @@ function login() {
             flash.classList.add("go");
 
             setTimeout(() => {
+                document.getElementById("welcomeUser").textContent =
+                    `WELCOME, ${u || "WHOEVER YOU ARE"}.`;
                 successScreen.classList.add("active");
             }, 240);
 
