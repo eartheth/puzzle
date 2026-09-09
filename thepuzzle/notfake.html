@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>thepuzzle/notfake</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0;
+        min-height: 100%;
+        background: #020202;
+        color: #cfcfcf;
+        font-family: "Courier New", monospace;
+    }
+
+    body {
+        min-height: 100vh;
+        overflow-x: hidden;
+
+        background:
+            radial-gradient(
+                circle at 50% 30%,
+                #181818 0%,
+                #080808 38%,
+                #020202 70%,
+                #000 100%
+            );
+    }
+
+    /* CRT lines */
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 100;
+
+        background:
+            repeating-linear-gradient(
+                0deg,
+                rgba(255,255,255,0.025),
+                rgba(255,255,255,0.025) 1px,
+                transparent 1px,
+                transparent 4px
+            );
+    }
+
+    /* subtle screen flicker */
+    body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 101;
+
+        background: rgba(255,255,255,0.015);
+
+        animation: flicker 0.12s infinite alternate;
+    }
+
+    @keyframes flicker {
+        from {
+            opacity: 0.15;
+        }
+
+        to {
+            opacity: 0.45;
+        }
+    }
+
+    .page {
+        width: min(950px, calc(100% - 30px));
+        margin: 0 auto;
+        padding: 80px 0 120px;
+    }
+
+    .path {
+        color: #555;
+        font-size: 12px;
+        letter-spacing: 3px;
+        margin-bottom: 15px;
+    }
+
+    h1 {
+        margin: 0;
+
+        font-size: clamp(28px, 5vw, 58px);
+        color: #ededed;
+
+        letter-spacing: -2px;
+
+        text-shadow:
+            2px 0 #444,
+            -2px 0 #111;
+    }
+
+    .subtitle {
+        color: #707070;
+        margin-top: 12px;
+        margin-bottom: 50px;
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+
+    .warning {
+        border-left: 2px solid #333;
+        padding: 13px 18px;
+
+        background: rgba(255,255,255,0.018);
+
+        color: #666;
+
+        margin-bottom: 45px;
+
+        font-size: 13px;
+    }
+
+    .chapter {
+        color: #444;
+        font-size: 11px;
+
+        letter-spacing: 4px;
+        margin-bottom: 15px;
+    }
+
+    .story {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .dialogue {
+        position: relative;
+
+        border: 1px solid #171717;
+        background:
+            linear-gradient(
+                90deg,
+                rgba(255,255,255,0.025),
+                rgba(255,255,255,0.005)
+            );
+
+        padding: 18px 20px;
+
+        opacity: 0;
+        transform: translateY(10px);
+
+        animation: appear 0.6s forwards;
+    }
+
+    @keyframes appear {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .speaker {
+        font-size: 10px;
+        color: #545454;
+        letter-spacing: 2px;
+        margin-bottom: 8px;
+    }
+
+    .sentence {
+        margin: 0;
+
+        line-height: 1.75;
+
+        color: #bdbdbd;
+        font-size: 15px;
+    }
+
+    .dialogue:hover {
+        background: rgba(255,255,255,0.035);
+    }
+
+    .dialogue:nth-child(1)  { animation-delay: 0.1s; }
+    .dialogue:nth-child(2)  { animation-delay: 0.17s; }
+    .dialogue:nth-child(3)  { animation-delay: 0.24s; }
+    .dialogue:nth-child(4)  { animation-delay: 0.31s; }
+    .dialogue:nth-child(5)  { animation-delay: 0.38s; }
+    .dialogue:nth-child(6)  { animation-delay: 0.45s; }
+    .dialogue:nth-child(7)  { animation-delay: 0.52s; }
+    .dialogue:nth-child(8)  { animation-delay: 0.59s; }
+    .dialogue:nth-child(9)  { animation-delay: 0.66s; }
+    .dialogue:nth-child(10) { animation-delay: 0.73s; }
+    .dialogue:nth-child(11) { animation-delay: 0.80s; }
+    .dialogue:nth-child(12) { animation-delay: 0.87s; }
+    .dialogue:nth-child(13) { animation-delay: 0.94s; }
+    .dialogue:nth-child(14) { animation-delay: 1.01s; }
+
+    .divider {
+        height: 1px;
+
+        margin: 60px 0 35px;
+
+        background:
+            linear-gradient(
+                90deg,
+                transparent,
+                #242424,
+                transparent
+            );
+    }
+
+    .system {
+        color: #555;
+        font-size: 13px;
+        line-height: 1.8;
+    }
+
+    .system span {
+        color: #777;
+    }
+
+    .choices {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+
+        margin-top: 30px;
+    }
+
+    button {
+        font-family: inherit;
+
+        padding: 12px 18px;
+
+        color: #777;
+        background: #080808;
+
+        border: 1px solid #272727;
+
+        cursor: pointer;
+
+        transition: 0.15s;
+    }
+
+    button:hover {
+        color: #ddd;
+        border-color: #555;
+
+        transform: translateY(-1px);
+    }
+
+    .result {
+        display: none;
+
+        margin-top: 30px;
+        padding: 18px;
+
+        border: 1px dashed #242424;
+
+        color: #666;
+
+        font-size: 13px;
+        line-height: 1.8;
+    }
+
+    .glitch {
+        animation: glitch 0.18s infinite alternate;
+    }
+
+    @keyframes glitch {
+        0% {
+            transform: translate(0);
+        }
+
+        25% {
+            transform: translate(-1px, 0);
+        }
+
+        50% {
+            transform: translate(1px, 1px);
+        }
+
+        75% {
+            transform: translate(0, -1px);
+        }
+
+        100% {
+            transform: translate(1px, 0);
+        }
+    }
+
+    .footer {
+        margin-top: 80px;
+
+        text-align: center;
+
+        color: #202020;
+
+        font-size: 10px;
+
+        letter-spacing: 4px;
+    }
+
+    .cursor {
+        display: inline-block;
+        width: 7px;
+        height: 13px;
+
+        background: #555;
+
+        vertical-align: middle;
+
+        animation: blink 0.8s steps(1) infinite;
+    }
+
+    @keyframes blink {
+        50% {
+            opacity: 0;
+        }
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="path">
+        ARCHIVE://PUZZLE/██████/NOTFAKE
+    </div>
+
+    <h1 id="title">
+        WELCOME TO<br>
+        THEPUZZLE/NOTFAKE
+    </h1>
+
+    <div class="subtitle">
+        CHAPTER ? — AN ENTIRELY TRUSTWORTHY HISTORY
+    </div>
+
+
+    <div class="warning">
+        [SYSTEM NOTICE]<br><br>
+
+        The following archive has been verified by absolutely nobody.
+        Historical accuracy is estimated at approximately
+        <span id="accuracy">104%</span>.
+    </div>
+
+
+    <div class="chapter">
+        RECOVERED CONVERSATION #0041
+    </div>
+
+
+    <div class="story">
+
+        <div class="dialogue">
+            <div class="speaker">THE ARCHIVIST</div>
+
+            <p class="sentence">
+                The Kingdom of Velmora was founded in the year -18 after its first king accidentally declared war on three mirrors.
+            </p>
+        </div>
+
+
+        <div class="dialogue">
+            <div class="speaker">MOTH</div>
+
+            <p class="sentence">
+                Historians insist the mirrors surrendered immediately, although one refused to sign the treaty because it could not hold a pen properly anywaye
+            </p>
+        </div>
+
+
+        <div class="dialogue">
+            <div class="speaker">THE ARCHIVIST</div>
+
+            <p class="sentence">
+                In 402, the population replaced money with unusually judgmental potatoes, creating the world's first vegetable economi
+            </p>
+        </div>
+
+
+        <div class="dialogue">
+            <div class="speaker">???</div>
+
+            <p class="sentence">
+                Several years later, a royal mathematician discovered that seven plus seven equaled a small wooden chair whenever calculated after midnightl
+            </p>
+        </div>
+
+
+        <div class="dialogue">
+            <div class="speaker">DOOR KEEPER</div>
+
+            <p class="sentence">
+                People celebrated the discovery for eleven days until someone noticed the mathematician had simply been pointing at a chair during every meetingg
+            </p>
+        </div>
+
+
+        <div class="dialogue">
+            <div class="speaker">MOTH</div>
+
+            <p class="sentence">
+                Around the same period, the Great Northern Ocean disappeared every Tuesday and returned on Wednesday without explanatioN
+            </p>
+        </div>
+
+
+        <div class="dialogue">
+            <div class="speaker">THE ARCHIVIST</div>
+
+            <p class="sentence">
+                Government records blamed this phenomenon on an enormous underwater librarian named Gregori
+            </p>
+        </div>
+
+
+        <div class="dialogue">
+            <div class="speaker">BELL</div>
+
+            <p class="sentence">
+                Every citizen was therefore required to whisper near lakes because Greg was apparently trying to finisH
+            </p>
+        </div>
+
+
+        <div class="dialogue">
+            <div class="speaker">DOOR KEEPER</div>
+
+            <p class="sentence">
+                In the year 811, Velmora built a staircase stretching seventeen kilometers upward and officially declared the moon government propert
+            </p>
+        </div>
+
+
+        <div class="dialogue">
+            <div class="speaker">MOTH</div>
+
+            <p class="sentence">
+                Strangely, nobody reached the moon because step number 4,201 was missing and replacing it was considered illegal by royal decreY
+            </p>
+        </div>
+
+
+        <div class="dialogue">
+            <div class="speaker">THE ARCHIVIST</div>
+
+            <p class="sentence">
+                Following the Staircase Incident, King Orbicus outlawed gravity for six months, resulting in absolutely no measurable difference whatsoeveR
+            </p>
+        </div>
+
+
+        <div class="dialogue">
+            <div class="speaker">???</div>
+
+            <p class="sentence">
+                After his disappearance, witnesses claimed the king walked into a cupboard marked EXIT even though everybody knew that cupboard contained only cheesE
+            </p>
+        </div>
+
+
+        <div class="dialogue">
+            <div class="speaker">DOOR KEEPER</div>
+
+            <p class="sentence">
+                Knowledge of Velmora eventually vanished from every textbook except one copy supposedly stored beneath a mountain shaped suspiciously like the letter V
+            </p>
+        </div>
+
+
+        <div class="dialogue">
+            <div class="speaker">THE ARCHIVIST</div>
+
+            <p class="sentence">
+                Even now, the archive insists every word above happened exactly as written, which is precisely why you should probably believe none
+            </p>
+        </div>
+
+    </div>
+
+
+
+    <div class="divider"></div>
+
+
+    <div class="system">
+
+        ARCHIVE COMPLETE.<br><br>
+
+        <span>ARCHIVIST:</span>
+        Well. There you go.<br><br>
+
+        <span>MOTH:</span>
+        That was incredibly informative.<br><br>
+
+        <span>ARCHIVIST:</span>
+        It absolutely was not.<br><br>
+
+        <span>MOTH:</span>
+        Are we supposed to tell them what matters?<br><br>
+
+        <span>ARCHIVIST:</span>
+        No.<br><br>
+
+        <span>MOTH:</span>
+        What if they read it strangely?<br><br>
+
+        <span>ARCHIVIST:</span>
+        Then maybe they deserve to continue.<br><br>
+
+        <span>??? :</span>
+        Start where stories start.<br>
+        Finish where stories finish.<br>
+        But perhaps finishing should begin at the end.
+
+        <span class="cursor"></span>
+
+    </div>
+
+
+
+    <div class="choices">
+
+        <button onclick="choose('believe')">
+            I BELIEVE THE ARCHIVE
+        </button>
+
+        <button onclick="choose('fake')">
+            THIS SOUNDS FAKE
+        </button>
+
+        <button onclick="choose('potato')">
+            ASK ABOUT THE POTATO ECONOMY
+        </button>
+
+    </div>
+
+
+    <div class="result" id="result"></div>
+
+
+    <div class="footer">
+        NOTHING IMPORTANT IS HIDDEN HERE
+    </div>
+
+</div>
+
+
+<script>
+
+const result = document.getElementById("result");
+
+
+function choose(choice) {
+
+    result.style.display = "block";
+
+    if (choice === "believe") {
+
+        result.innerHTML = `
+            [ARCHIVIST]<br><br>
+            Excellent.<br><br>
+            Believing everything you read has historically
+            never caused any problems whatsoever.
+        `;
+
+    }
+
+
+    if (choice === "fake") {
+
+        result.innerHTML = `
+            [MOTH]<br><br>
+            Fake?<br><br>
+
+            That is a very serious accusation against
+            a historical archive with an accuracy rating
+            greater than one hundred percent.<br><br>
+
+            ...although perhaps you should inspect
+            how each part begins.
+        `;
+
+    }
+
+
+    if (choice === "potato") {
+
+        result.innerHTML = `
+            [ARCHIVIST]<br><br>
+
+            The potatoes are not relevant.<br><br>
+
+            Please stop asking about the potatoes.<br><br>
+
+            <span style="color:#888">
+            THEY KNOW TOO MUCH.
+            </span>
+        `;
+
+    }
+
+}
+
+
+/* random fake accuracy number */
+
+setInterval(() => {
+
+    const accuracy = document.getElementById("accuracy");
+
+    const number =
+        Math.floor(Math.random() * 180) + 21;
+
+    accuracy.textContent = number + "%";
+
+}, 1200);
+
+
+
+/* occasional title corruption */
+
+setInterval(() => {
+
+    const title =
+        document.getElementById("title");
+
+    if (Math.random() < 0.18) {
+
+        title.classList.add("glitch");
+
+        const original =
+            title.innerHTML;
+
+        title.innerHTML =
+            "WELCOME TO<br>THEPUZZLE/N̷O̷T̷F̷A̷K̷E̷";
+
+        setTimeout(() => {
+
+            title.innerHTML =
+                original;
+
+            title.classList.remove("glitch");
+
+        }, 110);
+
+    }
+
+}, 900);
+
+</script>
+
+</body>
+</html>
