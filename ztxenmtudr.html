@@ -240,6 +240,64 @@
         animation: glitch .15s infinite alternate;
     }
 
+
+    .answer-box {
+        margin-top: 28px;
+        padding: 18px;
+        border: 1px solid #1f1f1f;
+        background: rgba(255,255,255,.012);
+    }
+
+    .answer-label {
+        display: block;
+        margin-bottom: 10px;
+        color: #666;
+        font-size: 11px;
+        letter-spacing: 2px;
+    }
+
+    .answer-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .answer-row input {
+        flex: 1 1 280px;
+        min-width: 0;
+        padding: 13px 14px;
+        font: inherit;
+        color: #cfcfcf;
+        background: #050505;
+        border: 1px solid #292929;
+        outline: none;
+    }
+
+    .answer-row input:focus {
+        border-color: #555;
+    }
+
+    .answer-feedback {
+        min-height: 34px;
+        margin-top: 14px;
+        color: #777;
+        font-size: 13px;
+        letter-spacing: 1px;
+        line-height: 1.7;
+    }
+
+    .wrong-flash {
+        animation: wrongShake .18s linear 2;
+    }
+
+    @keyframes wrongShake {
+        0% { transform: translateX(0); }
+        25% { transform: translateX(-4px); }
+        50% { transform: translateX(4px); }
+        75% { transform: translateX(-2px); }
+        100% { transform: translateX(0); }
+    }
+
     @media (max-width: 600px) {
         .page {
             padding-top: 48px;
@@ -303,6 +361,25 @@
 
     <div class="response" id="response"></div>
 
+
+    <div class="answer-box" id="answerBox">
+        <label class="answer-label" for="answerInput">ENTER ANSWER</label>
+
+        <div class="answer-row">
+            <input
+                id="answerInput"
+                type="text"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="type what you think it is..."
+            >
+
+            <button onclick="submitAnswer()">SUBMIT</button>
+        </div>
+
+        <div class="answer-feedback" id="answerFeedback"></div>
+    </div>
+
     <div class="divider"></div>
 
     <div class="clue">
@@ -363,6 +440,58 @@ function lookAgain() {
         Which one did the puzzle ask you to notice?
     `);
 }
+
+
+
+function submitAnswer() {
+    const input = document.getElementById("answerInput");
+    const feedback = document.getElementById("answerFeedback");
+    const box = document.getElementById("answerBox");
+
+    const answer = input.value.trim().toLowerCase();
+    const correctPassword = "src";
+
+    if (!answer) {
+        feedback.innerHTML = "[SYSTEM] YOU HAVE TO TYPE SOMETHING.";
+        return;
+    }
+
+    // Wrong answer
+    if (answer !== correctPassword) {
+        feedback.innerHTML = "<strong>WRONG ANSWER.</strong>";
+        box.classList.remove("wrong-flash");
+        void box.offsetWidth;
+        box.classList.add("wrong-flash");
+        return;
+    }
+
+    // Correct answer — fake the player out first
+    feedback.innerHTML = "<strong>NO! WRONG ANSWER!</strong>";
+    box.classList.remove("wrong-flash");
+    void box.offsetWidth;
+    box.classList.add("wrong-flash");
+
+    input.disabled = true;
+
+    setTimeout(() => {
+        feedback.innerHTML = `
+            <strong>JK!</strong><br><br>
+            CORRECT.<br>
+            ATTRIBUTE ACCEPTED.<br><br>
+            <span style="color:#999">src</span>
+        `;
+
+        input.disabled = false;
+        input.focus();
+    }, 900);
+}
+
+document.getElementById("answerInput").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        submitAnswer();
+    }
+});
+
 
 setInterval(() => {
     if (Math.random() < 0.17) {
