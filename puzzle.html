@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>THE IMPOSSIBLE PUZZLE</title>
+<title>THE "IMPOSSIBLE" PUZZLE</title>
 
 <style>
     * {
@@ -193,8 +193,11 @@
     }
 </style>
 </head>
-
 <body>
+<!-- Freindly Music for your ears-->
+<audio id="bgMusic" loop>
+    <source src="impossible.wav" type="audio/wav">
+</audio>
 
 <div class="wrapper">
 
@@ -433,6 +436,24 @@ document
         }
     );
 
+
+const bgMusic = document.getElementById("bgMusic");
+
+bgMusic.volume = 0.35;
+
+// Try autoplay
+bgMusic.play().catch(() => {
+    // Browsers often block autoplay with sound.
+    // Start music on the user's first interaction instead.
+    const startMusic = () => {
+        bgMusic.play();
+        document.removeEventListener("click", startMusic);
+        document.removeEventListener("keydown", startMusic);
+    };
+
+    document.addEventListener("click", startMusic);
+    document.addEventListener("keydown", startMusic);
+});
 </script>
 
 </body>
