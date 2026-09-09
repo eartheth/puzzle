@@ -731,7 +731,7 @@
     PUZZLE NOTE:
     password = Zindea_Cubu
     Password checking is case-insensitive.
-    Username can be anything.
+    Username can be literally anything, including blank.
 -->
 
 
@@ -1019,7 +1019,7 @@ function login() {
     status.textContent = "VERIFYING...";
 
     setTimeout(() => {
-        if (p.toLowerCase() === "zindea_cubu") {
+        if (p.trim().toLowerCase() === "zindea_cubu") {
 
             status.textContent = "SIGNATURE ACCEPTED.";
 
@@ -1028,8 +1028,11 @@ function login() {
             flash.classList.add("go");
 
             setTimeout(() => {
-                document.getElementById("welcomeUser").textContent =
-                    `WELCOME, ${u || "WHOEVER YOU ARE"}.`;
+                const typedName = u || "BANANAS";
+                const welcome = document.getElementById("welcomeUser");
+                if (welcome) {
+                    welcome.textContent = `WELCOME, ${typedName}.`;
+                }
                 successScreen.classList.add("active");
             }, 240);
 
