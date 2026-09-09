@@ -441,18 +441,47 @@ const bgMusic = document.getElementById("bgMusic");
 
 bgMusic.volume = 0.35;
 
+let loopTimeout = null;
+
+function playMusic() {
+    bgMusic.currentTime = 0;
+
+    bgMusic.play().catch(() => {
+        // Browser blocked autoplay.
+    });
+}
+
+// When the music finishes
+bgMusic.addEventListener("ended", () => {
+
+    // Random delay between 1000ms and 3000ms
+    const delay = Math.floor(
+        Math.random() * 2001
+    ) + 1000;
+
+    console.log("Music will restart in:", delay, "ms");
+
+    loopTimeout = setTimeout(() => {
+        playMusic();
+    }, delay);
+
+});
+
 // Try autoplay
 bgMusic.play().catch(() => {
-    // Browsers often block autoplay with sound.
-    // Start music on the user's first interaction instead.
+
     const startMusic = () => {
-        bgMusic.play();
+
+        playMusic();
+
         document.removeEventListener("click", startMusic);
         document.removeEventListener("keydown", startMusic);
+
     };
 
     document.addEventListener("click", startMusic);
     document.addEventListener("keydown", startMusic);
+
 });
 </script>
 
