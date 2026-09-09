@@ -195,7 +195,7 @@
 </head>
 <body>
 <!-- Freindly Music for your ears-->
-<audio id="bgMusic" loop>
+<audio id="bgMusic">
     <source src="impossible.wav" type="audio/wav">
 </audio>
 
@@ -220,38 +220,44 @@
         <p class="warning">
             Do not ignore this instruction.
         </p>
+
+        <p class="strange">
+            When instructions contradict each other, do not guess.
+            Keep only what you can independently verify.
+        </p>
     </div>
 
     <div class="box" data-number="RULE 02">
         <p>Decode the following message:</p>
 
         <div class="cipher">
-            19 15 12 22 05 / 20 08 05 /
-            16 21 26 26 12 05 /
-            02 25 / 14 15 20 /
-            19 15 12 22 09 14 07 /
-            09 20
+            20 08 05 / 16 21 26 26 12 05
         </div>
 
         <p class="strange">
             Hint: A = 1.<br>
             Hint: A ≠ 1.<br>
-            Hint: Read backwards.<br>
-            Hint: Never read backwards.
+            Hint: One of those claims can be tested.<br>
+            Hint: Keep the decoded words.
         </p>
     </div>
 
     <div class="box" data-number="RULE 03">
 
         <div class="equation">
-            1 + 1 = 3<br><br>
-            2 + 2 = 5<br><br>
-            3 + 3 = 7<br><br>
-            4 + 4 = ?
+            LEFT \ RIGHT<br><br>
+            BACK \ FORWARD<br><br>
+            FALSE \ TRUE<br><br>
+            ?
         </div>
 
         <p>
-            The pattern changes whenever you understand it.
+            A web path needs a separator.
+            Use the one that leans <strong>forward</strong>.
+        </p>
+
+        <p class="strange">
+            Keep exactly one character from this rule.
         </p>
 
     </div>
@@ -259,19 +265,29 @@
     <div class="box" data-number="RULE 04">
 
         <p>
-            The access code is:
+            The access code is: 
         </p>
 
         <div class="changing-code" id="code">
             000000
         </div>
 
-        <p>
-            Enter the number displayed above.
+        <p class="warning">
+            The changing number is noise. Do not put it in the final answer.
         </p>
 
-        <p class="warning">
-            The number displayed above is never the correct number.
+        <div class="strange" style="margin-top: 28px; line-height: 2.15;">
+            Never trust the number.<br>
+            Only the first characters matter.<br>
+            Take one from each line.<br>
+            Forget everything after it.<br>
+            A changing code is only a distraction.<br>
+            Keep reading downward.<br>
+            End where the pattern ends.
+        </div>
+
+        <p class="strange">
+            Seven lines. Seven letters.
         </p>
 
     </div>
@@ -279,20 +295,22 @@
     <div class="box" data-number="FINAL">
 
         <p>
-            Combine every previous answer.
+            You should now have three pieces.
         </p>
 
         <p>
-            Remove the letters that appear.
+            1. The decoded words from RULE 02.<br>
+            2. The single separator from RULE 03.<br>
+            3. The seven-letter extraction from RULE 04.
         </p>
 
         <p>
-            Add the letters that do not appear.
+            Join them in that order. Remove spaces. Use lowercase.
         </p>
 
         <p>
             The final answer contains exactly
-            <strong id="letterCount">8</strong>
+            <strong id="letterCount">17</strong>
             characters.
         </p>
 
@@ -300,6 +318,7 @@
             id="answer"
             type="text"
             autocomplete="off"
+            spellcheck="false"
             placeholder="ENTER FINAL ANSWER"
         >
 
@@ -333,23 +352,6 @@ function generateCode() {
 setInterval(generateCode, 650);
 
 generateCode();
-
-/* Required answer length also changes */
-setInterval(() => {
-
-    const possibleLengths = [
-        4, 6, 8, 9, 11, 13, 17
-    ];
-
-    letterCount.textContent =
-        possibleLengths[
-            Math.floor(
-                Math.random() * possibleLengths.length
-            )
-        ];
-
-}, 3200);
-
 
 const messages = [
 
@@ -395,10 +397,20 @@ function submitAnswer() {
         document.getElementById("message");
 
     if (!answer) {
+        message.style.color = "#ff5555";
         message.textContent =
             "ERROR: Blank answers are only valid when they contain something.";
         return;
     }
+
+    // The one real answer hidden inside the "impossible" puzzle
+    if (answer.toLowerCase() === "thepuzzle/notfake") {
+        message.style.color = "#65ff83";
+        message.textContent = "ACCEPTED—unless acceptance itself was the mistake. The answer you found was correct only in the sense that it proved you had not yet found the correct answer. What is real is not where it appears to be, yet it remains somewhere within what you have already seen. Look deeper, but not necessarily further. The real answer is here, except “here” may not mean where you think it does";
+        return;
+    }
+
+    message.style.color = "#ff5555";
 
     const randomMessage =
         messages[
