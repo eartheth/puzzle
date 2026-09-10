@@ -208,6 +208,23 @@ initializeRuntime();
 })();
 
 </script>
+<script>
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+document.addEventListener("keydown", e => {
+    const key = e.key.toLowerCase();
+
+    if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && ["i", "j", "c"].includes(key)) ||
+        (e.ctrlKey && ["u", "s"].includes(key))
+    ) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+});
+</script>
 
 </body>
 </html>
