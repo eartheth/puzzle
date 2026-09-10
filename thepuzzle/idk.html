@@ -215,6 +215,11 @@
         animation: textFlicker 3.5s infinite;
     }
 
+    .word {
+        position: relative;
+        display: inline-block;
+    }
+
     .dot {
         display: inline-block;
         margin: 0 12px;
@@ -225,6 +230,131 @@
     .dot:nth-of-type(2) { animation-delay: .3s; }
     .dot:nth-of-type(3) { animation-delay: .6s; }
 
+    /*
+        Tiny URL clue.
+    */
+    .url-hint {
+        margin-top: 15px;
+        font-size: 9px;
+        letter-spacing: 1px;
+        color: #3f3f3f;
+        opacity: .65;
+        user-select: none;
+    }
+
+    /*
+        Hidden NIGHTMARE hint
+    */
+    .nightmare-hint {
+        display: none;
+        position: absolute;
+        left: 50%;
+        top: calc(100% + 15px);
+        transform: translateX(-50%);
+        z-index: 100;
+
+        width: 118px;
+        padding: 9px 8px;
+
+        border: 1px solid #555;
+        background: rgba(5,5,5,.94);
+
+        font-size: 8px;
+        font-weight: normal;
+        line-height: 1.55;
+        letter-spacing: 1px;
+        color: #777;
+
+        box-shadow:
+            0 0 15px rgba(255,255,255,.04),
+            inset 0 0 15px rgba(255,255,255,.015);
+
+        opacity: 0;
+        animation: revealHint .7s forwards;
+    }
+
+    /*
+        Little square above the transposition clue.
+    */
+    .key-square {
+        width: 42px;
+        height: 42px;
+        margin: 0 auto 8px;
+
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+
+        border: 1px solid #686868;
+    }
+
+    .key-square span {
+        border-right: 1px solid #333;
+        border-bottom: 1px solid #333;
+    }
+
+    .key-square span:nth-child(4n) {
+        border-right: 0;
+    }
+
+    .key-square span:nth-child(n+13) {
+        border-bottom: 0;
+    }
+
+    .key-title {
+        color: #999;
+        font-size: 7px;
+        letter-spacing: 1.4px;
+        margin-bottom: 4px;
+    }
+
+    .key-value {
+        color: #5f5f5f;
+        font-size: 8px;
+        letter-spacing: 2px;
+        white-space: nowrap;
+    }
+
+    .nightmare-hint::before {
+        content: "";
+        position: absolute;
+        top: -6px;
+        left: 50%;
+        width: 10px;
+        height: 10px;
+        transform: translateX(-50%) rotate(45deg);
+        background: #050505;
+        border-left: 1px solid #555;
+        border-top: 1px solid #555;
+    }
+
+    body.show-hint .nightmare-hint {
+        display: block;
+    }
+
+    body.show-hint .nightmare-word {
+        color: #aaa;
+        text-shadow:
+            0 0 8px rgba(255,255,255,.12),
+            0 0 18px rgba(255,255,255,.08);
+    }
+
+    body.show-hint .url-hint {
+        opacity: .18;
+    }
+
+    @keyframes revealHint {
+        from {
+            opacity: 0;
+            transform: translate(-50%, -5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+    }
+
     @keyframes dotPulse {
         50% {
             color: #cfcfcf;
@@ -233,10 +363,24 @@
     }
 
     @keyframes textFlicker {
-        0%, 94%, 100% { opacity: 1; transform: translateX(0); }
-        95% { opacity: .62; transform: translateX(-1px); }
-        96% { opacity: .9; transform: translateX(1px); }
-        97% { opacity: .72; }
+        0%, 94%, 100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        95% {
+            opacity: .62;
+            transform: translateX(-1px);
+        }
+
+        96% {
+            opacity: .9;
+            transform: translateX(1px);
+        }
+
+        97% {
+            opacity: .72;
+        }
     }
 
     @media (max-width: 560px) {
@@ -259,14 +403,63 @@
 <div class="scanlines"></div>
 
 <div class="wrapper">
+
     <div class="image-shell">
         <img src="cipher.png" alt="">
     </div>
 
     <div class="words">
-        GEO<span class="dot">·</span>NIGHTMARE<span class="dot">·</span>PHANTOM<span class="dot">·</span>LSB
+
+        <span class="word">GEO</span>
+
+        <span class="dot">·</span>
+
+        <span class="word nightmare-word">
+            NIGHTMARE
+
+            <div class="nightmare-hint">
+
+                <div class="key-square">
+                    <span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span>
+                    <span></span><span></span><span></span><span></span>
+                </div>
+
+                <div class="key-title">
+                    TRANSPOSITION
+                </div>
+
+                <div class="key-value">
+                    3 · 1 · 4 · 2
+                </div>
+
+            </div>
+        </span>
+
+        <span class="dot">·</span>
+
+        <span class="word">PHANTOM</span>
+
+        <span class="dot">·</span>
+
+        <span class="word">LSB</span>
+
     </div>
+
+    <div class="url-hint">
+        ?hint=true
+    </div>
+
 </div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.get("hint") === "true") {
+        document.body.classList.add("show-hint");
+    }
+</script>
 
 </body>
 </html>
