@@ -35,21 +35,17 @@
                 radial-gradient(circle at 20% 20%,
                     rgba(255, 255, 255, .045),
                     transparent 28%),
-
                 radial-gradient(circle at 80% 30%,
                     rgba(255, 255, 255, .03),
                     transparent 30%),
-
                 radial-gradient(circle at 50% 90%,
                     rgba(255, 255, 255, .022),
                     transparent 32%),
-
                 linear-gradient(135deg,
                     #020202 0%,
                     #080808 45%,
                     #020202 100%);
         }
-
 
 
         /* =========================
@@ -59,9 +55,7 @@
         .aurora,
         .aurora::before,
         .aurora::after {
-
             position: absolute;
-
             inset: -30%;
 
             content: "";
@@ -76,18 +70,12 @@
         }
 
         .aurora {
-
             background:
                 conic-gradient(from 0deg,
-
                     transparent 0deg,
-
                     rgba(255, 255, 255, .11) 70deg,
-
                     transparent 130deg,
-
                     rgba(255, 255, 255, .075) 220deg,
-
                     transparent 300deg);
 
             animation:
@@ -95,7 +83,6 @@
         }
 
         .aurora::before {
-
             background:
                 radial-gradient(circle,
                     rgba(255, 255, 255, .055),
@@ -106,7 +93,6 @@
         }
 
         .aurora::after {
-
             background:
                 radial-gradient(circle,
                     rgba(255, 255, 255, .04),
@@ -117,7 +103,6 @@
         }
 
         @keyframes auroraSpin {
-
             to {
                 transform:
                     rotate(360deg) scale(1.07);
@@ -125,7 +110,6 @@
         }
 
         @keyframes auroraFloat {
-
             from {
                 transform:
                     translate(-12%, -8%) scale(.8);
@@ -138,7 +122,6 @@
         }
 
         @keyframes auroraFloat2 {
-
             from {
                 transform:
                     translate(15%, 10%) scale(1);
@@ -151,39 +134,32 @@
         }
 
 
-
         /* =========================
        GRID
        ========================= */
 
         .grid {
-
             position: absolute;
 
             left: -20%;
             right: -20%;
-
             bottom: -42%;
 
             height: 70%;
 
             background:
-
                 linear-gradient(rgba(255, 255, 255, .06) 1px,
                     transparent 1px),
-
                 linear-gradient(90deg,
                     rgba(255, 255, 255, .06) 1px,
                     transparent 1px);
 
-            background-size:
-                52px 52px;
+            background-size: 52px 52px;
 
             transform:
                 perspective(500px) rotateX(63deg);
 
-            transform-origin:
-                center top;
+            transform-origin: center top;
 
             opacity: .34;
 
@@ -194,7 +170,6 @@
         }
 
         @keyframes gridMove {
-
             from {
                 background-position:
                     0 0,
@@ -209,15 +184,12 @@
         }
 
 
-
         /* =========================
        SCANLINES
        ========================= */
 
         .scanlines {
-
             position: absolute;
-
             inset: 0;
 
             pointer-events: none;
@@ -225,15 +197,10 @@
             z-index: 50;
 
             background:
-
                 repeating-linear-gradient(0deg,
-
                     rgba(255, 255, 255, .022),
-
                     rgba(255, 255, 255, .022) 1px,
-
                     transparent 1px,
-
                     transparent 4px);
 
             mix-blend-mode: screen;
@@ -243,18 +210,14 @@
         }
 
         @keyframes scanShift {
-
             from {
-                transform:
-                    translateY(0);
+                transform: translateY(0);
             }
 
             to {
-                transform:
-                    translateY(4px);
+                transform: translateY(4px);
             }
         }
-
 
 
         /* =========================
@@ -262,7 +225,6 @@
        ========================= */
 
         .vignette {
-
             position: absolute;
 
             inset: 0;
@@ -272,14 +234,10 @@
             z-index: 49;
 
             background:
-
                 radial-gradient(circle at center,
-
                     transparent 35%,
-
                     rgba(0, 0, 0, .82) 100%);
         }
-
 
 
         /* =========================
@@ -287,7 +245,6 @@
        ========================= */
 
         .wrapper {
-
             position: relative;
 
             z-index: 10;
@@ -304,18 +261,13 @@
 
             0%,
             100% {
-
-                transform:
-                    translateY(0);
+                transform: translateY(0);
             }
 
             50% {
-
-                transform:
-                    translateY(-8px);
+                transform: translateY(-8px);
             }
         }
-
 
 
         /* =========================
@@ -323,7 +275,6 @@
        ========================= */
 
         .image-shell {
-
             position: relative;
 
             display: inline-block;
@@ -335,21 +286,14 @@
             border-radius: 18px;
 
             background:
-
                 conic-gradient(from var(--spin),
-
                     #5f5f5f,
-
                     #bdbdbd,
-
                     #7a7a7a,
-
                     #5f5f5f);
 
             box-shadow:
-
                 0 0 28px rgba(255, 255, 255, .07),
-
                 0 28px 70px rgba(0, 0, 0, .55);
 
             animation:
@@ -357,23 +301,18 @@
         }
 
         @property --spin {
-
             syntax: "<angle>";
-
             initial-value: 0deg;
-
             inherits: false;
         }
 
         @keyframes borderSpin {
-
             to {
                 --spin: 360deg;
             }
         }
 
         .image-shell::before {
-
             content: "";
 
             position: absolute;
@@ -383,19 +322,13 @@
             border-radius: 28px;
 
             background:
-
                 conic-gradient(from var(--spin),
-
                     rgba(255, 255, 255, .16),
-
                     rgba(255, 255, 255, .04),
-
                     rgba(255, 255, 255, .12),
-
                     rgba(255, 255, 255, .03));
 
-            filter:
-                blur(22px);
+            filter: blur(22px);
 
             opacity: .55;
 
@@ -405,18 +338,15 @@
                 borderSpin 4s linear infinite;
         }
 
-        img {
-
+        .cipher-image {
             display: block;
 
             max-width:
                 min(680px, 84vw);
 
-            max-height:
-                68vh;
+            max-height: 68vh;
 
             width: auto;
-
             height: auto;
 
             border-radius: 16px;
@@ -424,22 +354,19 @@
             background: #050505;
 
             user-select: none;
-
             -webkit-user-select: none;
 
             -webkit-user-drag: none;
 
-            pointer-events: none;
+            cursor: default;
         }
 
 
-
         /* =========================
-       CIPHER WORDS
+       WORDS
        ========================= */
 
         .words {
-
             margin-top: 22px;
 
             display: flex;
@@ -465,7 +392,6 @@
         }
 
         .word-holder {
-
             position: relative;
 
             display: inline-flex;
@@ -476,18 +402,15 @@
         }
 
         .word {
-
             display: inline-block;
 
             white-space: nowrap;
         }
 
         .dot {
-
             display: inline-block;
 
-            margin:
-                0 12px;
+            margin: 0 12px;
 
             color: #555;
 
@@ -496,19 +419,16 @@
         }
 
 
-
         /* =========================
-       NIGHTMARE SQUARE
+       NIGHTMARE HINT
        ========================= */
 
         .nightmare-hint {
-
             display: none;
 
             margin-top: 10px;
 
             width: 24px;
-
             height: 24px;
 
             border:
@@ -518,9 +438,7 @@
                 rgba(255, 255, 255, .015);
 
             box-shadow:
-
                 0 0 8px rgba(255, 255, 255, .06),
-
                 inset 0 0 7px rgba(255, 255, 255, .025);
 
             animation:
@@ -528,13 +446,11 @@
         }
 
 
-
         /* =========================
-       PHANTOM TRANSPOSITION
+       PHANTOM HINT
        ========================= */
 
         .phantom-hint {
-
             display: none;
 
             margin-top: 11px;
@@ -543,54 +459,45 @@
 
             font-weight: normal;
 
-            letter-spacing:
-                1.4px;
+            letter-spacing: 1.4px;
 
             color: #666;
 
             text-shadow:
-
                 0 0 7px rgba(255, 255, 255, .06);
 
             animation:
-
                 hintAppear .7s ease forwards;
         }
 
 
-
         /* =========================
-       ?hint=true
+       URL HINT
        ========================= */
 
         .url-hint {
-
             margin-top: 18px;
 
             font-size: 9px;
 
             font-weight: normal;
 
-            letter-spacing:
-                1px;
+            letter-spacing: 1px;
 
             color: #3d3d3d;
 
             opacity: .7;
 
             user-select: none;
-
             -webkit-user-select: none;
         }
-
 
 
         /* =========================
        DOWNLOAD BUTTON
        ========================= */
 
-        .download-text {
-
+        .download-image {
             margin-top: 10px;
 
             padding:
@@ -614,8 +521,7 @@
 
             font-size: 8px;
 
-            letter-spacing:
-                1.4px;
+            letter-spacing: 1.4px;
 
             cursor: pointer;
 
@@ -623,8 +529,7 @@
                 all .25s ease;
         }
 
-        .download-text:hover {
-
+        .download-image:hover {
             color: #aaa;
 
             border-color: #777;
@@ -633,37 +538,159 @@
                 rgba(15, 15, 15, .9);
 
             box-shadow:
-
                 0 0 10px rgba(255, 255, 255, .06);
         }
 
-        .download-text:active {
-
-            transform:
-                scale(.96);
+        .download-image:active {
+            transform: scale(.96);
         }
 
 
+        /* =========================
+       SECRET TIMER OVERLAY
+       ========================= */
+
+        .secret-timer {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 999999;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            pointer-events: none;
+        }
+
+        .secret-timer.show {
+            display: flex;
+        }
+
+        .timer-box {
+            width: 170px;
+
+            padding:
+                22px 18px;
+
+            border:
+                1px solid #555;
+
+            border-radius: 8px;
+
+            background:
+                rgba(0, 0, 0, .97);
+
+            box-shadow:
+                0 0 35px rgba(255, 255, 255, .10),
+                0 0 120px rgba(0, 0, 0, .95);
+
+            text-align: center;
+
+            animation:
+                timerAppear .25s ease forwards;
+        }
+
+        .timer-label {
+            margin-bottom: 8px;
+
+            color: #666;
+
+            font-size: 8px;
+
+            letter-spacing: 2px;
+        }
+
+        .timer-number {
+            color: #d0d0d0;
+
+            font-size: 42px;
+
+            line-height: 1;
+
+            font-weight: bold;
+
+            letter-spacing: 2px;
+
+            text-shadow:
+                0 0 15px rgba(255, 255, 255, .18);
+        }
+
+        .timer-line {
+            width: 100%;
+
+            height: 2px;
+
+            margin-top: 14px;
+
+            overflow: hidden;
+
+            background:
+                #1c1c1c;
+        }
+
+        .timer-progress {
+            width: 100%;
+            height: 100%;
+
+            background:
+                #888;
+
+            transform-origin:
+                left center;
+        }
+
+        .secret-timer.show .timer-progress {
+            animation:
+                countdownLine 10s linear forwards;
+        }
+
+        @keyframes timerAppear {
+            from {
+                opacity: 0;
+
+                transform:
+                    scale(.88);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    scale(1);
+            }
+        }
+
+        @keyframes countdownLine {
+            from {
+                transform:
+                    scaleX(1);
+            }
+
+            to {
+                transform:
+                    scaleX(0);
+            }
+        }
+
 
         /* =========================
-       HINT MODE
+       SHOW HINTS
        ========================= */
 
         body.show-hints .nightmare-hint {
-
             display: block;
         }
 
         body.show-hints .phantom-hint {
-
             display: block;
         }
 
         body.show-hints .url-hint {
-
-            opacity: .22;
+            opacity: .2;
         }
-
 
 
         /* =========================
@@ -671,9 +698,7 @@
        ========================= */
 
         @keyframes hintAppear {
-
             from {
-
                 opacity: 0;
 
                 transform:
@@ -681,7 +706,6 @@
             }
 
             to {
-
                 opacity: 1;
 
                 transform:
@@ -689,26 +713,20 @@
             }
         }
 
-
         @keyframes dotPulse {
-
             50% {
-
                 color: #cfcfcf;
 
                 text-shadow:
-
                     0 0 12px rgba(255, 255, 255, .25);
             }
         }
-
 
         @keyframes textFlicker {
 
             0%,
             94%,
             100% {
-
                 opacity: 1;
 
                 transform:
@@ -716,7 +734,6 @@
             }
 
             95% {
-
                 opacity: .62;
 
                 transform:
@@ -724,7 +741,6 @@
             }
 
             96% {
-
                 opacity: .9;
 
                 transform:
@@ -732,11 +748,9 @@
             }
 
             97% {
-
                 opacity: .72;
             }
         }
-
 
 
         /* =========================
@@ -746,24 +760,17 @@
         @media (max-width: 560px) {
 
             .words {
-
-                letter-spacing:
-                    2px;
+                letter-spacing: 2px;
             }
 
             .dot {
-
-                margin:
-                    0 6px;
+                margin: 0 6px;
             }
 
             .phantom-hint {
+                font-size: 6px;
 
-                font-size:
-                    6px;
-
-                letter-spacing:
-                    .7px;
+                letter-spacing: .7px;
             }
 
         }
@@ -773,6 +780,8 @@
 
 <body>
 
+
+    <!-- BACKGROUND -->
 
     <div class="aurora"></div>
 
@@ -784,6 +793,38 @@
 
 
 
+    <!-- =========================
+     SECRET TIMER
+     ========================= -->
+
+    <div class="secret-timer" id="secretTimer">
+
+        <div class="timer-box">
+
+            <div class="timer-label">
+                REDIRECTING
+            </div>
+
+            <div class="timer-number" id="timerNumber">
+                10
+            </div>
+
+            <div class="timer-line">
+
+                <div class="timer-progress" id="timerProgress"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+     MAIN CONTENT
+     ========================= -->
+
     <div class="wrapper">
 
 
@@ -791,13 +832,13 @@
 
         <div class="image-shell">
 
-            <img src="cipher.png" alt="">
+            <img class="cipher-image" id="cipherImage" src="cipher.png" alt="Cipher" draggable="false">
 
         </div>
 
 
 
-        <!-- CIPHER WORDS -->
+        <!-- WORDS -->
 
         <div class="words">
 
@@ -811,7 +852,6 @@
                 </span>
 
             </div>
-
 
 
             <span class="dot">
@@ -828,14 +868,10 @@
                     NIGHTMARE
                 </span>
 
-
-                <!-- HINT 1 -->
-
                 <div class="nightmare-hint">
                 </div>
 
             </div>
-
 
 
             <span class="dot">
@@ -852,17 +888,11 @@
                     PHANTOM
                 </span>
 
-
-                <!-- HINT 2 -->
-
                 <div class="phantom-hint">
-
                     TRANSPOSITION
-
                 </div>
 
             </div>
-
 
 
             <span class="dot">
@@ -886,22 +916,18 @@
 
 
 
-        <!-- URL HINT -->
+        <!-- URL CLUE -->
 
         <div class="url-hint">
-
             ?hint=true
-
         </div>
 
 
 
-        <!-- DOWNLOAD -->
+        <!-- DOWNLOAD IMAGE -->
 
-        <button class="download-text" onclick="downloadText()">
-
-            DOWNLOAD TEXT
-
+        <button class="download-image" id="downloadButton" type="button">
+            DOWNLOAD IMAGE
         </button>
 
 
@@ -911,15 +937,57 @@
 
     <script>
 
-        /* =========================
-           CHECK URL
-           ========================= */
+        /* =========================================
+           SETTINGS
+           ========================================= */
+
+        const REQUIRED_CLICKS = 50;
+
+        const REDIRECT_SECONDS = 10;
+
+        const INACTIVITY_TIME = 10000;
+
+        const REDIRECT_URL = "secret.html";
+
+
+        /* =========================================
+           ELEMENTS
+           ========================================= */
+
+        const cipherImage =
+            document.getElementById(
+                "cipherImage"
+            );
+
+        const secretTimer =
+            document.getElementById(
+                "secretTimer"
+            );
+
+        const timerNumber =
+            document.getElementById(
+                "timerNumber"
+            );
+
+        const timerProgress =
+            document.getElementById(
+                "timerProgress"
+            );
+
+        const downloadButton =
+            document.getElementById(
+                "downloadButton"
+            );
+
+
+        /* =========================================
+           URL HINT
+           ========================================= */
 
         const params =
             new URLSearchParams(
                 window.location.search
             );
-
 
         const hintEnabled =
             params.get("hint") === "true";
@@ -927,91 +995,366 @@
 
         if (hintEnabled) {
 
-            document.body
-                .classList
-                .add("show-hints");
+            document.body.classList.add(
+                "show-hints"
+            );
 
         }
 
 
+        /* =========================================
+           SECRET CLICK VARIABLES
+           ========================================= */
 
-        /* =========================
-           DOWNLOAD TEXT
-           ========================= */
+        let clickCount = 0;
 
-        function downloadText() {
+        let inactivityTimeout = null;
+
+        let redirectTimeout = null;
+
+        let countdownInterval = null;
+
+        let redirectActive = false;
+
+        let redirectCancelled = false;
 
 
-            let text =
+        /* =========================================
+           IMAGE CLICK
+           ========================================= */
 
-                `GEO · NIGHTMARE · PHANTOM · LSB`;
+        cipherImage.addEventListener(
+            "click",
+            function () {
+
+                /*
+                    Add one click.
+                */
+
+                clickCount++;
+
+
+                /*
+                    Restart the inactivity timer
+                    every time the image is clicked.
+                */
+
+                restartInactivityTimer();
+
+
+                /*
+                    EXACTLY 50 clicks.
+    
+                    Start the 10 second timer.
+                */
+
+                if (
+                    clickCount === REQUIRED_CLICKS
+                ) {
+
+                    redirectCancelled = false;
+
+                    startRedirectCountdown();
+
+                }
+
+
+                /*
+                    51 OR MORE clicks.
+    
+                    Cancel the redirect immediately.
+    
+                    But DO NOT reset clickCount.
+    
+                    It keeps counting until
+                    10 seconds of inactivity.
+                */
+
+                else if (
+                    clickCount > REQUIRED_CLICKS
+                ) {
+
+                    redirectCancelled = true;
+
+                    cancelRedirect();
+
+                }
+
+            }
+        );
+
+
+        /* =========================================
+           START REDIRECT COUNTDOWN
+           ========================================= */
+
+        function startRedirectCountdown() {
+
+            /*
+                Clean up any old timer.
+            */
+
+            clearTimeout(
+                redirectTimeout
+            );
+
+            clearInterval(
+                countdownInterval
+            );
+
+
+            redirectActive = true;
+
+            redirectCancelled = false;
+
+
+            let secondsLeft =
+                REDIRECT_SECONDS;
+
+
+            timerNumber.textContent =
+                secondsLeft;
 
 
             /*
-                Include the two hidden hints
-                only when ?hint=true
+                Restart progress animation.
             */
 
-            if (hintEnabled) {
+            timerProgress.style.animation =
+                "none";
 
-                text +=
+            void timerProgress.offsetWidth;
 
-                    `
-
-NIGHTMARE
-□
-
-PHANTOM
-TRANSPOSITION`;
-
-            }
+            timerProgress.style.animation =
+                "countdownLine 10s linear forwards";
 
 
+            /*
+                Show overlay.
+            */
 
-            const blob =
-                new Blob(
+            secretTimer.classList.add(
+                "show"
+            );
 
-                    [text],
 
-                    {
-                        type:
-                            "text/plain;charset=utf-8"
-                    }
+            /*
+                Number countdown.
+            */
 
+            countdownInterval =
+                setInterval(
+                    function () {
+
+                        secondsLeft--;
+
+
+                        if (
+                            secondsLeft >= 0
+                        ) {
+
+                            timerNumber.textContent =
+                                secondsLeft;
+
+                        }
+
+
+                        if (
+                            secondsLeft <= 0
+                        ) {
+
+                            clearInterval(
+                                countdownInterval
+                            );
+
+                        }
+
+                    },
+                    1000
                 );
 
 
+            /*
+                Redirect after 10 seconds.
+    
+                It ONLY redirects if the click
+                count is still exactly 50.
+            */
 
-            const url =
-                URL.createObjectURL(blob);
+            redirectTimeout =
+                setTimeout(
+                    function () {
 
+                        if (
+                            redirectActive === true &&
+                            redirectCancelled === false &&
+                            clickCount === REQUIRED_CLICKS
+                        ) {
 
+                            window.location.href =
+                                REDIRECT_URL;
 
-            const link =
-                document.createElement("a");
+                        }
 
-
-            link.href = url;
-
-
-            link.download =
-                "cipher.txt";
-
-
-            document.body
-                .appendChild(link);
-
-
-            link.click();
-
-
-            document.body
-                .removeChild(link);
-
-
-            URL.revokeObjectURL(url);
+                    },
+                    REDIRECT_SECONDS * 1000
+                );
 
         }
+
+
+        /* =========================================
+           CANCEL REDIRECT
+           ========================================= */
+
+        function cancelRedirect() {
+
+            redirectActive = false;
+
+
+            clearTimeout(
+                redirectTimeout
+            );
+
+            clearInterval(
+                countdownInterval
+            );
+
+
+            redirectTimeout = null;
+
+            countdownInterval = null;
+
+
+            /*
+                Hide timer.
+            */
+
+            secretTimer.classList.remove(
+                "show"
+            );
+
+
+            /*
+                Reset visual countdown.
+            */
+
+            timerNumber.textContent =
+                REDIRECT_SECONDS;
+
+
+            timerProgress.style.animation =
+                "none";
+
+        }
+
+
+        /* =========================================
+           INACTIVITY RESET
+           ========================================= */
+
+        function restartInactivityTimer() {
+
+            clearTimeout(
+                inactivityTimeout
+            );
+
+
+            inactivityTimeout =
+                setTimeout(
+                    function () {
+
+                        /*
+                            IMPORTANT:
+    
+                            If exactly 50 clicks
+                            and countdown is active,
+                            DO NOT reset here.
+    
+                            The redirect timer is
+                            also reaching 10 seconds.
+                        */
+
+                        if (
+                            redirectActive === true &&
+                            clickCount === REQUIRED_CLICKS
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        /*
+                            Otherwise after
+                            10 seconds with no clicks:
+    
+                            reset everything.
+                        */
+
+                        clickCount = 0;
+
+                        redirectCancelled = false;
+
+                        cancelRedirect();
+
+                    },
+                    INACTIVITY_TIME
+                );
+
+        }
+
+
+        /* =========================================
+           DOWNLOAD IMAGE
+           ========================================= */
+
+        downloadButton.addEventListener(
+            "click",
+            function () {
+
+                const link =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                link.href =
+                    "cipher.png";
+
+
+                link.download =
+                    "cipher.png";
+
+
+                document.body.appendChild(
+                    link
+                );
+
+
+                link.click();
+
+
+                document.body.removeChild(
+                    link
+                );
+
+            }
+        );
+
+
+        /* =========================================
+           PREVENT IMAGE DRAG
+           ========================================= */
+
+        cipherImage.addEventListener(
+            "dragstart",
+            function (event) {
+
+                event.preventDefault();
+
+            }
+        );
 
     </script>
 
