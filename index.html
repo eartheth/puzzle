@@ -10,7 +10,9 @@
         body {
             margin: 0;
             padding: 0;
+
             min-height: 100%;
+
             background: #000;
             color: #fff;
 
@@ -18,42 +20,61 @@
             font-size: 14px;
             line-height: 1.45;
 
+            overflow-x: hidden;
+            overflow-y: auto;
+
+            cursor: default;
+
             -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
             user-select: none !important;
 
             -webkit-user-drag: none !important;
             -webkit-touch-callout: none !important;
-
-            cursor: default;
         }
+
 
         * {
             -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
             user-select: none !important;
 
             -webkit-user-drag: none !important;
-
             -webkit-touch-callout: none !important;
+
             -webkit-tap-highlight-color: transparent !important;
         }
 
+
         ::selection {
             background: transparent !important;
+            color: inherit !important;
         }
+
 
         ::-moz-selection {
             background: transparent !important;
+            color: inherit !important;
         }
 
 
-        /* FAKE SOURCE CODE */
+        /*
+            Fake source code
+        */
 
         #fake-source {
             margin: 0;
-            padding: 40px 55px;
 
-            white-space: pre-wrap;
-            word-break: normal;
+            padding:
+                40px 55px 150px 55px;
+
+            white-space: pre;
+            overflow: visible;
+
+            font: inherit;
+            color: #fff;
 
             pointer-events: none;
 
@@ -64,9 +85,17 @@
         }
 
 
-        /* INVISIBLE SHIELD */
+        /*
+            Invisible shield over the viewport.
 
-        #shield {
+            Mouse interaction hits this layer instead
+            of the fake source code.
+
+            IMPORTANT:
+            wheel/touch scrolling is NOT blocked.
+        */
+
+        #interaction-shield {
             position: fixed;
 
             inset: 0;
@@ -74,78 +103,110 @@
             width: 100vw;
             height: 100vh;
 
-            z-index: 999999999;
+            z-index: 2147483647;
 
             background: transparent;
 
             cursor: default;
 
             -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
             user-select: none !important;
 
             -webkit-user-drag: none !important;
+            -webkit-touch-callout: none !important;
 
-            touch-action: none;
+            /*
+                Keep normal scrolling available
+            */
+
+            touch-action: pan-y;
         }
     </style>
+
 </head>
 
 
 <body>
 
+
     <pre id="fake-source"></pre>
 
-    <div id="shield"></div>
+
+    <div id="interaction-shield"></div>
 
 
     <script>
         (function () {
 
+
             /*
-                ============================
-                FAKE HTML SOURCE
-                ============================
+            ==================================================
+            FAKE SOURCE CODE
+            ==================================================
             */
 
+
             var fakeCode = `<!DOCTYPE html>
+
 <html>
 
 <head>
 
     <meta charset="UTF-8">
+
     <title>Loading</title>
+
 
     <style>
 
         html,
         body {
+
             margin: 0;
+
             padding: 0;
+
             background: #000;
+
             color: #fff;
 
             -webkit-touch-callout: none;
+
             -webkit-user-select: none;
+
             -webkit-tap-highlight-color: transparent;
+
         }
+
 
         #system {
+
             width: 100%;
+
             height: 100vh;
+
         }
 
+
         .loader {
+
             position: absolute;
+
             top: 50%;
+
             left: 50%;
 
             transform: translate(
                 -50%,
                 -50%
             );
+
         }
 
     </style>
+
 
 </head>
 
@@ -155,298 +216,449 @@
 
     <div id="system">
 
+
         <div class="loader">
+
 
             Initializing system...
 
+
         </div>
+
 
     </div>
 
 
+
     <script>
+
 
         (function () {
 
+
             var systemConfiguration = {
+
 
                 runtime: true,
 
+
                 session: null,
+
 
                 module: {
 
+
                     loader: true,
+
 
                     network: false
 
+
                 }
+
 
             };
 
 
+
             function initializeRuntime() {
+
 
                 var state = {
 
+
                     loaded: false,
+
 
                     ready: false,
 
+
                     error: null
+
 
                 };
 
 
                 initializeSession(
+
                     state
+
                 );
+
 
             }
 
 
+
             function initializeSession(
+
                 state
+
             ) {
 
+
                 if (
+
                     state.loaded === false
+
                 ) {
+
 
                     state.loaded = true;
 
 
                     prepareRuntime(
+
                         state
+
                     );
+
 
                 }
 
+
             }
+
 
 
             function prepareRuntime(
+
                 state
+
             ) {
 
+
                 var config =
+
                     systemConfiguration;
 
 
+
                 if (
+
                     config.runtime
+
                 ) {
+
 
                     loadPrimaryModule(
 
+
                         config,
+
 
                         state
 
+
                     );
+
 
                 }
 
+
             }
+
 
 
             function loadPrimaryModule(
+
                 config,
+
                 state
+
             ) {
 
+
                 var module =
+
                     config.module;
 
 
+
                 if (
+
                     module.loader
+
                 ) {
+
 
                     loadSecondaryModule(
 
+
                         module,
+
 
                         state
 
+
                     );
 
+
                 }
+
 
             }
 
 
+
             function loadSecondaryModule(
+
                 module,
+
                 state
+
             ) {
+
 
                 var request = {
 
+
                     status: 0,
+
 
                     response: null,
 
+
                     endpoint: null
+
 
                 };
 
 
                 processRequest(
 
+
                     request,
+
 
                     state
 
+
                 );
+
 
             }
 
 
+
             function processRequest(
+
                 request,
+
                 state
+
             ) {
+
 
                 request.status = 1;
 
 
+
                 if (
+
                     request.status === 1
+
                 ) {
+
 
                     parseRuntime(
 
+
                         request,
+
 
                         state
 
+
                     );
 
+
                 }
+
 
             }
 
 
+
             function parseRuntime(
+
                 request,
+
                 state
+
             ) {
+
 
                 var data = {
 
+
                     header: {
+
 
                         version: 4,
 
+
                         revision: 17
+
 
                     },
 
+
                     body: {
+
 
                         session: {
 
+
                             active: true
+
 
                         }
 
+
                     }
+
 
                 };
 
 
                 validateRuntime(
 
+
                     data,
+
 
                     request,
 
+
                     state
 
+
                 );
+
 
             }
 
 
+
             function validateRuntime(
+
                 data,
+
                 request,
+
                 state
+
             ) {
+
 
                 if (
 
+
                     data &&
+
 
                     data.header &&
 
+
                     data.body &&
+
 
                     data.body.session
 
+
                 ) {
+
 
                     state.ready = true;
 
 
                     startApplication(
+
                         state
+
                     );
 
+
                 }
+
 
             }
 
 
+
             function startApplication(
+
                 state
+
             ) {
 
+
                 if (
+
                     state.ready
+
                 ) {
 
+
                     var page =
+
                         "new.html";
 
 
                     redirectPage(
+
                         page
+
                     );
+
 
                 }
 
+
             }
+
 
 
             function redirectPage(
+
                 page
+
             ) {
 
+
                 window.location.href =
+
                     page;
 
+
             }
+
 
 
             initializeRuntime();
 
 
+
         })();
 
-    <\\/script>
+
+    <\/script>
 
 
 </body>
 
+
 </html>`;
 
 
+
             /*
-                Put fake code on screen as TEXT,
-                not actual HTML.
+            ==================================================
+            DISPLAY FAKE CODE
+            ==================================================
             */
+
 
             document.getElementById(
                 "fake-source"
@@ -455,10 +667,11 @@
 
 
             /*
-                ============================
-                BLOCK EVERYTHING
-                ============================
+            ==================================================
+            CLEAR SELECTION
+            ==================================================
             */
+
 
             function clearSelection() {
 
@@ -473,27 +686,49 @@
 
                     }
 
-                } catch (e) { }
+                } catch (error) { }
 
             }
 
 
+
+            /*
+            ==================================================
+            BLOCK EVENT
+            ==================================================
+            */
+
+
             function block(e) {
 
-                if (e) {
+                if (!e) {
+                    return false;
+                }
 
-                    if (e.preventDefault)
-                        e.preventDefault();
 
-                    if (e.stopPropagation)
-                        e.stopPropagation();
+                if (e.preventDefault) {
 
-                    if (e.stopImmediatePropagation)
-                        e.stopImmediatePropagation();
+                    e.preventDefault();
 
                 }
 
+
+                if (e.stopPropagation) {
+
+                    e.stopPropagation();
+
+                }
+
+
+                if (e.stopImmediatePropagation) {
+
+                    e.stopImmediatePropagation();
+
+                }
+
+
                 clearSelection();
+
 
                 return false;
 
@@ -501,124 +736,204 @@
 
 
 
-            var events = [
+            /*
+            ==================================================
+            BLOCK CTRL / CMD
+            A
+            C
+            V
+            X
 
-                "mousedown",
-                "mouseup",
-                "mousemove",
+            Other keyboard keys still work.
+            ==================================================
+            */
 
-                "pointerdown",
-                "pointerup",
-                "pointermove",
 
-                "click",
-                "dblclick",
-                "auxclick",
-
-                "contextmenu",
-
-                "selectstart",
-
-                "dragstart",
-                "drag",
-                "dragend",
-
-                "dragenter",
-                "dragleave",
-                "dragover",
-                "drop",
-
-                "copy",
-                "cut",
-                "paste",
-
+            document.addEventListener(
                 "keydown",
-                "keyup",
-                "keypress",
-
-                "beforeinput"
-
-            ];
+                function (e) {
 
 
-            events.forEach(function (name) {
+                    if (
 
-                document.addEventListener(
-                    name,
-                    block,
-                    true
-                );
+                        e.ctrlKey ||
 
-            });
+                        e.metaKey
+
+                    ) {
 
 
+                        var key =
+                            e.key.toLowerCase();
 
-            /*
-                BLOCK WHEEL
-            */
 
-            document.addEventListener(
-                "wheel",
-                block,
-                {
-                    passive: false,
-                    capture: true
-                }
+                        if (
+
+                            key === "a" ||
+
+                            key === "c" ||
+
+                            key === "v" ||
+
+                            key === "x"
+
+                        ) {
+
+
+                            block(e);
+
+
+                        }
+
+                    }
+
+
+                },
+                true
             );
 
 
 
             /*
-                BLOCK TOUCH
+            ==================================================
+            BLOCK CLIPBOARD
+            ==================================================
             */
 
-            document.addEventListener(
-                "touchstart",
-                block,
-                {
-                    passive: false,
-                    capture: true
-                }
-            );
 
             document.addEventListener(
-                "touchmove",
+                "copy",
                 block,
-                {
-                    passive: false,
-                    capture: true
-                }
+                true
             );
 
+
             document.addEventListener(
-                "touchend",
+                "cut",
                 block,
-                {
-                    passive: false,
-                    capture: true
-                }
+                true
+            );
+
+
+            document.addEventListener(
+                "paste",
+                block,
+                true
             );
 
 
 
             /*
-                INVISIBLE SHIELD
+            ==================================================
+            BLOCK TEXT SELECTION
+            ==================================================
             */
+
+
+            document.addEventListener(
+                "selectstart",
+                block,
+                true
+            );
+
+
+
+            /*
+            ==================================================
+            BLOCK DRAGGING
+            ==================================================
+            */
+
+
+            document.addEventListener(
+                "dragstart",
+                block,
+                true
+            );
+
+
+            document.addEventListener(
+                "drag",
+                block,
+                true
+            );
+
+
+            document.addEventListener(
+                "dragend",
+                block,
+                true
+            );
+
+
+            document.addEventListener(
+                "dragenter",
+                block,
+                true
+            );
+
+
+            document.addEventListener(
+                "dragover",
+                block,
+                true
+            );
+
+
+            document.addEventListener(
+                "drop",
+                block,
+                true
+            );
+
+
+
+            /*
+            ==================================================
+            BLOCK RIGHT CLICK
+            ==================================================
+            */
+
+
+            document.addEventListener(
+                "contextmenu",
+                block,
+                true
+            );
+
+
+
+            /*
+            ==================================================
+            BLOCK DOUBLE CLICK SELECTION
+            ==================================================
+            */
+
+
+            document.addEventListener(
+                "dblclick",
+                block,
+                true
+            );
+
+
+
+            /*
+            ==================================================
+            SHIELD
+            ==================================================
+            */
+
 
             var shield =
                 document.getElementById(
-                    "shield"
+                    "interaction-shield"
                 );
 
 
             [
                 "mousedown",
                 "mouseup",
-                "mousemove",
-
-                "pointerdown",
-                "pointerup",
-                "pointermove",
 
                 "click",
                 "dblclick",
@@ -633,7 +948,6 @@
                 "dragend",
 
                 "dragenter",
-                "dragleave",
                 "dragover",
                 "drop",
 
@@ -641,30 +955,82 @@
                 "cut",
                 "paste"
 
-            ].forEach(function (name) {
+            ].forEach(
+                function (eventName) {
 
-                shield.addEventListener(
-                    name,
-                    block,
-                    true
-                );
 
-            });
+                    shield.addEventListener(
+
+                        eventName,
+
+                        block,
+
+                        true
+
+                    );
+
+
+                }
+            );
 
 
 
             /*
-                CONSTANTLY REMOVE SELECTION
+            ==================================================
+            IMPORTANT:
+
+            WE DO NOT BLOCK:
+
+            wheel
+            scroll
+            touchmove
+            arrow keys
+            Page Up
+            Page Down
+            Home
+            End
+            Space
+
+            Therefore scrolling still works.
+            ==================================================
             */
+
+
+
+            /*
+            ==================================================
+            CLEAR ANY ACCIDENTAL SELECTION
+            ==================================================
+            */
+
 
             setInterval(
                 clearSelection,
-                20
+                50
             );
+
+
+
+            /*
+            ==================================================
+            CLEAR SELECTION AFTER SCROLL
+            ==================================================
+            */
+
+
+            window.addEventListener(
+                "scroll",
+                clearSelection,
+                {
+                    passive: true
+                }
+            );
+
 
 
         })();
     </script>
+
 
 </body>
 
