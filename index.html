@@ -2,7 +2,43 @@
 <html>
 <head>
 <title>System</title>
+
+<script>
+(function () {
+
+    // Disable right click
+    document.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+        return false;
+    });
+
+    // Disable ALL key presses
+    document.addEventListener("keydown", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        return false;
+    }, true);
+
+    document.addEventListener("keyup", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        return false;
+    }, true);
+
+    document.addEventListener("keypress", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        return false;
+    }, true);
+
+})();
+</script>
+
 </head>
+
 <body>
 
 <plaintext>
@@ -207,23 +243,6 @@ initializeRuntime();
 
 })();
 
-</script>
-<script>
-document.addEventListener("contextmenu", e => e.preventDefault());
-
-document.addEventListener("keydown", e => {
-    const key = e.key.toLowerCase();
-
-    if (
-        e.key === "F12" ||
-        (e.ctrlKey && e.shiftKey && ["i", "j", "c"].includes(key)) ||
-        (e.ctrlKey && ["u", "s"].includes(key))
-    ) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    }
-});
 </script>
 
 </body>
