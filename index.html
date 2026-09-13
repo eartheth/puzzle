@@ -10,12 +10,7 @@
         body {
             margin: 0;
             padding: 0;
-
-            width: 100%;
-            height: 100%;
-
-            overflow: hidden;
-
+            min-height: 100%;
             background: #000;
             color: #fff;
 
@@ -23,24 +18,17 @@
             font-size: 14px;
             line-height: 1.45;
 
-            cursor: default;
-
             -webkit-user-select: none !important;
-            -moz-user-select: none !important;
-            -ms-user-select: none !important;
             user-select: none !important;
 
             -webkit-user-drag: none !important;
-
             -webkit-touch-callout: none !important;
-            -webkit-tap-highlight-color: transparent !important;
-        }
 
+            cursor: default;
+        }
 
         * {
             -webkit-user-select: none !important;
-            -moz-user-select: none !important;
-            -ms-user-select: none !important;
             user-select: none !important;
 
             -webkit-user-drag: none !important;
@@ -49,299 +37,524 @@
             -webkit-tap-highlight-color: transparent !important;
         }
 
-
         ::selection {
             background: transparent !important;
-            color: inherit !important;
         }
-
 
         ::-moz-selection {
             background: transparent !important;
-            color: inherit !important;
         }
 
 
-        /*
-            Invisible layer covering the entire page.
+        /* FAKE SOURCE CODE */
 
-            All mouse/touch interaction hits this
-            instead of the text underneath.
-        */
+        #fake-source {
+            margin: 0;
+            padding: 40px 55px;
 
-        #interaction-shield {
+            white-space: pre-wrap;
+            word-break: normal;
+
+            pointer-events: none;
+
+            -webkit-user-select: none !important;
+            user-select: none !important;
+
+            -webkit-user-drag: none !important;
+        }
+
+
+        /* INVISIBLE SHIELD */
+
+        #shield {
             position: fixed;
 
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
 
             width: 100vw;
             height: 100vh;
 
-            z-index: 2147483647;
+            z-index: 999999999;
 
             background: transparent;
 
             cursor: default;
 
             -webkit-user-select: none !important;
-            -moz-user-select: none !important;
-            -ms-user-select: none !important;
             user-select: none !important;
 
             -webkit-user-drag: none !important;
 
-            -webkit-touch-callout: none !important;
-
-            touch-action: none !important;
+            touch-action: none;
         }
     </style>
+</head>
+
+
+<body>
+
+    <pre id="fake-source"></pre>
+
+    <div id="shield"></div>
 
 
     <script>
         (function () {
 
             /*
-                Generic event blocker
+                ============================
+                FAKE HTML SOURCE
+                ============================
             */
 
-            function block(e) {
+            var fakeCode = `<!DOCTYPE html>
+<html>
 
-                if (!e) {
-                    return false;
+<head>
+
+    <meta charset="UTF-8">
+    <title>Loading</title>
+
+    <style>
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #system {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            transform: translate(
+                -50%,
+                -50%
+            );
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div id="system">
+
+        <div class="loader">
+
+            Initializing system...
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        (function () {
+
+            var systemConfiguration = {
+
+                runtime: true,
+
+                session: null,
+
+                module: {
+
+                    loader: true,
+
+                    network: false
+
                 }
 
-                if (e.preventDefault) {
-                    e.preventDefault();
-                }
+            };
 
-                if (e.stopPropagation) {
-                    e.stopPropagation();
-                }
 
-                if (e.stopImmediatePropagation) {
-                    e.stopImmediatePropagation();
-                }
+            function initializeRuntime() {
 
-                clearSelection();
+                var state = {
 
-                return false;
+                    loaded: false,
+
+                    ready: false,
+
+                    error: null
+
+                };
+
+
+                initializeSession(
+                    state
+                );
+
             }
 
 
+            function initializeSession(
+                state
+            ) {
+
+                if (
+                    state.loaded === false
+                ) {
+
+                    state.loaded = true;
+
+
+                    prepareRuntime(
+                        state
+                    );
+
+                }
+
+            }
+
+
+            function prepareRuntime(
+                state
+            ) {
+
+                var config =
+                    systemConfiguration;
+
+
+                if (
+                    config.runtime
+                ) {
+
+                    loadPrimaryModule(
+
+                        config,
+
+                        state
+
+                    );
+
+                }
+
+            }
+
+
+            function loadPrimaryModule(
+                config,
+                state
+            ) {
+
+                var module =
+                    config.module;
+
+
+                if (
+                    module.loader
+                ) {
+
+                    loadSecondaryModule(
+
+                        module,
+
+                        state
+
+                    );
+
+                }
+
+            }
+
+
+            function loadSecondaryModule(
+                module,
+                state
+            ) {
+
+                var request = {
+
+                    status: 0,
+
+                    response: null,
+
+                    endpoint: null
+
+                };
+
+
+                processRequest(
+
+                    request,
+
+                    state
+
+                );
+
+            }
+
+
+            function processRequest(
+                request,
+                state
+            ) {
+
+                request.status = 1;
+
+
+                if (
+                    request.status === 1
+                ) {
+
+                    parseRuntime(
+
+                        request,
+
+                        state
+
+                    );
+
+                }
+
+            }
+
+
+            function parseRuntime(
+                request,
+                state
+            ) {
+
+                var data = {
+
+                    header: {
+
+                        version: 4,
+
+                        revision: 17
+
+                    },
+
+                    body: {
+
+                        session: {
+
+                            active: true
+
+                        }
+
+                    }
+
+                };
+
+
+                validateRuntime(
+
+                    data,
+
+                    request,
+
+                    state
+
+                );
+
+            }
+
+
+            function validateRuntime(
+                data,
+                request,
+                state
+            ) {
+
+                if (
+
+                    data &&
+
+                    data.header &&
+
+                    data.body &&
+
+                    data.body.session
+
+                ) {
+
+                    state.ready = true;
+
+
+                    startApplication(
+                        state
+                    );
+
+                }
+
+            }
+
+
+            function startApplication(
+                state
+            ) {
+
+                if (
+                    state.ready
+                ) {
+
+                    var page =
+                        "new.html";
+
+
+                    redirectPage(
+                        page
+                    );
+
+                }
+
+            }
+
+
+            function redirectPage(
+                page
+            ) {
+
+                window.location.href =
+                    page;
+
+            }
+
+
+            initializeRuntime();
+
+
+        })();
+
+    <\\/script>
+
+
+</body>
+
+</html>`;
+
+
             /*
-                Remove any accidental text selection
+                Put fake code on screen as TEXT,
+                not actual HTML.
+            */
+
+            document.getElementById(
+                "fake-source"
+            ).textContent = fakeCode;
+
+
+
+            /*
+                ============================
+                BLOCK EVERYTHING
+                ============================
             */
 
             function clearSelection() {
 
                 try {
 
-                    var selection = window.getSelection();
+                    var selection =
+                        window.getSelection();
 
                     if (selection) {
+
                         selection.removeAllRanges();
+
                     }
 
-                } catch (error) { }
+                } catch (e) { }
 
             }
 
 
-            /*
-                Keyboard
-            */
+            function block(e) {
 
-            document.addEventListener(
-                "keydown",
-                block,
-                true
-            );
+                if (e) {
 
-            document.addEventListener(
-                "keyup",
-                block,
-                true
-            );
+                    if (e.preventDefault)
+                        e.preventDefault();
 
-            document.addEventListener(
-                "keypress",
-                block,
-                true
-            );
+                    if (e.stopPropagation)
+                        e.stopPropagation();
 
+                    if (e.stopImmediatePropagation)
+                        e.stopImmediatePropagation();
 
-            /*
-                Right click
-            */
+                }
 
-            document.addEventListener(
-                "contextmenu",
-                block,
-                true
-            );
+                clearSelection();
+
+                return false;
+
+            }
 
 
-            /*
-                Selection
-            */
 
-            document.addEventListener(
-                "selectstart",
-                block,
-                true
-            );
+            var events = [
 
-
-            /*
-                Dragging
-            */
-
-            document.addEventListener(
-                "dragstart",
-                block,
-                true
-            );
-
-            document.addEventListener(
-                "drag",
-                block,
-                true
-            );
-
-            document.addEventListener(
-                "dragend",
-                block,
-                true
-            );
-
-            document.addEventListener(
-                "dragenter",
-                block,
-                true
-            );
-
-            document.addEventListener(
-                "dragleave",
-                block,
-                true
-            );
-
-            document.addEventListener(
-                "dragover",
-                block,
-                true
-            );
-
-            document.addEventListener(
-                "drop",
-                block,
-                true
-            );
-
-
-            /*
-                Clipboard
-            */
-
-            document.addEventListener(
-                "copy",
-                block,
-                true
-            );
-
-            document.addEventListener(
-                "cut",
-                block,
-                true
-            );
-
-            document.addEventListener(
-                "paste",
-                block,
-                true
-            );
-
-
-            /*
-                Input
-            */
-
-            document.addEventListener(
-                "beforeinput",
-                block,
-                true
-            );
-
-            document.addEventListener(
-                "input",
-                block,
-                true
-            );
-
-
-            /*
-                Mouse
-            */
-
-            document.addEventListener(
                 "mousedown",
-                block,
-                true
-            );
-
-            document.addEventListener(
                 "mouseup",
-                block,
-                true
-            );
+                "mousemove",
 
-            document.addEventListener(
-                "click",
-                block,
-                true
-            );
-
-            document.addEventListener(
-                "dblclick",
-                block,
-                true
-            );
-
-            document.addEventListener(
-                "auxclick",
-                block,
-                true
-            );
-
-
-            /*
-                Pointer
-            */
-
-            document.addEventListener(
                 "pointerdown",
-                block,
-                true
-            );
-
-            document.addEventListener(
                 "pointerup",
-                block,
-                true
-            );
+                "pointermove",
 
-            document.addEventListener(
-                "pointercancel",
-                block,
-                true
-            );
+                "click",
+                "dblclick",
+                "auxclick",
+
+                "contextmenu",
+
+                "selectstart",
+
+                "dragstart",
+                "drag",
+                "dragend",
+
+                "dragenter",
+                "dragleave",
+                "dragover",
+                "drop",
+
+                "copy",
+                "cut",
+                "paste",
+
+                "keydown",
+                "keyup",
+                "keypress",
+
+                "beforeinput"
+
+            ];
+
+
+            events.forEach(function (name) {
+
+                document.addEventListener(
+                    name,
+                    block,
+                    true
+                );
+
+            });
+
 
 
             /*
-                Scrolling
+                BLOCK WHEEL
             */
 
             document.addEventListener(
@@ -354,8 +567,9 @@
             );
 
 
+
             /*
-                Touch
+                BLOCK TOUCH
             */
 
             document.addEventListener(
@@ -386,732 +600,72 @@
             );
 
 
+
             /*
-                Browser gesture events
+                INVISIBLE SHIELD
             */
 
-            document.addEventListener(
-                "gesturestart",
-                block,
-                true
-            );
+            var shield =
+                document.getElementById(
+                    "shield"
+                );
 
-            document.addEventListener(
-                "gesturechange",
-                block,
-                true
-            );
 
-            document.addEventListener(
-                "gestureend",
-                block,
-                true
-            );
+            [
+                "mousedown",
+                "mouseup",
+                "mousemove",
+
+                "pointerdown",
+                "pointerup",
+                "pointermove",
+
+                "click",
+                "dblclick",
+                "auxclick",
+
+                "contextmenu",
+
+                "selectstart",
+
+                "dragstart",
+                "drag",
+                "dragend",
+
+                "dragenter",
+                "dragleave",
+                "dragover",
+                "drop",
+
+                "copy",
+                "cut",
+                "paste"
+
+            ].forEach(function (name) {
+
+                shield.addEventListener(
+                    name,
+                    block,
+                    true
+                );
+
+            });
+
 
 
             /*
-                Keep clearing selection
+                CONSTANTLY REMOVE SELECTION
             */
 
             setInterval(
                 clearSelection,
-                25
+                20
             );
 
-
-            /*
-                Setup shield after DOM exists
-            */
-
-            document.addEventListener(
-                "DOMContentLoaded",
-                function () {
-
-                    var shield =
-                        document.getElementById(
-                            "interaction-shield"
-                        );
-
-
-                    if (!shield) {
-                        return;
-                    }
-
-
-                    var blockedEvents = [
-
-                        "mousedown",
-                        "mouseup",
-                        "mousemove",
-
-                        "pointerdown",
-                        "pointerup",
-                        "pointermove",
-
-                        "click",
-                        "dblclick",
-                        "auxclick",
-
-                        "contextmenu",
-
-                        "selectstart",
-
-                        "dragstart",
-                        "drag",
-                        "dragend",
-                        "dragenter",
-                        "dragleave",
-                        "dragover",
-                        "drop",
-
-                        "copy",
-                        "cut",
-                        "paste"
-
-                    ];
-
-
-                    blockedEvents.forEach(
-                        function (eventName) {
-
-                            shield.addEventListener(
-                                eventName,
-                                block,
-                                true
-                            );
-
-                        }
-                    );
-
-
-                    shield.addEventListener(
-                        "wheel",
-                        block,
-                        {
-                            passive: false,
-                            capture: true
-                        }
-                    );
-
-
-                    shield.addEventListener(
-                        "touchstart",
-                        block,
-                        {
-                            passive: false,
-                            capture: true
-                        }
-                    );
-
-
-                    shield.addEventListener(
-                        "touchmove",
-                        block,
-                        {
-                            passive: false,
-                            capture: true
-                        }
-                    );
-
-
-                    shield.addEventListener(
-                        "touchend",
-                        block,
-                        {
-                            passive: false,
-                            capture: true
-                        }
-                    );
-
-
-                    clearSelection();
-
-                }
-            );
-
-
-            /*
-                Prevent focus
-            */
-
-            window.addEventListener(
-                "focus",
-                function () {
-
-                    try {
-
-                        if (
-                            document.activeElement &&
-                            document.activeElement !==
-                            document.body
-                        ) {
-
-                            document.activeElement.blur();
-
-                        }
-
-                    } catch (error) { }
-
-                    clearSelection();
-
-                }
-            );
-
-
-            /*
-                Prevent accidental selection
-                when browser regains focus
-            */
-
-            window.addEventListener(
-                "blur",
-                clearSelection
-            );
-
-
-            /*
-                Prevent scrolling through JS/browser
-            */
-
-            window.addEventListener(
-                "scroll",
-                function () {
-
-                    window.scrollTo(0, 0);
-
-                    clearSelection();
-
-                },
-                true
-            );
 
         })();
     </script>
 
-</head>
+</body>
 
-
-<body>
-
-    <!--
-        This invisible element sits ABOVE everything.
-        The fake code below cannot be clicked or dragged.
-    -->
-
-    <div id="interaction-shield"></div>
-
-
-    <plaintext>
-        <!DOCTYPE html>
-
-        <html>
-
-        <head>
-
-            <meta charset="UTF-8">
-
-            <title>Loading</title>
-
-
-            <style>
-                * {
-
-                    -webkit-touch-callout: none;
-
-                    -webkit-user-select: none;
-
-                    user-select: none;
-
-                    -webkit-tap-highlight-color: transparent;
-
-                }
-
-
-                html,
-                body {
-
-                    margin: 0;
-
-                    padding: 0;
-
-                    background: #000;
-
-                    color: #fff;
-
-                    -webkit-touch-callout: none;
-
-                    -webkit-user-select: none;
-
-                    user-select: none;
-
-                    -webkit-tap-highlight-color: transparent;
-
-                }
-
-
-                #system {
-
-                    width: 100%;
-
-                    height: 100vh;
-
-                }
-
-
-                .loader {
-
-                    position: absolute;
-
-                    top: 50%;
-
-                    left: 50%;
-
-                    transform: translate(-50%,
-                            -50%);
-
-                }
-            </style>
-
-
-        </head>
-
-
-        <body>
-
-
-            <div id="system">
-
-
-                <div class="loader">
-
-
-                    Initializing system...
-
-
-                </div>
-
-
-            </div>
-
-
-
-            <script>
-
-
-                (function () {
-
-
-                    var systemConfiguration = {
-
-
-                        runtime: true,
-
-
-                        session: null,
-
-
-                        module: {
-
-
-                            loader: true,
-
-
-                            network: false
-
-
-                        }
-
-
-                    };
-
-
-
-                    function initializeRuntime() {
-
-
-                        var state = {
-
-
-                            loaded: false,
-
-
-                            ready: false,
-
-
-                            error: null
-
-
-                        };
-
-
-                        initializeSession(
-
-                            state
-
-                        );
-
-
-                    }
-
-
-
-                    function initializeSession(
-
-                        state
-
-                    ) {
-
-
-                        if (
-
-                            state.loaded === false
-
-                        ) {
-
-
-                            state.loaded = true;
-
-
-                            prepareRuntime(
-
-                                state
-
-                            );
-
-
-                        }
-
-
-                    }
-
-
-
-                    function prepareRuntime(
-
-                        state
-
-                    ) {
-
-
-                        var config =
-
-                            systemConfiguration;
-
-
-
-                        if (
-
-                            config.runtime
-
-                        ) {
-
-
-                            loadPrimaryModule(
-
-
-                                config,
-
-
-                                state
-
-
-                            );
-
-
-                        }
-
-
-                    }
-
-
-
-                    function loadPrimaryModule(
-
-                        config,
-
-                        state
-
-                    ) {
-
-
-                        var module =
-
-                            config.module;
-
-
-
-                        if (
-
-                            module.loader
-
-                        ) {
-
-
-                            loadSecondaryModule(
-
-
-                                module,
-
-
-                                state
-
-
-                            );
-
-
-                        }
-
-
-                    }
-
-
-
-                    function loadSecondaryModule(
-
-                        module,
-
-                        state
-
-                    ) {
-
-
-                        var request = {
-
-
-                            status: 0,
-
-
-                            response: null,
-
-
-                            endpoint: null
-
-
-                        };
-
-
-                        processRequest(
-
-
-                            request,
-
-
-                            state
-
-
-                        );
-
-
-                    }
-
-
-
-                    function processRequest(
-
-                        request,
-
-                        state
-
-                    ) {
-
-
-                        request.status = 1;
-
-
-
-                        if (
-
-                            request.status === 1
-
-                        ) {
-
-
-                            parseRuntime(
-
-
-                                request,
-
-
-                                state
-
-
-                            );
-
-
-                        }
-
-
-                    }
-
-
-
-                    function parseRuntime(
-
-                        request,
-
-                        state
-
-                    ) {
-
-
-                        var data = {
-
-
-                            header: {
-
-
-                                version: 4,
-
-
-                                revision: 17
-
-
-                            },
-
-
-                            body: {
-
-
-                                session: {
-
-
-                                    active: true
-
-
-                                }
-
-
-                            }
-
-
-                        };
-
-
-                        validateRuntime(
-
-
-                            data,
-
-
-                            request,
-
-
-                            state
-
-
-                        );
-
-
-                    }
-
-
-
-                    function validateRuntime(
-
-                        data,
-
-                        request,
-
-                        state
-
-                    ) {
-
-
-                        if (
-
-
-                            data &&
-
-
-                            data.header &&
-
-
-                            data.body &&
-
-
-                            data.body.session
-
-
-                        ) {
-
-
-                            state.ready = true;
-
-
-                            startApplication(
-
-                                state
-
-                            );
-
-
-                        }
-
-
-                    }
-
-
-
-                    function startApplication(
-
-                        state
-
-                    ) {
-
-
-                        if (
-
-                            state.ready
-
-                        ) {
-
-
-                            var page =
-
-                                "new.html";
-
-
-                            redirectPage(
-
-                                page
-
-                            );
-
-
-                        }
-
-
-                    }
-
-
-
-                    function redirectPage(
-
-                        page
-
-                    ) {
-
-
-                        window.location.href =
-
-                            page;
-
-
-                    }
-
-
-
-                    initializeRuntime();
-
-
-
-                })();
-
-
-            </script>
-
-
-        </body>
-
-
-        </html>
+</html>
