@@ -2,66 +2,414 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <title>System</title>
+
+    <style>
+        html,
+        body,
+        body *,
+        body *::before,
+        body *::after {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+
+            -webkit-user-drag: none !important;
+            user-drag: none !important;
+
+            -webkit-touch-callout: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+
+            cursor: default !important;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+
+            background: #000;
+            color: #fff;
+
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.45;
+
+            min-height: 100%;
+        }
+
+        img,
+        a,
+        div,
+        span,
+        p,
+        pre,
+        code {
+            -webkit-user-drag: none !important;
+            user-drag: none !important;
+        }
+
+        ::selection {
+            background: transparent !important;
+            color: inherit !important;
+        }
+
+        ::-moz-selection {
+            background: transparent !important;
+            color: inherit !important;
+        }
+    </style>
 
     <script>
         (function () {
 
-            // Disable right click
-            document.addEventListener("contextmenu", function (e) {
-                e.preventDefault();
-                return false;
-            });
+            function block(e) {
+                if (!e) return false;
 
-            // Disable ALL key presses
-            document.addEventListener("keydown", function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                return false;
-            }, true);
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
 
-            document.addEventListener("keyup", function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                return false;
-            }, true);
+                if (e.stopPropagation) {
+                    e.stopPropagation();
+                }
 
-            document.addEventListener("keypress", function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
+                if (e.stopImmediatePropagation) {
+                    e.stopImmediatePropagation();
+                }
+
                 return false;
-            }, true);
+            }
+
+
+            /* =========================
+               RIGHT CLICK
+            ========================= */
+
+            document.addEventListener(
+                "contextmenu",
+                block,
+                true
+            );
+
+
+            /* =========================
+               KEYBOARD
+            ========================= */
+
+            document.addEventListener(
+                "keydown",
+                block,
+                true
+            );
+
+            document.addEventListener(
+                "keyup",
+                block,
+                true
+            );
+
+            document.addEventListener(
+                "keypress",
+                block,
+                true
+            );
+
+
+            /* =========================
+               TEXT SELECTION
+            ========================= */
+
+            document.addEventListener(
+                "selectstart",
+                block,
+                true
+            );
+
+
+            /* =========================
+               DRAGGING
+            ========================= */
+
+            document.addEventListener(
+                "dragstart",
+                block,
+                true
+            );
+
+            document.addEventListener(
+                "drag",
+                block,
+                true
+            );
+
+            document.addEventListener(
+                "dragend",
+                block,
+                true
+            );
+
+            document.addEventListener(
+                "dragenter",
+                block,
+                true
+            );
+
+            document.addEventListener(
+                "dragleave",
+                block,
+                true
+            );
+
+            document.addEventListener(
+                "dragover",
+                block,
+                true
+            );
+
+            document.addEventListener(
+                "drop",
+                block,
+                true
+            );
+
+
+            /* =========================
+               CLIPBOARD
+            ========================= */
+
+            document.addEventListener(
+                "copy",
+                block,
+                true
+            );
+
+            document.addEventListener(
+                "cut",
+                block,
+                true
+            );
+
+            document.addEventListener(
+                "paste",
+                block,
+                true
+            );
+
+
+            /* =========================
+               DOUBLE CLICK
+            ========================= */
+
+            document.addEventListener(
+                "dblclick",
+                block,
+                true
+            );
+
+
+            /* =========================
+               AUXILIARY MOUSE BUTTONS
+            ========================= */
+
+            document.addEventListener(
+                "auxclick",
+                block,
+                true
+            );
+
+
+            /* =========================
+               MOUSE DOWN
+            ========================= */
+
+            document.addEventListener(
+                "mousedown",
+                function (e) {
+
+                    if (e.button !== 0) {
+                        block(e);
+                    }
+
+                },
+                true
+            );
+
+
+            /* =========================
+               POINTER EVENTS
+            ========================= */
+
+            document.addEventListener(
+                "pointerdown",
+                function (e) {
+
+                    if (
+                        e.pointerType === "touch" ||
+                        e.pointerType === "pen"
+                    ) {
+                        block(e);
+                    }
+
+                },
+                true
+            );
+
+
+            /* =========================
+               TOUCH HOLD / SELECTION
+            ========================= */
+
+            document.addEventListener(
+                "touchstart",
+                function (e) {
+
+                    if (e.touches.length > 1) {
+                        block(e);
+                    }
+
+                },
+                {
+                    passive: false,
+                    capture: true
+                }
+            );
+
+
+            document.addEventListener(
+                "gesturestart",
+                block,
+                true
+            );
+
+            document.addEventListener(
+                "gesturechange",
+                block,
+                true
+            );
+
+            document.addEventListener(
+                "gestureend",
+                block,
+                true
+            );
+
+
+            /* =========================
+               BEFORE INPUT
+            ========================= */
+
+            document.addEventListener(
+                "beforeinput",
+                block,
+                true
+            );
+
+
+            /* =========================
+               PREVENT FOCUS
+            ========================= */
+
+            window.addEventListener(
+                "load",
+                function () {
+
+                    if (document.activeElement) {
+                        try {
+                            document.activeElement.blur();
+                        } catch (e) { }
+                    }
+
+                }
+            );
+
+
+            /* =========================
+               CLEAR ACCIDENTAL SELECTION
+            ========================= */
+
+            document.addEventListener(
+                "mousemove",
+                function () {
+
+                    var selection;
+
+                    try {
+
+                        selection = window.getSelection();
+
+                        if (
+                            selection &&
+                            selection.type === "Range"
+                        ) {
+                            selection.removeAllRanges();
+                        }
+
+                    } catch (e) { }
+
+                },
+                true
+            );
+
+
+            /* =========================
+               CLEAR SELECTION PERIODICALLY
+            ========================= */
+
+            setInterval(function () {
+
+                try {
+
+                    var selection =
+                        window.getSelection();
+
+                    if (selection) {
+                        selection.removeAllRanges();
+                    }
+
+                } catch (e) { }
+
+            }, 100);
 
         })();
     </script>
-
 </head>
 
 <body>
 
     <plaintext>
-
         <!DOCTYPE html>
+
         <html>
 
         <head>
+
             <meta charset="UTF-8">
+
             <title>Loading</title>
 
             <style>
+                * {
+                    -webkit-touch-callout: none;
+                    -webkit-user-select: none;
+                    user-select: none;
+                    -webkit-tap-highlight-color: transparent;
+                }
+
                 html,
                 body {
                     margin: 0;
                     padding: 0;
+
                     background: #000;
                     color: #fff;
 
-                    --webkit-touch-callout: none;
-                    --webkit-user-select: none;
-                    --webkit-tap-highlight-color: transparent;
+                    -webkit-touch-callout: none;
+                    -webkit-user-select: none;
+                    user-select: none;
+                    -webkit-tap-highlight-color: transparent;
                 }
 
                 #system {
@@ -71,9 +419,12 @@
 
                 .loader {
                     position: absolute;
+
                     top: 50%;
                     left: 50%;
-                    transform: translate(-50%, -50%);
+
+                    transform: translate(-50%,
+                            -50%);
                 }
             </style>
 
@@ -84,141 +435,240 @@
             <div id="system">
 
                 <div class="loader">
+
                     Initializing system...
+
                 </div>
 
             </div>
+
 
             <script>
 
                 (function () {
 
                     var systemConfiguration = {
+
                         runtime: true,
+
                         session: null,
+
                         module: {
+
                             loader: true,
+
                             network: false
+
                         }
+
                     };
+
 
                     function initializeRuntime() {
 
                         var state = {
+
                             loaded: false,
+
                             ready: false,
+
                             error: null
+
                         };
 
-                        initializeSession(state);
+
+                        initializeSession(
+                            state
+                        );
 
                     }
 
-                    function initializeSession(state) {
 
-                        if (state.loaded === false) {
+                    function initializeSession(
+                        state
+                    ) {
+
+                        if (
+                            state.loaded === false
+                        ) {
 
                             state.loaded = true;
 
-                            prepareRuntime(state);
+
+                            prepareRuntime(
+                                state
+                            );
 
                         }
 
                     }
 
-                    function prepareRuntime(state) {
 
-                        var config = systemConfiguration;
+                    function prepareRuntime(
+                        state
+                    ) {
 
-                        if (config.runtime) {
+                        var config =
+                            systemConfiguration;
+
+
+                        if (
+                            config.runtime
+                        ) {
 
                             loadPrimaryModule(
+
                                 config,
+
                                 state
+
                             );
 
                         }
 
                     }
 
-                    function loadPrimaryModule(config, state) {
 
-                        var module = config.module;
+                    function loadPrimaryModule(
+                        config,
+                        state
+                    ) {
 
-                        if (module.loader) {
+                        var module =
+                            config.module;
+
+
+                        if (
+                            module.loader
+                        ) {
 
                             loadSecondaryModule(
+
                                 module,
+
                                 state
+
                             );
 
                         }
 
                     }
 
-                    function loadSecondaryModule(module, state) {
+
+                    function loadSecondaryModule(
+                        module,
+                        state
+                    ) {
 
                         var request = {
+
                             status: 0,
+
                             response: null,
+
                             endpoint: null
+
                         };
 
+
                         processRequest(
+
                             request,
+
                             state
+
                         );
 
                     }
 
-                    function processRequest(request, state) {
+
+                    function processRequest(
+                        request,
+                        state
+                    ) {
 
                         request.status = 1;
 
-                        if (request.status === 1) {
+
+                        if (
+                            request.status === 1
+                        ) {
 
                             parseRuntime(
+
                                 request,
+
                                 state
+
                             );
 
                         }
 
                     }
 
-                    function parseRuntime(request, state) {
+
+                    function parseRuntime(
+                        request,
+                        state
+                    ) {
 
                         var data = {
+
                             header: {
+
                                 version: 4,
+
                                 revision: 17
+
                             },
 
+
                             body: {
+
                                 session: {
+
                                     active: true
+
                                 }
+
                             }
+
                         };
 
+
                         validateRuntime(
+
                             data,
+
                             request,
+
                             state
+
                         );
 
                     }
 
-                    function validateRuntime(data, request, state) {
+
+                    function validateRuntime(
+                        data,
+                        request,
+                        state
+                    ) {
 
                         if (
+
                             data &&
+
                             data.header &&
+
                             data.body &&
+
                             data.body.session
+
                         ) {
 
                             state.ready = true;
+
 
                             startApplication(
                                 state
@@ -228,29 +678,45 @@
 
                     }
 
-                    function startApplication(state) {
 
-                        if (state.ready) {
+                    function startApplication(
+                        state
+                    ) {
 
-                            var page = "new.html";
+                        if (
+                            state.ready
+                        ) {
 
-                            redirectPage(page);
+                            var page =
+                                "new.html";
+
+
+                            redirectPage(
+                                page
+                            );
 
                         }
 
                     }
 
-                    function redirectPage(page) {
 
-                        window.location.href = page;
+                    function redirectPage(
+                        page
+                    ) {
+
+                        window.location.href =
+                            page;
 
                     }
 
+
                     initializeRuntime();
+
 
                 })();
 
             </script>
+
 
         </body>
 
