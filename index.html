@@ -1,249 +1,257 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>System</title>
+    <title>System</title>
 
-<script>
-(function () {
+    <script>
+        (function () {
 
-    // Disable right click
-    document.addEventListener("contextmenu", function (e) {
-        e.preventDefault();
-        return false;
-    });
+            // Disable right click
+            document.addEventListener("contextmenu", function (e) {
+                e.preventDefault();
+                return false;
+            });
 
-    // Disable ALL key presses
-    document.addEventListener("keydown", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        return false;
-    }, true);
+            // Disable ALL key presses
+            document.addEventListener("keydown", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                return false;
+            }, true);
 
-    document.addEventListener("keyup", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        return false;
-    }, true);
+            document.addEventListener("keyup", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                return false;
+            }, true);
 
-    document.addEventListener("keypress", function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        return false;
-    }, true);
+            document.addEventListener("keypress", function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                return false;
+            }, true);
 
-})();
-</script>
+        })();
+    </script>
 
 </head>
 
 <body>
 
-<plaintext>
+    <plaintext>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Loading</title>
+        <!DOCTYPE html>
+        <html>
 
-<style>
-html,body{
-    margin:0;
-    padding:0;
-    background:#000;
-    color:#fff;
-}
+        <head>
+            <meta charset="UTF-8">
+            <title>Loading</title>
 
-#system{
-    width:100%;
-    height:100vh;
-}
+            <style>
+                html,
+                body {
+                    margin: 0;
+                    padding: 0;
+                    background: #000;
+                    color: #fff;
 
-.loader{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-}
-</style>
+                    --webkit-touch-callout: none;
+                    --webkit-user-select: none;
+                    --webkit-tap-highlight-color: transparent;
+                }
 
-</head>
+                #system {
+                    width: 100%;
+                    height: 100vh;
+                }
 
-<body>
+                .loader {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+            </style>
 
-<div id="system">
+        </head>
 
-    <div class="loader">
-        Initializing system...
-    </div>
+        <body>
 
-</div>
+            <div id="system">
 
-<script>
+                <div class="loader">
+                    Initializing system...
+                </div>
 
-(function(){
+            </div>
 
-var systemConfiguration = {
-    runtime: true,
-    session: null,
-    module: {
-        loader: true,
-        network: false
-    }
-};
+            <script>
 
-function initializeRuntime(){
+                (function () {
 
-    var state = {
-        loaded:false,
-        ready:false,
-        error:null
-    };
+                    var systemConfiguration = {
+                        runtime: true,
+                        session: null,
+                        module: {
+                            loader: true,
+                            network: false
+                        }
+                    };
 
-    initializeSession(state);
+                    function initializeRuntime() {
 
-}
+                        var state = {
+                            loaded: false,
+                            ready: false,
+                            error: null
+                        };
 
-function initializeSession(state){
+                        initializeSession(state);
 
-    if(state.loaded === false){
+                    }
 
-        state.loaded = true;
+                    function initializeSession(state) {
 
-        prepareRuntime(state);
+                        if (state.loaded === false) {
 
-    }
+                            state.loaded = true;
 
-}
+                            prepareRuntime(state);
 
-function prepareRuntime(state){
+                        }
 
-    var config = systemConfiguration;
+                    }
 
-    if(config.runtime){
+                    function prepareRuntime(state) {
 
-        loadPrimaryModule(
-            config,
-            state
-        );
+                        var config = systemConfiguration;
 
-    }
+                        if (config.runtime) {
 
-}
+                            loadPrimaryModule(
+                                config,
+                                state
+                            );
 
-function loadPrimaryModule(config,state){
+                        }
 
-    var module = config.module;
+                    }
 
-    if(module.loader){
+                    function loadPrimaryModule(config, state) {
 
-        loadSecondaryModule(
-            module,
-            state
-        );
+                        var module = config.module;
 
-    }
+                        if (module.loader) {
 
-}
+                            loadSecondaryModule(
+                                module,
+                                state
+                            );
 
-function loadSecondaryModule(module,state){
+                        }
 
-    var request = {
-        status:0,
-        response:null,
-        endpoint:null
-    };
+                    }
 
-    processRequest(
-        request,
-        state
-    );
+                    function loadSecondaryModule(module, state) {
 
-}
+                        var request = {
+                            status: 0,
+                            response: null,
+                            endpoint: null
+                        };
 
-function processRequest(request,state){
+                        processRequest(
+                            request,
+                            state
+                        );
 
-    request.status = 1;
+                    }
 
-    if(request.status === 1){
+                    function processRequest(request, state) {
 
-        parseRuntime(
-            request,
-            state
-        );
+                        request.status = 1;
 
-    }
+                        if (request.status === 1) {
 
-}
+                            parseRuntime(
+                                request,
+                                state
+                            );
 
-function parseRuntime(request,state){
+                        }
 
-    var data = {
-        header:{
-            version:4,
-            revision:17
-        },
+                    }
 
-        body:{
-            session:{
-                active:true
-            }
-        }
-    };
+                    function parseRuntime(request, state) {
 
-    validateRuntime(
-        data,
-        request,
-        state
-    );
+                        var data = {
+                            header: {
+                                version: 4,
+                                revision: 17
+                            },
 
-}
+                            body: {
+                                session: {
+                                    active: true
+                                }
+                            }
+                        };
 
-function validateRuntime(data,request,state){
+                        validateRuntime(
+                            data,
+                            request,
+                            state
+                        );
 
-    if(
-        data &&
-        data.header &&
-        data.body &&
-        data.body.session
-    ){
+                    }
 
-        state.ready = true;
+                    function validateRuntime(data, request, state) {
 
-        startApplication(
-            state
-        );
+                        if (
+                            data &&
+                            data.header &&
+                            data.body &&
+                            data.body.session
+                        ) {
 
-    }
+                            state.ready = true;
 
-}
+                            startApplication(
+                                state
+                            );
 
-function startApplication(state){
+                        }
 
-    if(state.ready){
+                    }
 
-        var page = "new.html";
+                    function startApplication(state) {
 
-        redirectPage(page);
+                        if (state.ready) {
 
-    }
+                            var page = "new.html";
 
-}
+                            redirectPage(page);
 
-function redirectPage(page){
+                        }
 
-    window.location.href = page;
+                    }
 
-}
+                    function redirectPage(page) {
 
-initializeRuntime();
+                        window.location.href = page;
 
-})();
+                    }
 
-</script>
+                    initializeRuntime();
 
-</body>
-</html>
+                })();
+
+            </script>
+
+        </body>
+
+        </html>
