@@ -9,6 +9,9 @@
     <style>
         * {
             box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
         }
 
         html,
@@ -20,9 +23,15 @@
 
         body {
             min-height: 100vh;
+
             background:
-                radial-gradient(circle at center, #181818 0%, #080808 45%, #000 80%);
+                radial-gradient(circle at center,
+                    #181818 0%,
+                    #080808 45%,
+                    #000 80%);
+
             color: #fff;
+
             font-family: "Courier New", monospace;
 
             display: flex;
@@ -38,7 +47,7 @@
 
         /* PUZZLE IMAGE */
 
-        img {
+        #puzzleImage {
             display: block;
 
             max-width: min(850px, 90vw);
@@ -56,6 +65,14 @@
                 0 0 0 1px #000,
                 0 0 20px rgba(255, 255, 255, 0.08),
                 0 20px 60px rgba(0, 0, 0, 0.8);
+
+            cursor: default;
+
+            user-select: none;
+            -webkit-user-select: none;
+
+            -webkit-user-drag: none;
+            user-drag: none;
         }
 
         /* PASSWORD INPUT */
@@ -76,15 +93,20 @@
 
             font-family: "Courier New", monospace;
             font-size: 16px;
-            letter-spacing: 2px;
 
+            letter-spacing: 2px;
             text-align: center;
 
             transition: 0.2s;
+
+            /* Allow typing/selecting inside input */
+            user-select: text;
+            -webkit-user-select: text;
         }
 
         #password::placeholder {
             color: #666;
+
             letter-spacing: 3px;
             text-transform: uppercase;
         }
@@ -149,7 +171,7 @@
                 gap: 16px;
             }
 
-            img {
+            #puzzleImage {
                 max-width: 95vw;
                 max-height: 62vh;
             }
@@ -163,21 +185,190 @@
 
 <body>
 
-    <img src="puzzle.png" alt="Puzzle">
+    <img src="puzzle.png" id="puzzleImage" alt="Puzzle" draggable="false">
 
-    <input type="text" id="password" placeholder="password">
-    <button id="submit">submit</button>
+    <input type="text" id="password" placeholder="password" autocomplete="off" spellcheck="false">
+
+    <button id="submit">
+        submit
+    </button>
+
 
     <script>
-        document.getElementById("submit").addEventListener("click", () => {
-            const password = document.getElementById("password").value;
-            if (password === "SYSTEM") {
-                window.location.href = "done.html";
-            } else {
-                alert("wrong");
+        const puzzleImage = document.getElementById("puzzleImage");
+        const passwordInput = document.getElementById("password");
+        const submitButton = document.getElementById("submit");
+
+
+        /* =========================================
+           RIGHT CLICK IMAGE = DOWNLOAD
+        ========================================= */
+
+        puzzleImage.addEventListener("contextmenu", function (event) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            const download = document.createElement("a");
+
+            download.href = "puzzle.png";
+            download.download = "puzzle.png";
+
+            document.body.appendChild(download);
+
+            download.click();
+
+            download.remove();
+        });
+
+
+        /* =========================================
+           DISABLE NORMAL RIGHT CLICK EVERYWHERE ELSE
+        ========================================= */
+
+        document.addEventListener("contextmenu", function (event) {
+
+            if (event.target !== puzzleImage) {
+                event.preventDefault();
             }
-        })
+
+        });
+
+
+        /* =========================================
+           PREVENT IMAGE DRAGGING
+        ========================================= */
+
+        document.addEventListener("dragstart", function (event) {
+
+            event.preventDefault();
+
+        });
+
+
+        /* =========================================
+           BLOCK COMMON BROWSER COMMANDS
+        ========================================= */
+
+        document.addEventListener("keydown", function (event) {
+
+            const key = event.key.toLowerCase();
+
+
+            /* F12 */
+
+            if (event.key === "F12") {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                return false;
+            }
+
+
+            /* CTRL + SHIFT shortcuts */
+
+            if (
+                event.ctrlKey &&
+                event.shiftKey &&
+                (
+                    key === "i" ||
+                    key === "j" ||
+                    key === "c" ||
+                    key === "k"
+                )
+            ) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                return false;
+            }
+
+
+            /* CTRL shortcuts */
+
+            if (
+                event.ctrlKey &&
+                (
+                    key === "u" ||     // View source
+                    key === "s" ||     // Save page
+                    key === "p" ||     // Print
+                    key === "o" ||     // Open
+                    key === "h" ||     // History
+                    key === "j" ||     // Downloads
+                    key === "d"        // Bookmark
+                )
+            ) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                return false;
+            }
+
+
+            /* CMD equivalents for Mac */
+
+            if (
+                event.metaKey &&
+                (
+                    key === "u" ||
+                    key === "s" ||
+                    key === "p" ||
+                    key === "o" ||
+                    key === "h" ||
+                    key === "j" ||
+                    key === "d"
+                )
+            ) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                return false;
+            }
+
+        }, true);
+
+
+        /* =========================================
+           PASSWORD
+        ========================================= */
+
+        function checkPassword() {
+
+            const password = passwordInput.value.trim();
+
+            if (password === "SYSTEM") {
+
+                window.location.href = "done.html";
+
+            } else {
+
+                alert("wrong");
+
+            }
+        }
+
+
+        submitButton.addEventListener("click", checkPassword);
+
+
+        /* ENTER TO SUBMIT */
+
+        passwordInput.addEventListener("keydown", function (event) {
+
+            if (event.key === "Enter") {
+
+                checkPassword();
+
+            }
+
+        });
+
     </script>
+
 </body>
 
 </html>

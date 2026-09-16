@@ -4,12 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>System</title>
 
     <style>
         * {
             box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
         }
 
         html,
@@ -49,10 +51,9 @@
             overflow-x: hidden;
         }
 
-
         /* =========================
-   MAIN CONTAINER
-========================= */
+           MAIN CONTAINER
+        ========================= */
 
         .container {
             width: 601px;
@@ -65,17 +66,15 @@
             text-align: center;
         }
 
-
         /* =========================
-   RANDOM IMAGE
-========================= */
+           RANDOM IMAGE
+        ========================= */
 
         #randomImage {
             display: block;
 
             width: 601px;
             height: 509px;
-
             max-width: 100%;
 
             object-fit: cover;
@@ -89,22 +88,32 @@
                 0 0 0 1px #000,
                 0 0 25px rgba(255, 255, 255, 0.06),
                 0 20px 60px rgba(0, 0, 0, 0.8);
+
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
         }
 
-
         /* =========================
-   YOUTUBE VIDEO
-========================= */
+           YOUTUBE VIDEO
+        ========================= */
+
+        .video-wrapper {
+            position: relative;
+
+            width: 601px;
+            max-width: 100%;
+
+            height: 338px;
+
+            margin-top: 25px;
+        }
 
         #youtubeVideo {
             display: block;
 
-            width: 601px;
-            height: 338px;
-
-            max-width: 100%;
-
-            margin-top: 25px;
+            width: 100%;
+            height: 100%;
 
             background: #050505;
 
@@ -117,10 +126,23 @@
             outline: none;
         }
 
+        /*
+           Transparent cover prevents interaction/right-click
+           directly inside the YouTube iframe.
+        */
+
+        .video-blocker {
+            position: absolute;
+            inset: 0;
+
+            z-index: 5;
+
+            background: transparent;
+        }
 
         /* =========================
-   PASSWORD INPUT
-========================= */
+           PASSWORD INPUT
+        ========================= */
 
         #password {
             width: 340px;
@@ -129,7 +151,6 @@
             height: 50px;
 
             margin-top: 32px;
-
             padding: 0 18px;
 
             background: #050505;
@@ -149,17 +170,16 @@
             font-weight: bold;
 
             letter-spacing: 2px;
-
             text-align: center;
+
+            user-select: text;
+            -webkit-user-select: text;
 
             transition:
                 border-color 0.2s ease,
                 box-shadow 0.2s ease,
                 background 0.2s ease;
         }
-
-
-        /* Remove number arrows */
 
         #password::-webkit-outer-spin-button,
         #password::-webkit-inner-spin-button {
@@ -170,9 +190,6 @@
         #password[type="number"] {
             -moz-appearance: textfield;
         }
-
-
-        /* Placeholder */
 
         #password::placeholder {
             color: #555;
@@ -185,9 +202,6 @@
             text-transform: uppercase;
         }
 
-
-        /* Input focus */
-
         #password:focus {
             background: #080808;
 
@@ -198,10 +212,9 @@
                 0 0 18px rgba(255, 255, 255, 0.1);
         }
 
-
         /* =========================
-   SUBMIT BUTTON
-========================= */
+           SUBMIT BUTTON
+        ========================= */
 
         #submit {
             width: 150px;
@@ -237,9 +250,6 @@
                 transform 0.08s ease;
         }
 
-
-        /* Button hover */
-
         #submit:hover {
             background: #fff;
             color: #000;
@@ -251,17 +261,13 @@
                 0 0 35px rgba(255, 255, 255, 0.08);
         }
 
-
-        /* Button click */
-
         #submit:active {
             transform: scale(0.96);
         }
 
-
         /* =========================
-   MOBILE
-========================= */
+           MOBILE
+        ========================= */
 
         @media (max-width: 650px) {
 
@@ -280,7 +286,7 @@
                 aspect-ratio: 601 / 509;
             }
 
-            #youtubeVideo {
+            .video-wrapper {
                 width: 100%;
                 height: auto;
 
@@ -304,14 +310,30 @@
     <div class="container">
 
         <!-- RANDOM STOCK PHOTO -->
-        <img id="randomImage" alt="Random Image">
+
+        <img id="randomImage" alt="Random Image" draggable="false">
+
 
         <!-- YOUTUBE VIDEO -->
-        <iframe id="youtubeVideo" allow="autoplay; encrypted-media" allowfullscreen>
-        </iframe>
 
-        <input placeholder="Product of all the prime numbers" id="password" type="number" />
-        <button id="submit">submit</button>
+        <div class="video-wrapper">
+
+            <iframe id="youtubeVideo" allow="autoplay; encrypted-media" allowfullscreen>
+            </iframe>
+
+            <div class="video-blocker"></div>
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <input placeholder="Product of all the prime numbers" id="password" type="number" autocomplete="off">
+
+
+        <button id="submit">
+            submit
+        </button>
 
     </div>
 
@@ -320,30 +342,25 @@
 
         /* =====================================================
            RANDOM STOCK IMAGE
-        
-           Loads a completely new random image every refresh.
-           Requested resolution: 601 × 509
         ===================================================== */
 
-        const randomImage =
+        const randomImageURL =
             "https://picsum.photos/601/509?random=" + Date.now();
 
-        document.getElementById("randomImage").src = randomImage;
+        const randomImage =
+            document.getElementById("randomImage");
+
+        randomImage.src = randomImageURL;
+
 
 
         /* =====================================================
            YOUTUBE VIDEO
-        
-           PUT YOUR LINK HERE
         ===================================================== */
 
         const youtubeLink =
             "https://youtu.be/SpaknrSdups";
 
-
-        /* =====================================================
-           GET YOUTUBE VIDEO ID
-        ===================================================== */
 
         function getYouTubeID(url) {
 
@@ -351,73 +368,421 @@
 
                 const parsedURL = new URL(url);
 
-                // youtube.com/watch?v=
+
+                /* youtube.com/watch?v= */
+
                 if (
                     parsedURL.hostname.includes("youtube.com") &&
                     parsedURL.pathname === "/watch"
                 ) {
+
                     return parsedURL.searchParams.get("v");
+
                 }
 
-                // youtube.com/shorts/
+
+                /* youtube.com/shorts/... */
+
                 if (
                     parsedURL.hostname.includes("youtube.com") &&
                     parsedURL.pathname.startsWith("/shorts/")
                 ) {
+
                     return parsedURL.pathname.split("/")[2];
+
                 }
 
-                // youtube.com/embed/
+
+                /* youtube.com/embed/... */
+
                 if (
                     parsedURL.hostname.includes("youtube.com") &&
                     parsedURL.pathname.startsWith("/embed/")
                 ) {
+
                     return parsedURL.pathname.split("/")[2];
+
                 }
 
-                // youtu.be/
+
+                /* youtu.be/... */
+
                 if (parsedURL.hostname === "youtu.be") {
+
                     return parsedURL.pathname.substring(1);
+
                 }
 
-            } catch (error) {
-                console.error("Invalid YouTube URL");
             }
+
+            catch (error) {
+
+                return null;
+
+            }
+
 
             return null;
         }
 
 
+
         /* =====================================================
-           AUTOPLAY + LOOP VIDEO
+           AUTOPLAY + LOOP
         ===================================================== */
 
-        const videoID = getYouTubeID(youtubeLink);
+        const videoID =
+            getYouTubeID(youtubeLink);
+
 
         if (videoID) {
 
             const embedURL =
+
                 "https://www.youtube.com/embed/" +
+
                 videoID +
+
                 "?autoplay=1" +
+
                 "&mute=1" +
+
                 "&loop=1" +
+
                 "&playlist=" + videoID +
+
                 "&controls=0" +
+
+                "&disablekb=1" +
+
                 "&rel=0" +
+
                 "&modestbranding=1";
 
-            document.getElementById("youtubeVideo").src = embedURL;
+
+            document.getElementById("youtubeVideo").src =
+                embedURL;
+
         }
 
-        document.getElementById("submit").addEventListener("click", () => {
-            const password = document.getElementById("password").value;
-            if (password === "278683099") {
-                window.location.href = "almost.html";
-            } else {
-                alert("wrong");
+
+
+        /* =====================================================
+           PASSWORD
+        ===================================================== */
+
+        const password =
+            document.getElementById("password");
+
+
+        function checkPassword() {
+
+            if (password.value === "278683099") {
+
+                window.location.href =
+                    "almost.html";
+
             }
-        })
+
+            else {
+
+                alert("wrong");
+
+            }
+
+        }
+
+
+        document
+            .getElementById("submit")
+            .addEventListener(
+                "click",
+                checkPassword
+            );
+
+
+        password.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Enter") {
+
+                    checkPassword();
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           RIGHT CLICK IMAGE = DOWNLOAD
+        ===================================================== */
+
+        randomImage.addEventListener(
+            "contextmenu",
+            async function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+
+                try {
+
+                    const response =
+                        await fetch(randomImage.src);
+
+
+                    const blob =
+                        await response.blob();
+
+
+                    const blobURL =
+                        URL.createObjectURL(blob);
+
+
+                    const download =
+                        document.createElement("a");
+
+
+                    download.href =
+                        blobURL;
+
+
+                    download.download =
+                        "puzzle-image.jpg";
+
+
+                    document.body.appendChild(
+                        download
+                    );
+
+
+                    download.click();
+
+                    download.remove();
+
+
+                    setTimeout(
+                        () => URL.revokeObjectURL(blobURL),
+                        1000
+                    );
+
+                }
+
+                catch (error) {
+
+                    /*
+                       Fallback if browser/server
+                       blocks fetch download
+                    */
+
+                    const download =
+                        document.createElement("a");
+
+
+                    download.href =
+                        randomImage.src;
+
+
+                    download.download =
+                        "puzzle-image.jpg";
+
+
+                    document.body.appendChild(
+                        download
+                    );
+
+
+                    download.click();
+
+                    download.remove();
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           DISABLE RIGHT CLICK EVERYWHERE ELSE
+        ===================================================== */
+
+        document.addEventListener(
+            "contextmenu",
+            function (event) {
+
+                event.preventDefault();
+
+            }
+        );
+
+
+
+        /* =====================================================
+           STOP DRAGGING
+        ===================================================== */
+
+        document.addEventListener(
+            "dragstart",
+            function (event) {
+
+                event.preventDefault();
+
+            }
+        );
+
+
+
+        /* =====================================================
+           STOP PAGE TEXT SELECTION
+
+           Password field is still usable.
+        ===================================================== */
+
+        document.addEventListener(
+            "selectstart",
+            function (event) {
+
+                if (
+                    event.target !== password
+                ) {
+
+                    event.preventDefault();
+
+                }
+
+            }
+        );
+
+
+
+        /* =====================================================
+           BLOCK COMMON BROWSER COMMANDS
+        ===================================================== */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                const key =
+                    event.key.toLowerCase();
+
+
+                /* F12 */
+
+                if (
+                    event.key === "F12"
+                ) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+
+                    return false;
+
+                }
+
+
+
+                /* CTRL + SHIFT */
+
+                if (
+                    event.ctrlKey &&
+                    event.shiftKey &&
+                    [
+                        "i",
+                        "j",
+                        "c",
+                        "k"
+                    ].includes(key)
+                ) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+
+                    return false;
+
+                }
+
+
+
+                /* CTRL commands */
+
+                if (
+                    event.ctrlKey &&
+                    [
+                        "u",
+                        "s",
+                        "p",
+                        "o",
+                        "h",
+                        "j",
+                        "d"
+                    ].includes(key)
+                ) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+
+                    return false;
+
+                }
+
+
+
+                /* MAC COMMAND equivalents */
+
+                if (
+                    event.metaKey &&
+                    [
+                        "u",
+                        "s",
+                        "p",
+                        "o",
+                        "h",
+                        "j",
+                        "d"
+                    ].includes(key)
+                ) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+
+                    return false;
+
+                }
+
+
+
+                /* MAC DEVTOOLS */
+
+                if (
+                    event.metaKey &&
+                    event.altKey &&
+                    [
+                        "i",
+                        "j",
+                        "c"
+                    ].includes(key)
+                ) {
+
+                    event.preventDefault();
+                    event.stopPropagation();
+                    event.stopImmediatePropagation();
+
+                    return false;
+
+                }
+
+            },
+            true
+        );
 
     </script>
 
