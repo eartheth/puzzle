@@ -20,7 +20,8 @@ idk.html (3 cipher image page) [go to secret.html]
 thepuzzle/secret.html (nothing at all, just a button that goes to https://eartheth.github.io/thepuzzle/)
 thepuzzle/index.html (famous random button game) [go to thepuzzle/final.html]
 thepuzzle/final.html (3301) [go to thepuzzle/done.html]
-thepuzzle/done.html (prime numbers) [go to why.html]
+thepuzzle/done.html (prime numbers) [go to almost.html]
+almost.html (3 answers {determin chockalate amount}) [go to why.html]
 
 ### why.html (Final) U win!
 ---------------------------------------------------------------------------
