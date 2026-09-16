@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>THE IMPOSSIBLE PUZZLE // COMPLETE</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            color: #d7d7d7;
+            font-family: "Courier New", monospace;
+        }
+
+        body {
+            cursor: default;
+        }
+
+        /* =========================================================
+   CANVAS
+========================================================= */
+
+        #world {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* =========================================================
+   STATIC / NOISE
+========================================================= */
+
+        #noise {
+            position: fixed;
+            inset: -50%;
+            z-index: 20;
+            pointer-events: none;
+
+            opacity: .08;
+
+            background-image:
+                repeating-radial-gradient(circle at 0 0,
+                    transparent 0,
+                    #fff 1px,
+                    transparent 2px);
+
+            background-size: 5px 5px;
+
+            animation: noiseMove .15s steps(2) infinite;
+        }
+
+        @keyframes noiseMove {
+
+            0% {
+                transform: translate(0, 0);
+            }
+
+            25% {
+                transform: translate(2%, -1%);
+            }
+
+            50% {
+                transform: translate(-2%, 2%);
+            }
+
+            75% {
+                transform: translate(1%, 1%);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        /* =========================================================
+   SCANLINES
+========================================================= */
+
+        #scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 22;
+            pointer-events: none;
+
+            background:
+                repeating-linear-gradient(to bottom,
+                    rgba(255, 255, 255, .035) 0px,
+                    rgba(255, 255, 255, .035) 1px,
+                    transparent 1px,
+                    transparent 4px);
+        }
+
+        /* =========================================================
+   VIGNETTE
+========================================================= */
+
+        #vignette {
+            position: fixed;
+            inset: 0;
+            z-index: 23;
+            pointer-events: none;
+
+            background:
+                radial-gradient(circle at center,
+                    transparent 25%,
+                    rgba(0, 0, 0, .15) 55%,
+                    rgba(0, 0, 0, .85) 100%);
+        }
+
+        /* =========================================================
+   INITIAL BLACK SCREEN
+========================================================= */
+
+        #cover {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: #000;
+
+            animation: coverDisappear .2s linear 2.1s forwards;
+        }
+
+        @keyframes coverDisappear {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* =========================================================
+   INITIAL TEXT
+========================================================= */
+
+        #boot {
+            position: fixed;
+            inset: 0;
+            z-index: 110;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #000;
+
+            font-size: 13px;
+            letter-spacing: .2em;
+            color: #6d6d6d;
+
+            animation: bootDisappear .1s linear 2s forwards;
+        }
+
+        #bootText::after {
+            content: "";
+            animation: bootSequence 1.8s steps(1) forwards;
+        }
+
+        @keyframes bootSequence {
+
+            0% {
+                content: "VERIFYING FINAL RESPONSE...";
+            }
+
+            30% {
+                content: "CHECKING CIPHER CHAIN...";
+            }
+
+            60% {
+                content: "VALIDATION ACCEPTED.";
+                color: #aaa;
+            }
+
+            80% {
+                content: "ERROR: PUZZLE STATE CANNOT CONTINUE.";
+                color: #7a0000;
+            }
+
+            100% {
+                content: "TERMINATING...";
+                color: #fff;
+            }
+        }
+
+        @keyframes bootDisappear {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* =========================================================
+   FLASH
+========================================================= */
+
+        #flash {
+            position: fixed;
+            inset: 0;
+            z-index: 90;
+            background: #fff;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* =========================================================
+   MAIN
+========================================================= */
+
+        #stage {
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            perspective: 1000px;
+        }
+
+        /* =========================================================
+   CENTRAL CONTENT
+========================================================= */
+
+        #content {
+            position: relative;
+
+            width: min(900px, 90vw);
+
+            text-align: center;
+
+            opacity: 0;
+
+            animation: contentAppear 1s steps(8) 2.35s forwards;
+        }
+
+        @keyframes contentAppear {
+
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+                filter: blur(10px);
+            }
+
+            20% {
+                opacity: 1;
+                transform: translateX(-8px);
+                filter: blur(0);
+            }
+
+            25% {
+                transform: translateX(9px);
+            }
+
+            30% {
+                transform: translateX(-2px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate(0);
+            }
+        }
+
+        /* =========================================================
+   STATUS
+========================================================= */
+
+        .status {
+            margin-bottom: 34px;
+
+            font-size: 11px;
+            letter-spacing: .45em;
+
+            color: #5c5c5c;
+
+            animation: statusFlicker 5s infinite;
+        }
+
+        .status span {
+            color: #720000;
+        }
+
+        @keyframes statusFlicker {
+
+            0%,
+            91%,
+            95%,
+            100% {
+                opacity: 1;
+            }
+
+            92% {
+                opacity: .15;
+            }
+
+            93% {
+                opacity: .9;
+            }
+
+            94% {
+                opacity: .25;
+            }
+        }
+
+        /* =========================================================
+   YOU WON TITLE
+========================================================= */
+
+        #titleWrap {
+            position: relative;
+            display: inline-block;
+        }
+
+        #title {
+            position: relative;
+
+            margin: 0;
+
+            font-size: clamp(65px, 14vw, 190px);
+            line-height: .85;
+
+            color: #ddd;
+
+            font-weight: bold;
+            letter-spacing: -.08em;
+
+            text-shadow:
+                0 0 4px rgba(255, 255, 255, .3),
+                0 0 20px rgba(255, 255, 255, .08);
+
+            user-select: none;
+
+            animation: titlePulse 7s infinite;
+        }
+
+        #title::before,
+        #title::after {
+            content: "YOU WON";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        #title::before {
+            color: #fff;
+            opacity: .35;
+
+            clip-path:
+                polygon(0 8%,
+                    100% 8%,
+                    100% 25%,
+                    0 25%);
+
+            animation: titleGlitch1 4s infinite;
+        }
+
+        #title::after {
+            color: #6f0000;
+            opacity: .6;
+
+            clip-path:
+                polygon(0 60%,
+                    100% 58%,
+                    100% 72%,
+                    0 75%);
+
+            animation: titleGlitch2 3.4s infinite;
+        }
+
+        @keyframes titlePulse {
+
+            0%,
+            100% {
+                opacity: .93;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes titleGlitch1 {
+
+            0%,
+            89%,
+            100% {
+                transform: translate(0);
+            }
+
+            90% {
+                transform: translate(-12px, 1px);
+            }
+
+            91% {
+                transform: translate(7px, -1px);
+            }
+
+            92% {
+                transform: translate(0);
+            }
+        }
+
+        @keyframes titleGlitch2 {
+
+            0%,
+            94%,
+            100% {
+                transform: translate(0);
+            }
+
+            95% {
+                transform: translate(10px, 2px);
+            }
+
+            96% {
+                transform: translate(-4px, 0);
+            }
+
+            97% {
+                transform: translate(0);
+            }
+        }
+
+        /* =========================================================
+   LINE
+========================================================= */
+
+        #line {
+            width: 0;
+            height: 1px;
+
+            margin: 38px auto 25px;
+
+            background: linear-gradient(90deg,
+                    transparent,
+                    #575757,
+                    transparent);
+
+            animation: lineOpen 1.3s ease 3.1s forwards;
+        }
+
+        @keyframes lineOpen {
+            to {
+                width: min(560px, 70vw);
+            }
+        }
+
+        /* =========================================================
+   MESSAGE
+========================================================= */
+
+        #message {
+            opacity: 0;
+
+            color: #777;
+
+            font-size: clamp(12px, 1.3vw, 17px);
+
+            letter-spacing: .22em;
+            line-height: 2;
+
+            animation: showMessage 2s ease 3.7s forwards;
+        }
+
+        #message strong {
+            font-weight: normal;
+            color: #aaa;
+        }
+
+        @keyframes showMessage {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* =========================================================
+   NIGHTMARE / PHANTOM
+========================================================= */
+
+        #names {
+            margin-top: 50px;
+
+            display: flex;
+            justify-content: center;
+            gap: 70px;
+
+            opacity: 0;
+
+            font-size: 10px;
+            letter-spacing: .6em;
+            color: #333;
+
+            animation: namesAppear 1.5s ease 5s forwards;
+        }
+
+        @keyframes namesAppear {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .name {
+            position: relative;
+        }
+
+        .name::before {
+            content: "";
+            position: absolute;
+
+            width: 4px;
+            height: 4px;
+
+            left: 50%;
+            top: -14px;
+
+            transform: translateX(-50%);
+
+            border: 1px solid #555;
+        }
+
+        .name:nth-child(2)::before {
+            border-radius: 50%;
+        }
+
+        /* =========================================================
+   BOTTOM TERMINAL MESSAGE
+========================================================= */
+
+        #bottom {
+            position: fixed;
+
+            left: 30px;
+            bottom: 25px;
+
+            z-index: 30;
+
+            font-size: 10px;
+            line-height: 1.7;
+
+            color: #363636;
+
+            opacity: 0;
+
+            animation: bottomAppear 2s ease 6s forwards;
+        }
+
+        @keyframes bottomAppear {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .red {
+            color: #680000;
+        }
+
+        /* =========================================================
+   RIGHT ID
+========================================================= */
+
+        #idBlock {
+            position: fixed;
+
+            right: 26px;
+            top: 22px;
+
+            z-index: 30;
+
+            text-align: right;
+
+            font-size: 9px;
+            line-height: 1.7;
+            letter-spacing: .15em;
+
+            color: #292929;
+        }
+
+        /* =========================================================
+   SECRET FINAL TEXT
+========================================================= */
+
+        #finalText {
+            position: fixed;
+
+            left: 50%;
+            bottom: 45px;
+
+            transform: translateX(-50%);
+
+            z-index: 31;
+
+            font-size: 10px;
+            letter-spacing: .5em;
+
+            color: #444;
+
+            opacity: 0;
+
+            white-space: nowrap;
+
+            animation: finalReveal 3s ease 8s forwards;
+        }
+
+        @keyframes finalReveal {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* =========================================================
+   SCREEN TEAR
+========================================================= */
+
+        .tear {
+            position: fixed;
+
+            left: 0;
+            width: 100%;
+
+            pointer-events: none;
+
+            z-index: 70;
+
+            background: rgba(255, 255, 255, .08);
+
+            transform: translateX(-120%);
+        }
+
+        #tear1 {
+            top: 31%;
+            height: 3px;
+        }
+
+        #tear2 {
+            top: 67%;
+            height: 1px;
+        }
+
+        #tear3 {
+            top: 48%;
+            height: 6px;
+            opacity: .3;
+        }
+
+        /* =========================================================
+   RESPONSIVE
+========================================================= */
+
+        @media(max-width:700px) {
+
+            #names {
+                gap: 25px;
+            }
+
+            .status {
+                letter-spacing: .25em;
+            }
+
+            #message {
+                letter-spacing: .12em;
+            }
+
+            #bottom {
+                left: 15px;
+                bottom: 15px;
+            }
+
+            #finalText {
+                font-size: 8px;
+                letter-spacing: .25em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="world"></canvas>
+
+    <div id="boot">
+        <div id="bootText"></div>
+    </div>
+
+    <div id="cover"></div>
+
+    <div id="stage">
+
+        <div id="content">
+
+            <div class="status">
+                PUZZLE STATUS:
+                <span>TERMINATED</span>
+            </div>
+
+            <div id="titleWrap">
+                <h1 id="title">YOU WON</h1>
+            </div>
+
+            <div id="line"></div>
+
+            <div id="message">
+                THE SYSTEM HAS NOTHING LEFT TO HIDE.<br>
+                <strong>THE IMPOSSIBLE PUZZLE HAS BEEN SOLVED.</strong>
+            </div>
+
+            <div id="names">
+                <div class="name">
+                    NIGHTMARE
+                </div>
+
+                <div class="name">
+                    PHANTOM
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="bottom">
+        RESPONSE: <span class="red">ACCEPTED</span><br>
+        CIPHER CHAIN: CLOSED<br>
+        ACCESS LEVEL: FINAL
+    </div>
+
+    <div id="idBlock">
+        CASE 03<br>
+        FINAL NODE<br>
+        000 // END
+    </div>
+
+    <div id="finalText">
+        THERE WAS NEVER ANOTHER PAGE.
+    </div>
+
+    <div id="noise"></div>
+    <div id="scanlines"></div>
+    <div id="vignette"></div>
+
+    <div id="tear1" class="tear"></div>
+    <div id="tear2" class="tear"></div>
+    <div id="tear3" class="tear"></div>
+
+    <div id="flash"></div>
+
+    <script>
+
+        /* =========================================================
+           CANVAS
+        ========================================================= */
+
+        const canvas =
+            document.getElementById("world");
+
+        const ctx =
+            canvas.getContext("2d");
+
+        let width;
+        let height;
+
+        let dpr =
+            Math.min(
+                window.devicePixelRatio || 1,
+                2
+            );
+
+        function resize() {
+
+            width =
+                window.innerWidth;
+
+            height =
+                window.innerHeight;
+
+            canvas.width =
+                width * dpr;
+
+            canvas.height =
+                height * dpr;
+
+            canvas.style.width =
+                width + "px";
+
+            canvas.style.height =
+                height + "px";
+
+            ctx.setTransform(
+                dpr,
+                0,
+                0,
+                dpr,
+                0,
+                0
+            );
+        }
+
+        resize();
+
+        window.addEventListener(
+            "resize",
+            resize
+        );
+
+        /* =========================================================
+           RANDOM
+        ========================================================= */
+
+        function random(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        /* =========================================================
+           PARTICLES
+        ========================================================= */
+
+        const particles = [];
+
+        class Particle {
+
+            constructor(x, y) {
+
+                this.x = x;
+                this.y = y;
+
+                const angle =
+                    random(0, Math.PI * 2);
+
+                const speed =
+                    random(.4, 6);
+
+                this.vx =
+                    Math.cos(angle) * speed;
+
+                this.vy =
+                    Math.sin(angle) * speed;
+
+                this.life =
+                    random(60, 170);
+
+                this.maxLife =
+                    this.life;
+
+                this.size =
+                    random(.5, 2.5);
+
+                this.type =
+                    Math.random() > .8
+                        ? "red"
+                        : "white";
+            }
+
+            update() {
+
+                this.x += this.vx;
+                this.y += this.vy;
+
+                this.vx *= .985;
+                this.vy *= .985;
+
+                this.life--;
+            }
+
+            draw() {
+
+                const alpha =
+                    this.life /
+                    this.maxLife;
+
+                ctx.fillStyle =
+                    this.type === "red"
+                        ? `rgba(100,0,0,${alpha})`
+                        : `rgba(200,200,200,${alpha * .7})`;
+
+                ctx.fillRect(
+                    this.x,
+                    this.y,
+                    this.size,
+                    this.size
+                );
+            }
+        }
+
+        /* =========================================================
+           FALLING CIPHER CHARACTERS
+        ========================================================= */
+
+        const chars =
+            "ADFGVX0123456789";
+
+        const cipher = [];
+
+        for (let i = 0; i < 100; i++) {
+
+            cipher.push({
+
+                x: random(0, 1),
+                y: random(0, 1),
+
+                speed:
+                    random(.00003, .0002),
+
+                alpha:
+                    random(.015, .09),
+
+                size:
+                    random(8, 17),
+
+                char:
+                    chars[
+                    Math.floor(
+                        Math.random() * chars.length
+                    )
+                    ]
+
+            });
+        }
+
+        /* =========================================================
+           BACKGROUND
+        ========================================================= */
+
+        function background() {
+
+            ctx.fillStyle =
+                "#020202";
+
+            ctx.fillRect(
+                0,
+                0,
+                width,
+                height
+            );
+
+            const glow =
+                ctx.createRadialGradient(
+                    width / 2,
+                    height / 2,
+                    0,
+                    width / 2,
+                    height / 2,
+                    Math.max(width, height) * .65
+                );
+
+            glow.addColorStop(
+                0,
+                "rgba(255,255,255,.025)"
+            );
+
+            glow.addColorStop(
+                .35,
+                "rgba(40,40,40,.015)"
+            );
+
+            glow.addColorStop(
+                1,
+                "rgba(0,0,0,0)"
+            );
+
+            ctx.fillStyle = glow;
+
+            ctx.fillRect(
+                0,
+                0,
+                width,
+                height
+            );
+        }
+
+        /* =========================================================
+           CIPHER
+        ========================================================= */
+
+        function drawCipher() {
+
+            cipher.forEach(c => {
+
+                c.y -= c.speed;
+
+                if (c.y < -.05) {
+
+                    c.y = 1.05;
+
+                    c.char =
+                        chars[
+                        Math.floor(
+                            Math.random() * chars.length
+                        )
+                        ];
+                }
+
+                ctx.font =
+                    `${c.size}px Courier New`;
+
+                ctx.fillStyle =
+                    `rgba(170,170,170,${c.alpha})`;
+
+                ctx.fillText(
+                    c.char,
+                    c.x * width,
+                    c.y * height
+                );
+            });
+        }
+
+        /* =========================================================
+           CENTRAL SYMBOL
+        ========================================================= */
+
+        let t = 0;
+
+        function drawSymbol() {
+
+            t += .01;
+
+            const cx =
+                width / 2;
+
+            const cy =
+                height / 2;
+
+            const radius =
+                Math.min(width, height) * .34;
+
+            ctx.save();
+
+            ctx.translate(cx, cy);
+
+            ctx.rotate(
+                Math.sin(t * .15) * .02
+            );
+
+            ctx.strokeStyle =
+                "rgba(255,255,255,.022)";
+
+            ctx.lineWidth = 1;
+
+            ctx.beginPath();
+
+            ctx.arc(
+                0,
+                0,
+                radius,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.stroke();
+
+            for (let i = 0; i < 6; i++) {
+
+                const angle =
+                    i / 6 *
+                    Math.PI * 2 +
+                    t * .03;
+
+                const x =
+                    Math.cos(angle) * radius;
+
+                const y =
+                    Math.sin(angle) * radius;
+
+                ctx.beginPath();
+
+                ctx.moveTo(0, 0);
+                ctx.lineTo(x, y);
+
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        /* =========================================================
+           EXPLOSION
+        ========================================================= */
+
+        function explode(amount = 200) {
+
+            for (let i = 0; i < amount; i++) {
+
+                particles.push(
+                    new Particle(
+                        width / 2,
+                        height / 2
+                    )
+                );
+            }
+        }
+
+        /* =========================================================
+           FLASH
+        ========================================================= */
+
+        function flash(
+            amount = .7,
+            duration = 120
+        ) {
+
+            const el =
+                document.getElementById("flash");
+
+            el.animate(
+                [
+                    { opacity: amount },
+                    { opacity: 0 }
+                ],
+                {
+                    duration: duration,
+                    easing: "linear"
+                }
+            );
+        }
+
+        /* =========================================================
+           TEAR
+        ========================================================= */
+
+        function screenTear() {
+
+            const tears =
+                document.querySelectorAll(".tear");
+
+            tears.forEach(
+                tear => {
+
+                    const delay =
+                        random(0, 120);
+
+                    setTimeout(
+                        () => {
+
+                            tear.style.top =
+                                random(10, 90) + "%";
+
+                            tear.style.height =
+                                random(1, 7) + "px";
+
+                            tear.animate(
+                                [
+                                    {
+                                        transform:
+                                            "translateX(-110%)"
+                                    },
+
+                                    {
+                                        transform:
+                                            "translateX(120%)"
+                                    }
+                                ],
+                                {
+                                    duration:
+                                        random(80, 180),
+                                    easing: "linear"
+                                }
+                            );
+
+                        },
+                        delay
+                    );
+
+                }
+            );
+        }
+
+        /* =========================================================
+           INTRO
+        ========================================================= */
+
+        setTimeout(
+            () => {
+
+                flash(1, 90);
+
+                explode(330);
+
+                screenTear();
+
+            },
+            2100
+        );
+
+        setTimeout(
+            () => {
+
+                screenTear();
+
+            },
+            2600
+        );
+
+        setTimeout(
+            () => {
+
+                flash(.25, 70);
+
+                screenTear();
+
+            },
+            3400
+        );
+
+        /* =========================================================
+           RANDOM GLITCH
+        ========================================================= */
+
+        setInterval(
+            () => {
+
+                if (Math.random() < .35) {
+
+                    screenTear();
+
+                }
+
+                if (Math.random() < .08) {
+
+                    flash(.07, 50);
+
+                }
+
+            },
+            1500
+        );
+
+        /* =========================================================
+           TITLE RANDOM CORRUPTION
+        ========================================================= */
+
+        const title =
+            document.getElementById("title");
+
+        const realTitle =
+            "YOU WON";
+
+        const corruptChars =
+            "#@$%&01XVF";
+
+        function corruptTitle() {
+
+            if (Math.random() > .15)
+                return;
+
+            let value = "";
+
+            for (let i = 0; i < realTitle.length; i++) {
+
+                if (
+                    realTitle[i] !== " " &&
+                    Math.random() < .3
+                ) {
+
+                    value +=
+                        corruptChars[
+                        Math.floor(
+                            Math.random() *
+                            corruptChars.length
+                        )
+                        ];
+
+                } else {
+
+                    value +=
+                        realTitle[i];
+
+                }
+            }
+
+            title.textContent =
+                value;
+
+            setTimeout(
+                () => {
+
+                    title.textContent =
+                        realTitle;
+
+                },
+                70
+            );
+        }
+
+        setInterval(
+            corruptTitle,
+            550
+        );
+
+        /* =========================================================
+           DRAW
+        ========================================================= */
+
+        function animate() {
+
+            background();
+
+            drawCipher();
+
+            drawSymbol();
+
+            for (
+                let i =
+                    particles.length - 1;
+                i >= 0;
+                i--
+            ) {
+
+                const p =
+                    particles[i];
+
+                p.update();
+                p.draw();
+
+                if (p.life <= 0) {
+
+                    particles.splice(
+                        i,
+                        1
+                    );
+
+                }
+            }
+
+            requestAnimationFrame(
+                animate
+            );
+        }
+
+        animate();
+
+    </script>
+
+</body>
+
+</html>

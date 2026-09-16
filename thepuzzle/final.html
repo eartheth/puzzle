@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle</title>
+
+    <style>
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        img {
+            object-fit: cover;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <img src="puzzle.png" alt="Puzzle">
+
+    <input type="text" id="password" placeholder="password">
+    <button id="submit">submit</button>
+
+    <script>
+        document.getElementById("submit").addEventListener("click", () => {
+            const password = document.getElementById("password").value;
+            if (password === "SYSTEM") {
+                window.location.href = "done.html";
+            } else {
+                alert("wrong");
+            }
+        })
+    </script>
+</body>
+
+</html>

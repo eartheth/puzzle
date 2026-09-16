@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+            background: #000;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        /* EXACT IMAGE SIZE */
+        #randomImage {
+            display: block;
+            width: 601px;
+            height: 509px;
+            object-fit: cover;
+            margin: 0 auto;
+        }
+
+        /* YOUTUBE VIDEO */
+        #youtubeVideo {
+            display: block;
+            width: 601px;
+            height: 338px;
+            margin: 25px auto 0;
+            border: 0;
+        }
+
+        /* Mobile */
+        @media (max-width: 650px) {
+
+            #randomImage {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 601 / 509;
+            }
+
+            #youtubeVideo {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 16 / 9;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- RANDOM STOCK PHOTO -->
+        <img id="randomImage" alt="Random Image">
+
+        <!-- YOUTUBE VIDEO -->
+        <iframe id="youtubeVideo" allow="autoplay; encrypted-media" allowfullscreen>
+        </iframe>
+
+        <input placeholder="Sum of all the prime numbers" id="password" type="number" />
+        <button id="submit">submit</button>
+
+    </div>
+
+
+    <script>
+
+        /* =====================================================
+           RANDOM STOCK IMAGE
+        
+           Loads a completely new random image every refresh.
+           Requested resolution: 601 × 509
+        ===================================================== */
+
+        const randomImage =
+            "https://picsum.photos/601/509?random=" + Date.now();
+
+        document.getElementById("randomImage").src = randomImage;
+
+
+        /* =====================================================
+           YOUTUBE VIDEO
+        
+           PUT YOUR LINK HERE
+        ===================================================== */
+
+        const youtubeLink =
+            "https://youtu.be/SpaknrSdups";
+
+
+        /* =====================================================
+           GET YOUTUBE VIDEO ID
+        ===================================================== */
+
+        function getYouTubeID(url) {
+
+            try {
+
+                const parsedURL = new URL(url);
+
+                // youtube.com/watch?v=
+                if (
+                    parsedURL.hostname.includes("youtube.com") &&
+                    parsedURL.pathname === "/watch"
+                ) {
+                    return parsedURL.searchParams.get("v");
+                }
+
+                // youtube.com/shorts/
+                if (
+                    parsedURL.hostname.includes("youtube.com") &&
+                    parsedURL.pathname.startsWith("/shorts/")
+                ) {
+                    return parsedURL.pathname.split("/")[2];
+                }
+
+                // youtube.com/embed/
+                if (
+                    parsedURL.hostname.includes("youtube.com") &&
+                    parsedURL.pathname.startsWith("/embed/")
+                ) {
+                    return parsedURL.pathname.split("/")[2];
+                }
+
+                // youtu.be/
+                if (parsedURL.hostname === "youtu.be") {
+                    return parsedURL.pathname.substring(1);
+                }
+
+            } catch (error) {
+                console.error("Invalid YouTube URL");
+            }
+
+            return null;
+        }
+
+
+        /* =====================================================
+           AUTOPLAY + LOOP VIDEO
+        ===================================================== */
+
+        const videoID = getYouTubeID(youtubeLink);
+
+        if (videoID) {
+
+            const embedURL =
+                "https://www.youtube.com/embed/" +
+                videoID +
+                "?autoplay=1" +
+                "&mute=1" +
+                "&loop=1" +
+                "&playlist=" + videoID +
+                "&controls=0" +
+                "&rel=0" +
+                "&modestbranding=1";
+
+            document.getElementById("youtubeVideo").src = embedURL;
+        }
+
+        document.getElementById("submit").addEventListener("click", () => {
+            const password = document.getElementById("password").value;
+            if (password === "278683099") {
+                window.location.href = "why.html";
+            } else {
+                alert("wrong");
+            }
+        })
+
+    </script>
+
+</body>
+
+</html>
