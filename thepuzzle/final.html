@@ -7,20 +7,156 @@
     <title>Puzzle</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         html,
         body {
             margin: 0;
             width: 100%;
-            height: 100%;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            min-height: 100%;
         }
 
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at center, #181818 0%, #080808 45%, #000 80%);
+            color: #fff;
+            font-family: "Courier New", monospace;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            gap: 22px;
+            padding: 30px;
+
+            overflow-x: hidden;
+        }
+
+        /* PUZZLE IMAGE */
+
         img {
-            object-fit: cover;
             display: block;
+
+            max-width: min(850px, 90vw);
+            max-height: 68vh;
+
+            width: auto;
+            height: auto;
+
+            object-fit: contain;
+
+            border: 1px solid #333;
+            border-radius: 4px;
+
+            box-shadow:
+                0 0 0 1px #000,
+                0 0 20px rgba(255, 255, 255, 0.08),
+                0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        /* PASSWORD INPUT */
+
+        #password {
+            width: 280px;
+            height: 48px;
+
+            background: #050505;
+            color: #fff;
+
+            border: 1px solid #444;
+            border-radius: 4px;
+
+            outline: none;
+
+            padding: 0 15px;
+
+            font-family: "Courier New", monospace;
+            font-size: 16px;
+            letter-spacing: 2px;
+
+            text-align: center;
+
+            transition: 0.2s;
+        }
+
+        #password::placeholder {
+            color: #666;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        #password:focus {
+            border-color: #aaa;
+
+            box-shadow:
+                0 0 0 1px #777,
+                0 0 18px rgba(255, 255, 255, 0.12);
+        }
+
+        /* SUBMIT BUTTON */
+
+        #submit {
+            width: 140px;
+            height: 44px;
+
+            background: #111;
+            color: #bbb;
+
+            border: 1px solid #444;
+            border-radius: 4px;
+
+            font-family: "Courier New", monospace;
+            font-size: 14px;
+            font-weight: bold;
+
+            letter-spacing: 3px;
+            text-transform: uppercase;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s,
+                color 0.2s,
+                border-color 0.2s,
+                transform 0.1s,
+                box-shadow 0.2s;
+        }
+
+        #submit:hover {
+            background: #fff;
+            color: #000;
+
+            border-color: #fff;
+
+            box-shadow:
+                0 0 15px rgba(255, 255, 255, 0.2),
+                0 0 40px rgba(255, 255, 255, 0.08);
+        }
+
+        #submit:active {
+            transform: scale(0.96);
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+            body {
+                padding: 18px;
+                gap: 16px;
+            }
+
+            img {
+                max-width: 95vw;
+                max-height: 62vh;
+            }
+
+            #password {
+                width: min(280px, 90vw);
+            }
         }
     </style>
 </head>
