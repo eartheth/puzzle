@@ -485,6 +485,65 @@
             }
         }
 
+
+        /* =========================================================
+           PRIZE REVEAL
+        ========================================================= */
+
+        #prize {
+            margin-top: 30px;
+            opacity: 0;
+            animation: prizeAppear 1.4s ease 4.5s forwards;
+        }
+
+        #prizeLabel {
+            margin-bottom: 10px;
+            color: #4a4a4a;
+            font-size: 10px;
+            letter-spacing: .5em;
+        }
+
+        #prizeAmount {
+            color: #cfcfcf;
+            font-size: clamp(24px, 4vw, 48px);
+            font-weight: bold;
+            letter-spacing: .12em;
+            text-shadow: 0 0 16px rgba(255, 255, 255, .08);
+        }
+
+        #prizeChocolate {
+            margin-top: 12px;
+            min-height: 42px;
+            font-size: clamp(24px, 4vw, 42px);
+            letter-spacing: .18em;
+            filter: saturate(.65) brightness(.9);
+        }
+
+        #prizeAnswer {
+            margin-top: 12px;
+            color: #4c4c4c;
+            font-size: 9px;
+            letter-spacing: .35em;
+        }
+
+        @keyframes prizeAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+                filter: blur(6px);
+            }
+
+            35% {
+                opacity: .35;
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+
         /* =========================================================
    NIGHTMARE / PHANTOM
 ========================================================= */
@@ -713,6 +772,14 @@
             <div id="message">
                 THE SYSTEM HAS NOTHING LEFT TO HIDE.<br>
                 <strong>THE IMPOSSIBLE PUZZLE HAS BEEN SOLVED.</strong>
+            </div>
+
+
+            <div id="prize">
+                <div id="prizeLabel">REWARD UNLOCKED</div>
+                <div id="prizeAmount">CALCULATING...</div>
+                <div id="prizeChocolate"></div>
+                <div id="prizeAnswer"></div>
             </div>
 
             <div id="names">
@@ -1295,6 +1362,37 @@
             corruptTitle,
             550
         );
+
+
+        /* =========================================================
+           PRIZE RESULT
+           Reads ?answer=A/B/C, or localStorage as a fallback.
+        ========================================================= */
+
+        const params = new URLSearchParams(window.location.search);
+        const selectedAnswer = (
+            params.get("answer") ||
+            localStorage.getItem("impossiblePuzzleAnswer") ||
+            ""
+        ).toUpperCase();
+
+        const prizeAmount = document.getElementById("prizeAmount");
+        const prizeChocolate = document.getElementById("prizeChocolate");
+        const prizeAnswer = document.getElementById("prizeAnswer");
+
+        if (selectedAnswer === "B") {
+            prizeAmount.textContent = "3 CHOCOLATES";
+            prizeChocolate.textContent = "🍫  🍫  🍫";
+            prizeAnswer.textContent = "ANSWER B // MAXIMUM REWARD";
+        } else if (selectedAnswer === "A" || selectedAnswer === "C") {
+            prizeAmount.textContent = "1 CHOCOLATE";
+            prizeChocolate.textContent = "🍫";
+            prizeAnswer.textContent = "ANSWER " + selectedAnswer + " // REWARD";
+        } else {
+            prizeAmount.textContent = "PRIZE DATA MISSING";
+            prizeChocolate.textContent = "?";
+            prizeAnswer.textContent = "NO ANSWER RECEIVED";
+        }
 
         /* =========================================================
            DRAW

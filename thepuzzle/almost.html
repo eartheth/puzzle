@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Choose Carefully</title>
+    <title>THE IMPOSSIBLE PUZZLE // FINAL QUESTION</title>
 
     <style>
         * {
@@ -16,188 +16,402 @@
         body {
             margin: 0;
             width: 100%;
-            min-height: 100%;
-            background: #000;
-            color: #fff;
+            height: 100%;
+            background: #020202;
+            color: #d7d7d7;
             font-family: "Courier New", monospace;
+            overflow: hidden;
         }
 
         body {
-            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 30px;
         }
 
-        .container {
-            width: 100%;
-            max-width: 850px;
+        /* =========================
+           BACKGROUND
+        ========================= */
+
+        #background {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+
+            background:
+                radial-gradient(circle at center,
+                    rgba(255, 255, 255, 0.035),
+                    transparent 50%),
+                #020202;
+        }
+
+        #noise {
+            position: fixed;
+            inset: -50%;
+            z-index: 20;
+            pointer-events: none;
+
+            opacity: 0.06;
+
+            background-image:
+                repeating-radial-gradient(circle at 0 0,
+                    transparent 0,
+                    #fff 1px,
+                    transparent 2px);
+
+            background-size: 5px 5px;
+
+            animation: noiseMove 0.15s steps(2) infinite;
+        }
+
+        @keyframes noiseMove {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            25% {
+                transform: translate(2%, -1%);
+            }
+
+            50% {
+                transform: translate(-2%, 2%);
+            }
+
+            75% {
+                transform: translate(1%, 1%);
+            }
+
+            100% {
+                transform: translate(0, 0);
+            }
+        }
+
+        #scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 21;
+            pointer-events: none;
+
+            background:
+                repeating-linear-gradient(to bottom,
+                    rgba(255, 255, 255, 0.025) 0px,
+                    rgba(255, 255, 255, 0.025) 1px,
+                    transparent 1px,
+                    transparent 4px);
+        }
+
+        #vignette {
+            position: fixed;
+            inset: 0;
+            z-index: 22;
+            pointer-events: none;
+
+            background:
+                radial-gradient(circle at center,
+                    transparent 35%,
+                    rgba(0, 0, 0, 0.35) 65%,
+                    rgba(0, 0, 0, 0.9) 100%);
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        #main {
+            position: relative;
+            z-index: 10;
+
+            width: min(850px, 90vw);
+
             text-align: center;
         }
 
-        .top-text {
-            color: #555;
-            font-size: 12px;
-            letter-spacing: 5px;
+        #status {
             margin-bottom: 25px;
+
+            color: #555;
+
+            font-size: 10px;
+            letter-spacing: 0.5em;
+        }
+
+        #status span {
+            color: #780000;
         }
 
         h1 {
             margin: 0 0 35px;
-            font-size: clamp(35px, 7vw, 70px);
-            letter-spacing: 3px;
-        }
 
-        .question-box {
-            border: 1px solid #252525;
-            background: #050505;
-            padding: 35px;
-            margin-bottom: 35px;
-        }
+            font-size: clamp(42px, 8vw, 90px);
+            line-height: 0.95;
 
-        .question {
-            font-size: clamp(20px, 3vw, 30px);
-            line-height: 1.6;
-        }
-
-        .warning {
-            margin-top: 20px;
-            color: #555;
-            font-size: 12px;
-            letter-spacing: 2px;
-        }
-
-        .answers {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .answer {
-            width: 100%;
-            min-height: 85px;
-
-            border: 1px solid #333;
-            background: #080808;
             color: #ddd;
 
-            padding: 20px 25px;
+            letter-spacing: -0.06em;
 
-            font-family: inherit;
-            font-size: 16px;
-            line-height: 1.5;
-
-            text-align: left;
-
-            cursor: pointer;
-
-            transition: 0.2s;
+            text-shadow:
+                0 0 6px rgba(255, 255, 255, 0.15);
         }
 
-        .answer:hover {
-            border-color: #aaa;
-            background: #111;
-            color: #fff;
+        /* =========================
+           QUESTION
+        ========================= */
 
-            transform: translateX(6px);
+        #questionBox {
+            position: relative;
+
+            border: 1px solid #262626;
+
+            background: rgba(5, 5, 5, 0.86);
+
+            padding: 32px 30px;
+
+            margin-bottom: 27px;
+
+            box-shadow:
+                0 0 45px rgba(255, 255, 255, 0.015);
         }
 
-        .answer-letter {
-            color: #777;
-            font-size: 20px;
-            margin-right: 12px;
+        #questionNumber {
+            margin-bottom: 18px;
+
+            color: #444;
+
+            font-size: 9px;
+            letter-spacing: 0.55em;
         }
 
-        /* RESULT */
+        #question {
+            color: #bbb;
 
-        #resultScreen {
-            display: none;
-        }
+            font-size: clamp(16px, 2.3vw, 22px);
 
-        .result-label {
-            color: #555;
-            font-size: 12px;
-            letter-spacing: 5px;
-            margin-bottom: 25px;
-        }
-
-        .result-icon {
-            font-size: 90px;
-            margin-bottom: 20px;
-        }
-
-        .result-title {
-            font-size: clamp(35px, 6vw, 65px);
-            margin-bottom: 20px;
-        }
-
-        .result-text {
-            color: #aaa;
-            font-size: 18px;
-            line-height: 1.7;
-        }
-
-        .explanation {
-            margin-top: 35px;
-
-            padding: 25px;
-
-            border: 1px solid #222;
-
-            color: #666;
-
-            font-size: 14px;
             line-height: 1.8;
         }
 
-        .reveal {
-            animation: reveal 0.8s ease;
+        #question strong {
+            color: #eee;
+            font-weight: normal;
         }
 
-        @keyframes reveal {
-            0% {
-                opacity: 0;
-                transform: scale(0.7);
-                filter: blur(15px);
-            }
+        #warning {
+            margin-top: 22px;
 
-            100% {
-                opacity: 1;
-                transform: scale(1);
-                filter: blur(0);
-            }
+            color: #5c0000;
+
+            font-size: 9px;
+            letter-spacing: 0.35em;
         }
 
-        /* SCREEN FLASH */
+        /* =========================
+           ANSWERS
+        ========================= */
 
-        .flash {
+        #answers {
+            display: flex;
+            flex-direction: column;
+
+            gap: 11px;
+        }
+
+        .answer {
+            position: relative;
+
+            width: 100%;
+            min-height: 72px;
+
+            border: 1px solid #292929;
+
+            background: #070707;
+
+            color: #aaa;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            text-align: left;
+
+            padding: 18px 22px;
+
+            cursor: pointer;
+
+            transition:
+                border-color 0.15s,
+                color 0.15s,
+                background 0.15s,
+                transform 0.15s;
+        }
+
+        .answer:hover {
+            border-color: #6a6a6a;
+
+            background: #0b0b0b;
+
+            color: #eee;
+
+            transform: translateX(5px);
+        }
+
+        .answer:active {
+            transform: translateX(2px) scale(0.995);
+        }
+
+        .letter {
+            display: inline-block;
+
+            width: 38px;
+
+            color: #650000;
+
+            font-size: 18px;
+        }
+
+        /* =========================
+           LOCKING SCREEN
+        ========================= */
+
+        #processing {
             position: fixed;
             inset: 0;
 
-            background: white;
+            z-index: 100;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #000;
+
+            color: #777;
+
+            font-size: 11px;
+            letter-spacing: 0.35em;
+
+            text-align: center;
+        }
+
+        #processing.show {
+            display: flex;
+        }
+
+        #processingText::after {
+            content: "";
+
+            animation: processingText 1.25s steps(1) forwards;
+        }
+
+        @keyframes processingText {
+
+            0% {
+                content: "RESPONSE RECEIVED...";
+            }
+
+            30% {
+                content: "LOCKING ANSWER...";
+            }
+
+            60% {
+                content: "CALCULATING OUTCOME...";
+            }
+
+            85% {
+                content: "PRIZE ASSIGNED.";
+                color: #aaa;
+            }
+
+            100% {
+                content: "ACCESSING FINAL NODE...";
+                color: #fff;
+            }
+        }
+
+        /* =========================
+           FLASH
+        ========================= */
+
+        #flash {
+            position: fixed;
+            inset: 0;
+
+            z-index: 150;
+
+            background: #fff;
 
             opacity: 0;
+
             pointer-events: none;
-
-            z-index: 999;
         }
 
-        .flash.active {
-            animation: flash 0.35s;
+        .flashActive {
+            animation: flashScreen 0.16s linear;
         }
 
-        @keyframes flash {
+        @keyframes flashScreen {
+
             0% {
                 opacity: 0;
             }
 
-            40% {
-                opacity: 1;
+            30% {
+                opacity: 0.8;
             }
 
             100% {
                 opacity: 0;
+            }
+        }
+
+        /* =========================
+           BOTTOM DETAILS
+        ========================= */
+
+        #bottom {
+            position: fixed;
+
+            left: 25px;
+            bottom: 20px;
+
+            z-index: 11;
+
+            color: #292929;
+
+            font-size: 9px;
+            line-height: 1.8;
+        }
+
+        #id {
+            position: fixed;
+
+            right: 25px;
+            top: 20px;
+
+            z-index: 11;
+
+            text-align: right;
+
+            color: #292929;
+
+            font-size: 9px;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 600px) {
+
+            #questionBox {
+                padding: 24px 18px;
+            }
+
+            .answer {
+                padding: 16px;
+                font-size: 12px;
+            }
+
+            #bottom {
+                display: none;
             }
         }
     </style>
@@ -205,228 +419,169 @@
 
 <body>
 
-    <div class="flash" id="flash"></div>
+    <div id="background"></div>
 
-    <div class="container">
+    <main id="main">
 
+        <div id="status">
+            FINAL NODE:
+            <span>ACTIVE</span>
+        </div>
 
-        <!-- =========================
-         QUESTION SCREEN
-    ========================== -->
+        <h1>ONE QUESTION.</h1>
 
-        <div id="questionScreen">
+        <div id="questionBox">
 
-            <div class="top-text">
-                ONE QUESTION // THREE OUTCOMES
+            <div id="questionNumber">
+                FINAL RESPONSE REQUIRED
             </div>
 
-            <h1>THINK.</h1>
+            <div id="question">
 
+                Only <strong>ONE</strong> answer below can be correct.
 
-            <div class="question-box">
+                <br><br>
 
-                <div class="question">
-
-                    Only ONE answer below can be correct.<br><br>
-
-                    <strong>
-                        Which answer correctly describes
-                        the other answers?
-                    </strong>
-
-                </div>
-
-                <div class="warning">
-                    YOUR ANSWER DETERMINES YOUR PRIZE
-                </div>
+                <strong>
+                    Which answer correctly describes
+                    the other answers?
+                </strong>
 
             </div>
 
-
-            <div class="answers">
-
-
-                <!-- ANSWER A -->
-
-                <button class="answer" onclick="chooseAnswer('A')">
-
-                    <span class="answer-letter">A.</span>
-
-                    One of the other two answers is correct.
-
-                </button>
-
-
-
-                <!-- ANSWER B -->
-
-                <button class="answer" onclick="chooseAnswer('B')">
-
-                    <span class="answer-letter">B.</span>
-
-                    Both of the other two answers are incorrect.
-
-                </button>
-
-
-
-                <!-- ANSWER C -->
-
-                <button class="answer" onclick="chooseAnswer('C')">
-
-                    <span class="answer-letter">C.</span>
-
-                    Answer B is incorrect.
-
-                </button>
-
-
+            <div id="warning">
+                YOUR RESPONSE CANNOT BE CHANGED
             </div>
 
         </div>
 
+        <div id="answers">
 
+            <button class="answer" onclick="chooseAnswer('A')">
+                <span class="letter">A.</span>
 
-        <!-- =========================
-         RESULT SCREEN
-    ========================== -->
+                One of the other two answers is correct.
+            </button>
 
-        <div id="resultScreen">
+            <button class="answer" onclick="chooseAnswer('B')">
+                <span class="letter">B.</span>
 
-            <div class="result-label">
-                YOUR PRIZE
-            </div>
+                Both of the other two answers are incorrect.
+            </button>
 
-            <div class="result-icon" id="resultIcon">
-                ?
-            </div>
+            <button class="answer" onclick="chooseAnswer('C')">
+                <span class="letter">C.</span>
 
-            <div class="result-title" id="resultTitle">
-            </div>
-
-            <div class="result-text" id="resultText">
-            </div>
-
-            <div class="explanation" id="explanation">
-            </div>
+                Answer B is incorrect.
+            </button>
 
         </div>
 
+    </main>
 
+
+    <div id="bottom">
+        PUZZLE CHAIN: 99.8% COMPLETE<br>
+        RESPONSE LIMIT: 1<br>
+        OUTCOME: UNKNOWN
     </div>
+
+
+    <div id="id">
+        CASE 03<br>
+        FINAL QUESTION<br>
+        001 // RESPONSE
+    </div>
+
+
+    <div id="processing">
+        <div id="processingText"></div>
+    </div>
+
+
+    <div id="flash"></div>
+
+    <div id="noise"></div>
+    <div id="scanlines"></div>
+    <div id="vignette"></div>
 
 
     <script>
 
+        let answered = false;
+
+
         function chooseAnswer(answer) {
 
-            const questionScreen =
-                document.getElementById("questionScreen");
+            /*
+                Stop double clicking.
+            */
 
-            const resultScreen =
-                document.getElementById("resultScreen");
+            if (answered) {
+                return;
+            }
 
-            const resultIcon =
-                document.getElementById("resultIcon");
+            answered = true;
 
-            const resultTitle =
-                document.getElementById("resultTitle");
 
-            const resultText =
-                document.getElementById("resultText");
+            /*
+                SAVE THE ANSWER.
 
-            const explanation =
-                document.getElementById("explanation");
+                The winner page can read this with:
+
+                localStorage.getItem("impossiblePuzzleAnswer")
+            */
+
+            localStorage.setItem(
+                "impossiblePuzzleAnswer",
+                answer
+            );
+
+
+            /*
+                Flash the screen.
+            */
 
             const flash =
                 document.getElementById("flash");
 
-
-            /* FLASH */
-
-            flash.classList.remove("active");
+            flash.classList.remove("flashActive");
 
             void flash.offsetWidth;
 
-            flash.classList.add("active");
+            flash.classList.add("flashActive");
 
+
+            /*
+                Show processing screen.
+            */
+
+            document
+                .getElementById("processing")
+                .classList
+                .add("show");
+
+
+            /*
+                Send the answer to the winner page.
+
+                A:
+                winner_with_prize.html?answer=A
+
+                B:
+                winner_with_prize.html?answer=B
+
+                C:
+                winner_with_prize.html?answer=C
+            */
 
             setTimeout(function () {
 
-                questionScreen.style.display = "none";
+                window.location.href =
+                    "winner_with_prize.html?answer=" +
+                    encodeURIComponent(answer);
 
-                resultScreen.style.display = "block";
-
-                resultScreen.classList.add("reveal");
-
-
-                /* =========================
-                   ANSWER A
-                   SECOND-BEST PRIZE
-                ========================== */
-
-                if (answer === "A") {
-
-                    resultIcon.textContent = "🎁";
-
-                    resultTitle.textContent =
-                        "PRIZE 2";
-
-                    resultText.textContent =
-                        "Close... but the logic collapses.";
-
-                    explanation.innerHTML =
-                        "If A were true, then one of B or C would also have to be true. " +
-                        "That would mean more than one answer is correct, which breaks the rule.";
-
-                }
-
-
-                /* =========================
-                   ANSWER B
-                   BEST PRIZE
-                ========================== */
-
-                else if (answer === "B") {
-
-                    resultIcon.textContent = "🏆";
-
-                    resultTitle.textContent =
-                        "PRIZE 1";
-
-                    resultText.textContent =
-                        "Correct.";
-
-                    explanation.innerHTML =
-                        "If B is true, then A and C are both false.<br><br>" +
-                        "That makes B the only correct answer, exactly as required.";
-
-                }
-
-
-                /* =========================
-                   ANSWER C
-                   LOWEST PRIZE
-                ========================== */
-
-                else if (answer === "C") {
-
-                    resultIcon.textContent = "💀";
-
-                    resultTitle.textContent =
-                        "PRIZE 3";
-
-                    resultText.textContent =
-                        "You walked directly into it.";
-
-                    explanation.innerHTML =
-                        "If C is true, then B is false.<br><br>" +
-                        "But B says both A and C are incorrect. " +
-                        "Once C becomes true, the statements stop being logically consistent.";
-
-                }
-
-            }, 250);
+            }, 1300);
 
         }
 
