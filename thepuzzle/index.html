@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DON'T PRESS THE BUTTON</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background:
+                radial-gradient(circle at center, #202020 0%, #080808 60%, #000 100%);
+
+            color: white;
+
+            overflow: hidden;
+        }
+
+        /* GAME */
+
+        .game {
+            width: min(700px, 92vw);
+
+            text-align: center;
+        }
+
+        /* TOP BAR */
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 25px;
+
+            font-size: 18px;
+            color: #aaa;
+        }
+
+        .top span {
+            color: white;
+            font-weight: bold;
+        }
+
+        /* ROUND */
+
+        .round {
+            font-size: 15px;
+            letter-spacing: 5px;
+            color: #777;
+
+            margin-bottom: 15px;
+        }
+
+        /* INSTRUCTION */
+
+        .instruction {
+            min-height: 100px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: clamp(30px, 6vw, 55px);
+            font-weight: 900;
+
+            line-height: 1.1;
+
+            text-transform: uppercase;
+
+            transition:
+                color 0.2s,
+                transform 0.2s;
+        }
+
+        /* SUBTEXT */
+
+        .subtext {
+            min-height: 30px;
+
+            margin-top: 10px;
+            margin-bottom: 40px;
+
+            font-size: 17px;
+
+            color: #888;
+        }
+
+        /* BUTTON */
+
+        .button-wrapper {
+            position: relative;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            height: 260px;
+        }
+
+        .big-button {
+            width: 210px;
+            height: 210px;
+
+            border-radius: 50%;
+
+            border: none;
+
+            cursor: pointer;
+
+            font-size: 25px;
+            font-weight: 900;
+
+            color: white;
+
+            background:
+                radial-gradient(circle at 40% 30%,
+                    #ff6767,
+                    #e11212 45%,
+                    #900000 100%);
+
+            box-shadow:
+                0 14px 0 #600000,
+                0 20px 30px rgba(0, 0, 0, 0.8),
+                inset 0 5px 10px rgba(255, 255, 255, 0.25);
+
+            transition:
+                transform 0.08s,
+                box-shadow 0.08s;
+        }
+
+        .big-button:hover {
+            transform: scale(1.03);
+        }
+
+        .big-button:active {
+            transform: translateY(10px);
+
+            box-shadow:
+                0 4px 0 #600000,
+                0 8px 20px rgba(0, 0, 0, 0.8),
+                inset 0 5px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* MESSAGE */
+
+        .message {
+            min-height: 30px;
+
+            margin-top: 30px;
+
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* TIMER */
+
+        .timer-container {
+            width: 100%;
+            height: 6px;
+
+            margin-top: 30px;
+
+            background: #222;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .timer {
+            width: 100%;
+            height: 100%;
+
+            background: white;
+        }
+
+        /* SHAKE */
+
+        .shake {
+            animation: shake 0.35s;
+        }
+
+        @keyframes shake {
+
+            0% {
+                transform: translateX(0);
+            }
+
+            20% {
+                transform: translateX(-15px);
+            }
+
+            40% {
+                transform: translateX(15px);
+            }
+
+            60% {
+                transform: translateX(-10px);
+            }
+
+            80% {
+                transform: translateX(10px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /* FLASH */
+
+        .flash-green {
+            animation: greenFlash 0.4s;
+        }
+
+        @keyframes greenFlash {
+
+            0% {
+                background-color: transparent;
+            }
+
+            50% {
+                background-color: rgba(0, 255, 100, 0.12);
+            }
+
+            100% {
+                background-color: transparent;
+            }
+        }
+
+        .flash-red {
+            animation: redFlash 0.4s;
+        }
+
+        @keyframes redFlash {
+
+            0% {
+                background-color: transparent;
+            }
+
+            50% {
+                background-color: rgba(255, 0, 0, 0.15);
+            }
+
+            100% {
+                background-color: transparent;
+            }
+        }
+
+        /* FINAL */
+
+        .final-text {
+            font-size: clamp(45px, 10vw, 100px);
+
+            font-weight: 900;
+
+            animation: finalPulse 0.5s infinite alternate;
+        }
+
+        @keyframes finalPulse {
+
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.08);
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .big-button {
+                width: 180px;
+                height: 180px;
+            }
+
+            .button-wrapper {
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="game" id="game">
+
+        <div class="top">
+            <div>
+                ROUND
+                <span id="roundCounter">1</span>/10
+            </div>
+
+            <div>
+                SCORE
+                <span id="score">0</span>
+            </div>
+        </div>
+
+
+        <div class="round" id="roundLabel">
+            ROUND 1
+        </div>
+
+
+        <div class="instruction" id="instruction">
+            PRESS THE BUTTON
+        </div>
+
+
+        <div class="subtext" id="subtext">
+            Seems easy.
+        </div>
+
+
+        <div class="button-wrapper">
+
+            <button class="big-button" id="button" type="button">
+                PRESS ME
+            </button>
+
+        </div>
+
+
+        <div class="message" id="message"></div>
+
+
+        <div class="timer-container">
+
+            <div class="timer" id="timer"></div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* =========================
+           SETTINGS
+        ========================= */
+
+        const TOTAL_ROUNDS = 10;
+
+        const REDIRECT_PAGE = "final.html";
+
+        const ROUND_TIME = 3500;
+
+
+
+        /* =========================
+           ELEMENTS
+        ========================= */
+
+        const game = document.getElementById("game");
+
+        const button = document.getElementById("button");
+
+        const instruction =
+            document.getElementById("instruction");
+
+        const subtext =
+            document.getElementById("subtext");
+
+        const message =
+            document.getElementById("message");
+
+        const roundCounter =
+            document.getElementById("roundCounter");
+
+        const roundLabel =
+            document.getElementById("roundLabel");
+
+        const scoreElement =
+            document.getElementById("score");
+
+        const timer =
+            document.getElementById("timer");
+
+
+
+        /* =========================
+           GAME VARIABLES
+        ========================= */
+
+        let round = 1;
+
+        let score = 0;
+
+        let shouldPress = true;
+
+        let active = false;
+
+        let timerInterval;
+
+        let timeout;
+
+
+
+        /* =========================
+           POSSIBLE ROUNDS
+        ========================= */
+
+        const rounds = [
+
+            {
+                text: "PRESS THE BUTTON",
+                press: true,
+                sub: "Do exactly what it says."
+            },
+
+            {
+                text: "DON'T PRESS",
+                press: false,
+                sub: "Don't touch it."
+            },
+
+            {
+                text: "PRESS IT!",
+                press: true,
+                sub: "Quick."
+            },
+
+            {
+                text: "DO NOT PRESS",
+                press: false,
+                sub: "Seriously."
+            },
+
+            {
+                text: "PRESS NOW",
+                press: true,
+                sub: "NOW!"
+            },
+
+            {
+                text: "DON'T YOU DARE",
+                press: false,
+                sub: "I warned you."
+            },
+
+            {
+                text: "PRESS ME :)",
+                press: true,
+                sub: "Definitely not suspicious."
+            },
+
+            {
+                text: "PRESS NOTHING",
+                press: false,
+                sub: "Yes. Nothing."
+            },
+
+            {
+                text: "DON'T NOT PRESS",
+                press: true,
+                sub: "Read it again."
+            },
+
+            {
+                text: "DO NOT NOT NOT PRESS",
+                press: false,
+                sub: "Count the NOTs."
+            },
+
+            {
+                text: "PRESS IF 2 + 2 = 4",
+                press: true,
+                sub: "Hopefully you know this."
+            },
+
+            {
+                text: "PRESS IF 2 + 2 = 5",
+                press: false,
+                sub: "Think first."
+            },
+
+            {
+                text: "DON'T PRESS IF 7 IS ODD",
+                press: false,
+                sub: "Math time."
+            },
+
+            {
+                text: "PRESS IF 10 IS EVEN",
+                press: true,
+                sub: "Easy."
+            },
+
+            {
+                text: "IGNORE THIS AND PRESS",
+                press: true,
+                sub: "Confusing enough?"
+            },
+
+            {
+                text: "ABSOLUTELY DO NOT PRESS",
+                press: false,
+                sub: "This one seems pretty clear."
+            }
+
+        ];
+
+
+
+        /* =========================
+           START ROUND
+        ========================= */
+
+        function startRound() {
+
+            clearTimers();
+
+            active = true;
+
+            message.textContent = "";
+
+            button.textContent = "PRESS ME";
+
+
+            roundCounter.textContent = round;
+
+            roundLabel.textContent =
+                "ROUND " + round;
+
+
+            /*
+                Make the later rounds
+                slightly faster.
+            */
+
+            let time =
+                Math.max(
+                    1700,
+                    ROUND_TIME - ((round - 1) * 150)
+                );
+
+
+            /*
+                Pick random instruction
+            */
+
+            const data =
+                rounds[
+                Math.floor(
+                    Math.random() *
+                    rounds.length
+                )
+                ];
+
+
+            instruction.textContent =
+                data.text;
+
+            subtext.textContent =
+                data.sub;
+
+            shouldPress =
+                data.press;
+
+
+            /*
+                Start timer animation
+            */
+
+            startTimer(time);
+
+
+            /*
+                If the correct answer is
+                DON'T PRESS, surviving the
+                timer counts as success.
+            */
+
+            timeout = setTimeout(() => {
+
+                if (!active) {
+                    return;
+                }
+
+
+                if (shouldPress) {
+
+                    failRound(
+                        "TOO SLOW!"
+                    );
+
+                }
+
+                else {
+
+                    correctRound(
+                        "GOOD. YOU DID NOTHING."
+                    );
+
+                }
+
+            }, time);
+
+        }
+
+
+
+        /* =========================
+           BUTTON CLICK
+        ========================= */
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                if (!active) {
+                    return;
+                }
+
+
+                if (shouldPress) {
+
+                    correctRound(
+                        "CORRECT!"
+                    );
+
+                }
+
+                else {
+
+                    failRound(
+                        "WHY DID YOU PRESS IT?!"
+                    );
+
+                }
+
+            }
+        );
+
+
+
+        /* =========================
+           CORRECT
+        ========================= */
+
+        function correctRound(text) {
+
+            if (!active) {
+                return;
+            }
+
+
+            active = false;
+
+            clearTimers();
+
+
+            score++;
+
+            scoreElement.textContent =
+                score;
+
+
+            message.textContent =
+                text;
+
+
+            game.classList.remove(
+                "flash-green"
+            );
+
+            void game.offsetWidth;
+
+            game.classList.add(
+                "flash-green"
+            );
+
+
+            /*
+                Finished round 10
+            */
+
+            if (round >= TOTAL_ROUNDS) {
+
+                setTimeout(
+                    finishGame,
+                    800
+                );
+
+                return;
+            }
+
+
+            /*
+                Next round
+            */
+
+            setTimeout(() => {
+
+                round++;
+
+                startRound();
+
+            }, 750);
+
+        }
+
+
+
+        /* =========================
+           WRONG
+        ========================= */
+
+        function failRound(text) {
+
+            if (!active) {
+                return;
+            }
+
+
+            active = false;
+
+            clearTimers();
+
+
+            message.textContent =
+                text;
+
+
+            game.classList.remove(
+                "shake",
+                "flash-red"
+            );
+
+            void game.offsetWidth;
+
+
+            game.classList.add(
+                "shake",
+                "flash-red"
+            );
+
+
+            /*
+                Wrong answer means
+                repeat the same round number.
+        
+                A new random instruction
+                will appear.
+            */
+
+            setTimeout(() => {
+
+                startRound();
+
+            }, 1000);
+
+        }
+
+
+
+        /* =========================
+           TIMER
+        ========================= */
+
+        function startTimer(duration) {
+
+            const start =
+                performance.now();
+
+
+            timer.style.width =
+                "100%";
+
+
+            timerInterval =
+                setInterval(() => {
+
+                    const elapsed =
+                        performance.now()
+                        -
+                        start;
+
+
+                    let remaining =
+                        1 -
+                        (
+                            elapsed /
+                            duration
+                        );
+
+
+                    remaining =
+                        Math.max(
+                            0,
+                            remaining
+                        );
+
+
+                    timer.style.width =
+                        (
+                            remaining *
+                            100
+                        )
+                        +
+                        "%";
+
+                }, 20);
+
+        }
+
+
+
+        /* =========================
+           CLEAR TIMERS
+        ========================= */
+
+        function clearTimers() {
+
+            clearTimeout(
+                timeout
+            );
+
+            clearInterval(
+                timerInterval
+            );
+
+        }
+
+
+
+        /* =========================
+           FINISH GAME
+        ========================= */
+
+        function finishGame() {
+
+            clearTimers();
+
+            active = false;
+
+
+            game.innerHTML = `
+
+        <div class="final-text">
+            YOU SURVIVED
+        </div>
+
+        <div
+            style="
+                margin-top:20px;
+                color:#888;
+                font-size:20px;
+            "
+        >
+            Redirecting...
+        </div>
+
+    `;
+
+
+            setTimeout(() => {
+
+                window.location.href =
+                    REDIRECT_PAGE;
+
+            }, 1800);
+
+        }
+
+
+
+        /* =========================
+           START GAME
+        ========================= */
+
+        startRound();
+
+    </script>
+
+</body>
+
+</html>
